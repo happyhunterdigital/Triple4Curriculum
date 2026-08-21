@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './lib/authContext';
-import { Header } from './components/Header';
-import { Sidebar } from './components/Sidebar';
+import { ModernNavbar } from './components/ModernNavbar';
+import { ModernSidebar } from './components/ModernSidebar';
 import { ToastBanner } from './components/ToastBanner';
 import { AIFloatingChatbot } from './components/ai/AIFloatingChatbot';
 
@@ -35,9 +35,7 @@ const MainLayout: React.FC = () => {
   const [currentRoute, setCurrentRoute] = useState<string>(() => {
     return window.location.pathname !== '/' ? window.location.pathname : '/dashboard';
   });
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Sync with browser history and handle popstate for multi-page architecture
   useEffect(() => {
     const handlePopState = () => {
       setCurrentRoute(window.location.pathname || '/dashboard');
@@ -49,11 +47,9 @@ const MainLayout: React.FC = () => {
   const handleNavigate = (route: string) => {
     setCurrentRoute(route);
     window.history.pushState({}, '', route);
-    setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Adjust default route when switching roles if route doesn't match current role
   useEffect(() => {
     if (currentRole === 'admin' && !currentRoute.startsWith('/admin')) {
       handleNavigate('/admin/dashboard');
@@ -65,7 +61,6 @@ const MainLayout: React.FC = () => {
   }, [currentRole]);
 
   const renderCurrentView = () => {
-    // Admin Routes
     if (currentRole === 'admin' || currentRoute.startsWith('/admin')) {
       switch (currentRoute) {
         case '/admin/departments':
@@ -87,7 +82,6 @@ const MainLayout: React.FC = () => {
       }
     }
 
-    // Lecturer Routes
     if (currentRole === 'lecturer' || currentRoute.startsWith('/lecturer')) {
       switch (currentRoute) {
         case '/lecturer/progress':
@@ -110,7 +104,6 @@ const MainLayout: React.FC = () => {
       }
     }
 
-    // Student Routes
     switch (currentRoute) {
       case '/lectures':
       case '/student/lectures':
@@ -139,43 +132,24 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F5] text-deep-onyx flex flex-col font-sans selection:bg-achievement-gold selection:text-deep-onyx">
-      
-      {/* Toast Notification Stream */}
+    <div className="w-full min-h-screen bg-[var(--color-canvas-light)] flex flex-col antialiased">
       <ToastBanner />
+      <ModernNavbar />
 
-      {/* Global Header */}
-      <Header 
-        currentRoute={currentRoute}
-        mobileMenuOpen={mobileMenuOpen}
-        onToggleMobileMenu={() => setMobileMenuOpen(prev => !prev)} 
-        onNavigate={handleNavigate}
-      />
-
-      {/* Main Workspace with Structural 1px Blueprint Grid lines */}
-      <div className="flex-1 flex flex-col md:flex-row w-full max-w-[1520px] mx-auto pl-3 pr-3 sm:pl-8 sm:pr-4 lg:pl-12 lg:pr-6 py-6 gap-6">
+      <div className="w-full flex flex-1 items-stretch">
+        <ModernSidebar />
         
-        {/* Navigation Sidebar */}
-        <Sidebar 
-          currentRoute={currentRoute} 
-          onNavigate={handleNavigate} 
-          onCloseMobile={() => setMobileMenuOpen(false)}
-        />
-
-        {/* Dynamic Route Content Area with Architectural Asymmetric Editorial Padding */}
-        <main className="flex-1 min-w-0">
+        <main className="flex-1 p-8 overflow-y-auto">
           {renderCurrentView()}
         </main>
-
       </div>
 
-      {/* Institutional Blueprint Footer */}
-      <footer className="border-t border-neutral-300 bg-white py-6 text-xs text-neutral-600">
-        <div className="max-w-[1520px] mx-auto pl-4 pr-3 sm:pl-8 sm:pr-6 lg:pl-12 lg:pr-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer className="border-t border-[var(--color-canvas-border)] bg-[var(--color-canvas-card)] py-6 text-xs text-neutral-600">
+        <div className="max-w-[1520px] mx-auto px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-wider text-neutral-500 uppercase">
-            <span className="font-bold text-academic-green">[ TRIPLE 4 CURRICULUM ]</span>
+            <span className="font-bold text-[var(--color-brand-green)]">[ TRIPLE 4 CURRICULUM ]</span>
             <span>•</span>
-            <span className="text-deep-onyx font-bold">TRIPLE 4C ACCREDITED</span>
+            <span className="text-[var(--color-brand-black)] font-bold">TRIPLE 4C ACCREDITED</span>
             <span>•</span>
             <span>HIGHER EDUCATION & RESEARCH PARADIGM</span>
           </div>
@@ -185,9 +159,7 @@ const MainLayout: React.FC = () => {
         </div>
       </footer>
 
-      {/* Floating AI Study Copilot Action Button */}
       <AIFloatingChatbot />
-
     </div>
   );
 };
