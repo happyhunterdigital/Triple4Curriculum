@@ -62,7 +62,7 @@ export const ModernSidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-76 min-h-[calc(100vh-76px)] bg-[var(--color-canvas-card)] border-r border-[var(--color-canvas-line)] p-5 flex flex-col justify-between">
+    <aside className="relative z-20 w-76 min-h-[calc(100vh-76px)] bg-[var(--color-canvas-card)] border-r border-[var(--color-canvas-line)] p-5 flex flex-col justify-between">
       <div className="space-y-6">
         <div className="p-3 bg-[var(--color-canvas-soft)] border-l-4 border-[var(--color-t4c-green)] rounded-r-md">
           <p className="font-mono text-[9px] uppercase tracking-widest text-[var(--color-t4c-green)] font-bold mb-0.5">
