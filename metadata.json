@@ -1,0 +1,6 @@
+{
+  "name": "Triple 4 Curriculum",
+  "description": "Accredited online courses and university degree curricula with student learning tracks, faculty speed grading, clash-free timetabling, SA-SAMS compliance, and institutional administration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

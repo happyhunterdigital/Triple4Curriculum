@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@theme {
+  /* Prestige Typography Archetypes */
+  --font-serif: "Cormorant Garamond", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Inter", sans-serif;
+
+  /* Cinema-Grade Color Archetypes */
+  --color-prestige-dark: #0d0e10;
+  --color-prestige-canvas: #fcfbfa;
+  --color-prestige-line: rgba(13, 14, 16, 0.12);
+  --color-prestige-line-dark: rgba(252, 251, 250, 0.15);
+
+  /* Legacy & Architectural Palette Alignment */
+  --color-academic-green: #006D44;
+  --color-academic-green-dark: #005233;
+  --color-academic-green-light: #E6F3EC;
+  --color-achievement-gold: #C59B27;
+  --color-achievement-gold-light: #FFF9D6;
+  --color-deep-onyx: #0d0e10;
+  --color-blueprint-slate: #1E293B;
+  --color-grid-line: #E2E8F0;
+  --color-soft-bg: #fcfbfa;
+  --color-surface-card: #FFFFFF;
+}
+
+/* Enforce Global Print/Cinema Structural Defaults */
+html, body {
+  background-color: var(--color-prestige-canvas);
+  color: var(--color-prestige-dark);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  background-color: var(--color-prestige-canvas);
+  min-height: 100vh;
+}
+
+/* Zero Radius & Architectural Minimalist Strict Rules */
+* {
+  border-radius: 0px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Headings Typography */
+h1, h2, h3, .heading-serif {
+  font-family: var(--font-serif);
+  font-feature-settings: "liga", "kern";
+  letter-spacing: -0.02em;
+}
+
+/* Utilitarian Meta Labels */
+.meta-mono, .label-mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Utility Helpers */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.text-academic-green { color: #006D44; }
+.bg-academic-green { background-color: #006D44; }
+.border-academic-green { border-color: #006D44; }
+
+.text-achievement-gold { color: #9A7B1C; }
+.bg-achievement-gold { background-color: #C59B27; }
+.border-achievement-gold { border-color: #C59B27; }
+
+.text-deep-onyx { color: #0d0e10; }
+.bg-deep-onyx { background-color: #0d0e10; }
+.border-deep-onyx { border-color: #0d0e10; }
