@@ -2,31 +2,29 @@
 @import "tailwindcss";
 
 @theme {
-  /* Editorial & Modern Tech Typography */
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* Bright Institutional Accents */
-  --color-brand-green: #0F5A3B;
-  --color-brand-yellow: #FCD34D;
-  --color-brand-black: #111315;
+  /* Premium Crest Identity Palette */
+  --color-t4c-gold: #D4AF37;
+  --color-t4c-green: #0A5C36;
+  --color-t4c-black: #111215;
   
-  /* Canvas Environments */
-  --color-canvas-light: #FBFBFA;
+  /* Canvas Aesthetics */
+  --color-canvas-soft: #FAF9F5;
   --color-canvas-card: #FFFFFF;
-  --color-canvas-border: rgba(17, 19, 21, 0.08);
+  --color-canvas-line: rgba(10, 92, 54, 0.08);
 }
 
 html, body {
-  background-color: var(--color-canvas-light);
-  color: var(--color-brand-black);
+  background-color: var(--color-canvas-soft);
+  color: var(--color-t4c-black);
   font-family: var(--font-sans);
-  font-size: 16px;
   -webkit-font-smoothing: antialiased;
 }
 
 #root {
-  background-color: var(--color-canvas-light);
+  background-color: var(--color-canvas-soft);
   min-height: 100vh;
 }
 

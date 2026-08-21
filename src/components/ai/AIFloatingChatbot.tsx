@@ -193,31 +193,31 @@ Would you like to initiate a diagnostic quiz or review the SpeedGrader™ rubric
       {/* Structural Floating Trigger Button */}
       <div className="fixed bottom-6 right-6 z-40 flex items-center gap-3">
         {!isOpen && (
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-deep-onyx text-achievement-gold text-xs font-mono tracking-wider uppercase border border-deep-onyx rounded-none">
-            <span className="w-1.5 h-1.5 bg-achievement-gold" />
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-[var(--color-t4c-black)] text-[var(--color-t4c-gold)] text-xs font-mono tracking-wider uppercase rounded-full">
+            <span className="w-1.5 h-1.5 bg-[var(--color-t4c-gold)] rounded-full" />
             <span>444 AI COPILOT</span>
-            <span className="px-1 py-0.2 bg-white/20 text-[9px] text-white font-mono">Alt + /</span>
+            <span className="px-1 py-0.2 bg-white/20 text-[9px] text-white font-mono rounded">Alt + /</span>
           </div>
         )}
 
         <button
           id="btn-floating-ai-tutor"
           onClick={() => setIsOpen(prev => !prev)}
-          className={`w-14 h-14 sm:w-16 sm:h-16 p-1 border-2 transition cursor-pointer flex items-center justify-center rounded-none shadow-md overflow-hidden ${
+          className={`w-16 h-16 sm:w-20 sm:h-20 border-0 transition cursor-pointer flex items-center justify-center rounded-full shadow-lg overflow-hidden ${
             isOpen 
-              ? 'bg-deep-onyx text-achievement-gold border-deep-onyx' 
-              : 'bg-white hover:bg-neutral-50 text-deep-onyx border-neutral-800'
+              ? 'bg-[var(--color-t4c-black)]' 
+              : 'bg-[var(--color-t4c-black)] hover:bg-[var(--color-t4c-green)]'
           }`}
           title="Toggle 444 AI Copilot (Alt + /)"
           aria-label="Toggle AI Study Copilot"
         >
           {isOpen ? (
-            <X className="w-6 h-6 text-achievement-gold" />
+            <X className="w-7 h-7 text-[var(--color-t4c-gold)]" />
           ) : (
             <img 
               src="https://res.cloudinary.com/dka0498ns/image/upload/v1787326034/Triple_4_Curriculum_chabot_Icon_n2qrgg.png"
               alt="444 AI Chatbot"
-              className="w-full h-full object-contain scale-110"
+              className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
           )}
