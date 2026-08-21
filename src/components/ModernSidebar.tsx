@@ -15,7 +15,7 @@ interface NavigationItem {
   active?: boolean;
 }
 
-export const ModernSidebar: React.FC = () => {
+export const ModernSidebar: React.FC<{ onNavigate?: (route: string) => void }> = ({ onNavigate }) => {
   const [unreadLectures, setUnreadLectures] = useState<number>(0);
   const [unreadAssignments, setUnreadAssignments] = useState<number>(0);
   const [unreadNotices, setUnreadNotices] = useState<number>(0);
@@ -76,12 +76,13 @@ export const ModernSidebar: React.FC = () => {
         <nav className="space-y-1">
           {menuItems.map((item, idx) => (
             <button
-              key={idx}
+              key={item.id}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-150 group text-left cursor-pointer ${
                 item.active 
                   ? 'bg-[var(--color-t4c-gold)]/15 border-l-2 border-[var(--color-t4c-gold)] text-[var(--color-t4c-black)] font-bold' 
-                  : 'text-neutral-600 hover:bg-[var(--color-canvas-soft)] hover:text-[var(--color-t4c-black)]'
-              }`}
+                  : 'text-neutral-600 hover:bg-[var(--color-canvas-soft)] hover:text-[var(--color-t4c-black)]'}
+              `}
+              onClick={() => onNavigate?.(item.id)}
             >
               <div className="flex items-center space-x-3.5">
                 <span className={`${item.active ? 'text-[var(--color-t4c-green)]' : 'text-neutral-400 group-hover:text-[var(--color-t4c-green)]'}`}>
