@@ -13,7 +13,7 @@ const LECTURE_DATA: LectureAsset = {
   id: "L-101",
   chapter: "Chapter III // Systems Genesis",
   title: "Structural Compounding and Mechanics of High-Throughput Pipelines",
-  videoSrc: "/lectures/systems-genesis.mp4",
+  videoSrc: "https://res.cloudinary.com/dka0498ns/video/upload/v1787426745/Triple_4_Curriculum_Gold_particles_forming_medallion_wgxtl4.mp4",
   transcriptMarkdown: `
 ### I. Baseline Axioms of High-Throughput Delivery
 
