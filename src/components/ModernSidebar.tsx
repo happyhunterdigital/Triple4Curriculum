@@ -58,7 +58,6 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
               <span className="font-mono text-[8px] uppercase tracking-widest text-[var(--color-t4c-yellow)] font-bold">Senate Directive</span>
             </div>
             <h4 className="text-xs font-bold tracking-tight text-neutral-100">Faculty of Applied Sciences</h4>
-            <p className="font-mono text-[9px] text-emerald-400 mt-1 uppercase font-semibold">[ Stream: Connected ]</p>
           </div>
 
           <div className="space-y-1">

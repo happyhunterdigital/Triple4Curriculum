@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, ShieldAlert, Bell, ChevronDown, HelpCircle, Menu, X } from 'lucide-react';
+import { Search, Bell, ChevronDown, HelpCircle, Menu, X } from 'lucide-react';
 
 interface ModernNavbarProps {
   onToggleMenu?: () => void;
@@ -37,11 +37,6 @@ export const ModernNavbar: React.FC<ModernNavbarProps> = ({ onToggleMenu, menuOp
       </div>
 
       <div className="flex items-center gap-2 sm:gap-5 h-full shrink-0">
-        <div className="hidden lg:flex items-center gap-1.5 bg-[var(--color-t4c-black)]/30 px-3 py-1 rounded border border-[var(--color-t4c-yellow)]/30">
-          <ShieldAlert size={12} className="text-[var(--color-t4c-yellow)]" />
-          <span className="font-mono text-[9px] text-[var(--color-t4c-yellow)] font-bold uppercase tracking-wider">SYSTEM AUTHENTICATED</span>
-        </div>
-
         <button className="hidden sm:flex bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] font-mono text-[10px] uppercase tracking-widest px-3 sm:px-4 py-2 rounded font-bold hover:bg-white transition-all shadow-xs border-b-2 border-amber-600 cursor-pointer whitespace-nowrap">
           <span className="hidden lg:inline">Transmit File +</span><span className="lg:hidden">Transmit +</span>
         </button>
@@ -56,8 +51,7 @@ export const ModernNavbar: React.FC<ModernNavbarProps> = ({ onToggleMenu, menuOp
             SS
           </div>
           <div className="text-left hidden xl:block">
-            <p className="text-xs font-bold text-white leading-none mb-0.5">S. Student</p>
-            <p className="font-mono text-[8px] uppercase text-emerald-200 tracking-wider font-semibold">Matrix Validated</p>
+            <p className="text-xs font-bold text-white leading-none">S. Student</p>
           </div>
           <ChevronDown size={12} className="text-emerald-200 hidden sm:block" />
         </button>
