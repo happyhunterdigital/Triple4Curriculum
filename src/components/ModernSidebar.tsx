@@ -23,7 +23,7 @@ interface ModernSidebarProps {
 }
 
 export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, currentRoute = 'dashboard', open = false, onClose }) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [showCreateFlyout, setShowCreateFlyout] = useState(false);
   const [unreadLectures, setUnreadLectures] = useState(0);
   const [unreadAssignments, setUnreadAssignments] = useState(0);
@@ -49,38 +49,40 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
   };
 
   const primaryMenu: MenuItem[] = [
-    { id: 'dashboard', label: "Learner Dashboard", icon: <LayoutDashboard size={18} /> },
-    { id: 'lectures', label: "Interactive Lectures", icon: <BookOpen size={18} /> },
+    { id: 'dashboard', label: "Learner Dashboard", icon: <LayoutDashboard size={20} strokeWidth={2.4} /> },
+    { id: 'lectures', label: "Interactive Lectures", icon: <BookOpen size={20} strokeWidth={2.4} /> },
     {
       id: 'assignments',
       label: "Assignments",
-      icon: <FileText size={18} />,
+      icon: <FileText size={20} strokeWidth={2.4} />,
       subItems: [
         { label: "Drafts", count: unreadAssignments || 3 },
         { label: "Scheduled", count: 1 },
         { label: "Submitted", count: 14 }
       ]
     },
-    { id: 'timetable', label: "Class Timetable", icon: <Calendar size={18} /> },
+    { id: 'timetable', label: "Class Timetable", icon: <Calendar size={20} strokeWidth={2.4} /> },
   ];
 
   const secondaryMenu: MenuItem[] = [
-    { id: 'attendance', label: "Attendance Records", icon: <CheckSquare size={18} /> },
-    { id: 'discussions', label: "Academic Discussions", icon: <MessageSquare size={18} /> },
-    { id: 'notices', label: "Dispatches & Notices", icon: <Bell size={18} />, count: 2 },
+    { id: 'attendance', label: "Attendance Records", icon: <CheckSquare size={20} strokeWidth={2.4} /> },
+    { id: 'discussions', label: "Academic Discussions", icon: <MessageSquare size={20} strokeWidth={2.4} /> },
+    { id: 'notices', label: "Dispatches & Notices", icon: <Bell size={20} strokeWidth={2.4} />, count: 2 },
   ];
 
   return (
     <div className="relative flex h-[calc(100vh-74px)] shrink-0">
       {open && <div className="fixed inset-0 bg-black/30 z-40 lg:hidden" onClick={onClose} />}
       <aside
+        onMouseEnter={() => setIsExpanded(true)}
+        onMouseLeave={() => { setIsExpanded(false); setShowCreateFlyout(false); }}
         className={`h-full bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] border-r border-[var(--color-t4c-black)]/10 flex flex-col justify-between transition-all duration-300 ease-in-out relative select-none z-40 lg:z-0
           ${isExpanded ? 'w-64' : 'w-16'}
-          fixed lg:static inset-y-0 left-0 top-[74px] lg:top-0 ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+          fixed lg:static inset-y-0 left-0 top-[74px] lg:top-0 ${open ? 'translate-x-0 !w-64' : '-translate-x-full lg:translate-x-0'}`}
       >
-        <div>
-          <div className={`p-4 flex items-center border-b border-[var(--color-t4c-black)]/10 ${isExpanded ? 'justify-between' : 'justify-center'}`}>
-            <div className="flex items-center gap-3 overflow-hidden">
+        <div className="overflow-hidden">
+          <div className={`p-3 flex items-center border-b border-[var(--color-t4c-black)]/10 ${isExpanded ? 'justify-between' : 'justify-center'}`}>
+            <div className={`flex items-center gap-3 overflow-hidden ${!isExpanded ? 'justify-center w-full' : ''}`}>
               <div className="w-8 h-8 rounded-md bg-[var(--color-t4c-black)] text-white font-mono font-bold flex items-center justify-center text-xs border border-white/20 shrink-0">
                 SS
               </div>
@@ -93,34 +95,35 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
             </div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="p-1.5 rounded hover:bg-[var(--color-t4c-black)]/10 text-[var(--color-t4c-black)] cursor-pointer flex shrink-0 border border-black/5"
-              title={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
+              className="p-1.5 rounded hover:bg-[var(--color-t4c-black)]/10 text-[var(--color-t4c-black)] cursor-pointer hidden lg:flex shrink-0 border border-black/5"
+              title={isExpanded ? "Collapse — hover to expand" : "Expand"}
             >
               {isExpanded ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
             </button>
           </div>
 
-          <div className="p-3 relative">
+          <div className="p-2 relative">
             <button
               onClick={() => isExpanded && setShowCreateFlyout(!showCreateFlyout)}
-              className={`w-full flex items-center bg-[var(--color-t4c-black)] text-white text-xs font-bold rounded py-2 px-3 border border-amber-600 transition-colors cursor-pointer hover:bg-neutral-800 ${isExpanded ? 'justify-between' : 'justify-center'}`}
+              className={`w-full flex items-center bg-[var(--color-t4c-black)] text-white text-xs font-bold rounded py-2.5 border border-amber-600 transition-colors cursor-pointer hover:bg-neutral-800 ${isExpanded ? 'justify-between px-3' : 'justify-center px-2'}`}
+              title="File Submission"
             >
               <div className="flex items-center gap-2">
-                <Plus size={14} className="text-[var(--color-t4c-yellow)]" />
+                <Plus size={16} strokeWidth={2.6} className="text-[var(--color-t4c-yellow)] shrink-0" />
                 {isExpanded && <span>File Submission</span>}
               </div>
             </button>
             {showCreateFlyout && isExpanded && (
-              <div className="absolute top-14 left-3 right-3 bg-[var(--color-t4c-black)] text-white border border-neutral-800 rounded shadow-xl p-1.5 space-y-0.5 z-40">
+              <div className="absolute top-14 left-2 right-2 bg-[var(--color-t4c-black)] text-white border border-neutral-800 rounded shadow-xl p-1.5 space-y-0.5 z-40">
                 <button className="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] font-medium hover:bg-white/10 rounded text-left"><FilePlus size={12} className="text-amber-400" /> <span>Upload Assignment</span></button>
                 <button className="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] font-medium hover:bg-white/10 rounded text-left"><FolderPlus size={12} className="text-amber-400" /> <span>Create Workspace Folder</span></button>
               </div>
             )}
           </div>
 
-          <nav className="px-2 space-y-0.5">
+          <nav className="px-2 space-y-0.5 mt-2">
             {isExpanded && (
-              <p className="px-2 font-mono text-[8px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5 mt-2">Core Registry</p>
+              <p className="px-2 font-mono text-[8px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">Core Registry</p>
             )}
             {primaryMenu.map((item) => {
               const isSelected = currentRoute === item.id;
@@ -128,10 +131,11 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
                 <div key={item.id} className="space-y-0.5">
                   <button
                     onClick={() => handleNavigate(item.id)}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded text-xs font-bold transition-all border group text-left cursor-pointer ${isSelected ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)] shadow-xs' : 'text-[var(--color-t4c-black)] border-transparent hover:bg-[var(--color-t4c-black)]/10'}`}
+                    title={item.label}
+                    className={`w-full flex items-center ${isExpanded ? 'justify-between px-3' : 'justify-center px-2'} py-2.5 rounded text-xs font-bold transition-all border group text-left cursor-pointer ${isSelected ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)] shadow-xs' : 'text-[var(--color-t4c-black)] border-transparent hover:bg-[var(--color-t4c-black)]/10'}`}
                   >
-                    <div className="flex items-center gap-3">
-                      <span className={isSelected ? 'text-[var(--color-t4c-yellow)]' : 'text-[var(--color-t4c-black)]/60 group-hover:text-[var(--color-t4c-black)]'}>{item.icon}</span>
+                    <div className={`flex items-center ${isExpanded ? 'gap-3' : 'justify-center'}`}>
+                      <span className={`${isSelected ? 'text-[var(--color-t4c-yellow)]' : 'text-[var(--color-t4c-black)]'} font-bold`}>{item.icon}</span>
                       {isExpanded && <span>{item.label}</span>}
                     </div>
                   </button>
@@ -158,10 +162,11 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
               <button
                 key={item.id}
                 onClick={() => handleNavigate(item.id)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded text-xs font-bold transition-all text-left cursor-pointer ${currentRoute === item.id ? 'bg-[var(--color-t4c-black)] text-white' : 'text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10'}`}
+                title={item.label}
+                className={`w-full flex items-center ${isExpanded ? 'justify-between px-3' : 'justify-center px-2'} py-2.5 rounded text-xs font-bold transition-all text-left cursor-pointer ${currentRoute === item.id ? 'bg-[var(--color-t4c-black)] text-white' : 'text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10'}`}
               >
-                <div className="flex items-center gap-3">
-                  <span className={`${currentRoute === item.id ? 'text-[var(--color-t4c-yellow)]' : 'opacity-60'}`}>{item.icon}</span>
+                <div className={`flex items-center ${isExpanded ? 'gap-3' : 'justify-center'}`}>
+                  <span className={`${currentRoute === item.id ? 'text-[var(--color-t4c-yellow)]' : 'text-[var(--color-t4c-black)]'} font-bold`}>{item.icon}</span>
                   {isExpanded && <span>{item.label}</span>}
                 </div>
                 {item.count && isExpanded && (
@@ -172,14 +177,14 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
           </nav>
         </div>
 
-        <div className="p-2 space-y-1 border-t border-[var(--color-t4c-black)]/10">
-          <button className="w-full flex items-center px-3 py-2 text-xs font-bold rounded text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10 text-left cursor-pointer">
-            <Settings size={16} className="opacity-60 mr-3" />
-            {isExpanded && <span>System Settings</span>}
+        <div className="p-2 space-y-1 border-t border-[var(--color-t4c-black)]/10 overflow-hidden">
+          <button title="System Settings" className={`w-full flex items-center ${isExpanded ? 'px-3' : 'justify-center px-2'} py-2 text-xs font-bold rounded text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10 text-left cursor-pointer`}>
+            <Settings size={18} strokeWidth={2.4} className="text-[var(--color-t4c-black)] shrink-0" />
+            {isExpanded && <span className="ml-3">System Settings</span>}
           </button>
-          <button className="w-full flex items-center px-3 py-2 text-xs font-bold rounded text-red-800 hover:bg-red-900/10 text-left cursor-pointer">
-            <LogOut size={16} className="opacity-60 mr-3" />
-            {isExpanded && <span>Terminate Link</span>}
+          <button title="Terminate Link" className={`w-full flex items-center ${isExpanded ? 'px-3' : 'justify-center px-2'} py-2 text-xs font-bold rounded text-red-800 hover:bg-red-900/10 text-left cursor-pointer`}>
+            <LogOut size={18} strokeWidth={2.4} className="shrink-0" />
+            {isExpanded && <span className="ml-3">Terminate Link</span>}
           </button>
         </div>
       </aside>
