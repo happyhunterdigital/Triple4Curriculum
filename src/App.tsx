@@ -15,6 +15,29 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const renderCurrentView = () => {
+    // Admin Routes
+    if (currentRoute === '/admin' || currentRoute.startsWith('/admin/')) {
+      // In a full implementation, import and render admin views
+      return <div>Admin Panel - {currentRoute}</div>;
+    }
+    
+    // Lecturer Routes
+    if (currentRoute === '/lecturer' || currentRoute.startsWith('/lecturer/')) {
+      // In a full implementation, import and render lecturer views
+      return <div>Lecturer Panel - {currentRoute}</div>;
+    }
+    
+    // Student Routes
+    if (currentRoute === '/student' || currentRoute.startsWith('/student/')) {
+      // In a full implementation, import and render student views
+      return <div>Student Panel - {currentRoute}</div>;
+    }
+    
+    // Default / Dashboard route
+    return <ClassroomWorkspace />;
+  };
+
   return (
     <AuthProvider>
       <div className="w-full min-h-screen bg-[var(--color-canvas-soft)] flex flex-col antialiased">
@@ -25,7 +48,7 @@ function App() {
           
           <div className="flex-1 flex flex-col overflow-y-auto relative z-0">
             <div className="border-b border-[var(--color-canvas-line)]">
-              <ClassroomWorkspace />
+              {renderCurrentView()}
             </div>
 
             <div className="bg-white py-12">
