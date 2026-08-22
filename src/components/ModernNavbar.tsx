@@ -13,9 +13,7 @@ export const ModernNavbar: React.FC<ModernNavbarProps> = ({ onToggleMenu, menuOp
         <button onClick={onToggleMenu} className="lg:hidden p-2 -ml-2 text-emerald-100 hover:text-[var(--color-t4c-yellow)]">
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
-        <div className="w-9 h-9 rounded bg-[var(--color-t4c-black)] flex items-center justify-center font-mono font-bold text-xs text-[var(--color-t4c-yellow)] border border-[var(--color-t4c-yellow)] shadow-sm shrink-0">
-          444
-        </div>
+        <img src="https://res.cloudinary.com/dka0498ns/image/upload/v1787254845/Triple_4_Curriculum_latest_logo_variant4_hjviza.png" alt="Triple 4C" className="w-9 h-9 rounded-full object-cover border border-[var(--color-t4c-yellow)] shadow-sm shrink-0 bg-white" referrerPolicy="no-referrer" />
         <div className="hidden sm:block">
           <h1 className="text-sm font-extrabold tracking-tight text-white uppercase leading-none">Triple 4C Platform</h1>
           <p className="text-[9px] font-mono uppercase tracking-widest text-[var(--color-t4c-yellow)] font-bold">Academic Core</p>

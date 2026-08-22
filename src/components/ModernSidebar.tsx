@@ -93,7 +93,8 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
             </div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="p-1 rounded hover:bg-[var(--color-t4c-black)]/10 text-[var(--color-t4c-black)] cursor-pointer hidden lg:flex"
+              className="p-1.5 rounded hover:bg-[var(--color-t4c-black)]/10 text-[var(--color-t4c-black)] cursor-pointer flex shrink-0 border border-black/5"
+              title={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
             >
               {isExpanded ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
             </button>
