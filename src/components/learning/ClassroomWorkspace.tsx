@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface LectureAsset {
@@ -40,6 +40,26 @@ As the complexity coefficient scales upward, maintaining un-bordered layouts min
 
 export const ClassroomWorkspace: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.play().catch(() => {});
+          } else {
+            el.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <main className="w-full min-h-screen bg-[var(--color-prestige-canvas)] text-[var(--color-prestige-dark)] flex flex-col">
@@ -58,8 +78,12 @@ export const ClassroomWorkspace: React.FC = () => {
         <div className="bg-[var(--color-prestige-dark)] relative flex flex-col justify-center items-center overflow-hidden border-r border-[var(--color-prestige-line)] aspect-video lg:aspect-auto">
           <div className="w-full max-w-5xl aspect-[16/9] border-t border-b lg:border border-[var(--color-prestige-line-dark)] relative bg-neutral-950">
             <video
+              ref={videoRef}
               className="w-full h-full object-cover filtering-none grayscale-[10%]"
               src={LECTURE_DATA.videoSrc}
+              autoPlay
+              muted
+              loop
               controls
               playsInline
               preload="metadata"
