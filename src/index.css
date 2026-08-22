@@ -1,22 +1,20 @@
-@import url('https://googleapis.com');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Outfit", sans-serif;
 
-  /* Premium Color Block Architecture */
+  /* Prestige Crest Identity Palette Applied to the Specifications */
   --color-t4c-green: #084228;
   --color-t4c-yellow: #E9C444;
   --color-t4c-black: #111214;
-  
-  /* Workspaces */
   --color-canvas-soft: #FAF9F5;
   --color-canvas-card: #FFFFFF;
   --color-canvas-line: rgba(17, 18, 20, 0.08);
 }
 
-html, body {
+body {
   background-color: var(--color-canvas-soft);
   color: var(--color-t4c-black);
   font-family: var(--font-sans);

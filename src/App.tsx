@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { AuthProvider } from './lib/authContext';
 import { ModernNavbar } from './components/ModernNavbar';
 import { ModernSidebar } from './components/ModernSidebar';
+import { BrandedHero } from './components/BrandedHero';
+import { MarqueeScroller } from './components/MarqueeScroller';
 import { ClassroomWorkspace } from './components/learning/ClassroomWorkspace';
 import { AssignmentLedger } from './components/AssignmentLedger';
 import { AIFloatingChatbot } from './components/ai/AIFloatingChatbot';
@@ -34,6 +36,8 @@ function AppInner() {
       default:
         return (
           <>
+            <BrandedHero />
+            <MarqueeScroller />
             <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs overflow-hidden">
               <ClassroomWorkspace />
             </div>
@@ -50,7 +54,7 @@ function AppInner() {
       <ModernNavbar onToggleMenu={() => setMenuOpen(o => !o)} menuOpen={menuOpen} />
       <div className="w-full flex flex-1 items-stretch overflow-hidden">
         <ModernSidebar onNavigate={handleNavigate} currentRoute={currentRoute} open={menuOpen} onClose={() => setMenuOpen(false)} />
-        <div className="flex-1 flex flex-col overflow-y-auto bg-[var(--color-canvas-soft)] p-4 sm:p-6 min-w-0">
+        <div className="flex-1 flex flex-col overflow-y-auto bg-[var(--color-canvas-soft)] p-4 sm:p-6 gap-6 min-w-0">
           {renderView()}
         </div>
       </div>
