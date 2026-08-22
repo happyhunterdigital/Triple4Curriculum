@@ -6,13 +6,11 @@ export const BrandedHero: React.FC = () => {
   return (
     <section className="relative w-full max-w-[1400px] mx-auto rounded-[32px] sm:rounded-[48px] bg-white border border-[var(--color-t4c-black)]/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.03)] overflow-hidden h-[520px] sm:h-[600px] flex flex-col my-2 sm:my-6 shrink-0">
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden select-none">
-        <video
-          className="w-full h-full object-cover scale-105 grayscale-[15%] contrast-[105%]"
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260505_101331_74f9b798-3f00-4e86-8a01-377aa16ffeaa.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
+        <img
+          src="https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg"
+          alt="Triple4C Learners"
+          className="w-full h-full object-cover scale-105 grayscale-[10%] contrast-[105%]"
+          referrerPolicy="no-referrer"
         />
       </div>
 
