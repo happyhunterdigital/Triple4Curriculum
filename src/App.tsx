@@ -48,12 +48,10 @@ function AppInner() {
   return (
     <div className="w-full min-h-screen bg-[var(--color-canvas-soft)] flex flex-col antialiased">
       <ModernNavbar onToggleMenu={() => setMenuOpen(o => !o)} menuOpen={menuOpen} />
-      <div className="w-full flex flex-1 items-stretch">
+      <div className="w-full flex flex-1 items-stretch overflow-hidden">
         <ModernSidebar onNavigate={handleNavigate} currentRoute={currentRoute} open={menuOpen} onClose={() => setMenuOpen(false)} />
-        <div className="flex-1 flex flex-col overflow-y-auto bg-[var(--color-canvas-soft)] min-w-0">
-          <div className="p-4 sm:p-6">
-            {renderView()}
-          </div>
+        <div className="flex-1 flex flex-col overflow-y-auto bg-[var(--color-canvas-soft)] p-4 sm:p-6 min-w-0">
+          {renderView()}
         </div>
       </div>
       <AIFloatingChatbot />
