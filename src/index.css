@@ -5,15 +5,15 @@
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* Premium Crest Identity Palette */
-  --color-t4c-gold: #D4AF37;
-  --color-t4c-green: #0A5C36;
-  --color-t4c-black: #111215;
+  /* Premium Color Block Architecture */
+  --color-t4c-green: #084228;
+  --color-t4c-yellow: #E9C444;
+  --color-t4c-black: #111214;
   
-  /* Canvas Aesthetics */
+  /* Workspaces */
   --color-canvas-soft: #FAF9F5;
   --color-canvas-card: #FFFFFF;
-  --color-canvas-line: rgba(10, 92, 54, 0.08);
+  --color-canvas-line: rgba(17, 18, 20, 0.08);
 }
 
 html, body {
@@ -28,10 +28,5 @@ html, body {
   min-height: 100vh;
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
