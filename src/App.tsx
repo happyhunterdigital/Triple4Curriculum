@@ -28,11 +28,11 @@ function AppInner() {
   const renderView = () => {
     switch (currentRoute) {
       case 'lectures': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs overflow-hidden"><StudentLectures /></div>;
-      case 'timetable': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-4 sm:p-6 overflow-hidden"><StudentTimetable /></div>;
-      case 'assignments': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-4 sm:p-6 overflow-hidden"><StudentAssignments /></div>;
-      case 'attendance': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-4 sm:p-6 overflow-hidden"><StudentAttendance /></div>;
-      case 'discussions': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-4 sm:p-6 overflow-hidden"><StudentMessages /></div>;
-      case 'notices': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-4 sm:p-6 overflow-hidden"><StudentNotifications /></div>;
+      case 'timetable': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-3 sm:p-6 overflow-hidden"><StudentTimetable /></div>;
+      case 'assignments': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-3 sm:p-6 overflow-hidden"><StudentAssignments /></div>;
+      case 'attendance': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-3 sm:p-6 overflow-hidden"><StudentAttendance /></div>;
+      case 'discussions': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-3 sm:p-6 overflow-hidden"><StudentMessages /></div>;
+      case 'notices': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-3 sm:p-6 overflow-hidden"><StudentNotifications /></div>;
       default:
         return (
           <>
@@ -41,7 +41,7 @@ function AppInner() {
             <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs overflow-hidden">
               <ClassroomWorkspace />
             </div>
-            <div className="mt-6 bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-4 sm:p-6 overflow-x-auto">
+            <div className="mt-4 sm:mt-6 bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-3 sm:p-6 overflow-hidden">
               <AssignmentLedger />
             </div>
           </>

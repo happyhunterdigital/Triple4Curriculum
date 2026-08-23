@@ -14,16 +14,22 @@
   --color-canvas-line: rgba(17, 18, 20, 0.08);
 }
 
+* { -webkit-tap-highlight-color: transparent; }
+
+html { overflow-x: hidden; scroll-behavior: smooth; }
+
 body {
   background-color: var(--color-canvas-soft);
   color: var(--color-t4c-black);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 #root {
   background-color: var(--color-canvas-soft);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .hide-scrollbar::-webkit-scrollbar { display: none; }

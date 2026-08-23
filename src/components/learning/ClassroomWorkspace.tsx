@@ -55,31 +55,31 @@ export const ClassroomWorkspace: React.FC = () => {
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.4 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <main className="w-full min-h-screen bg-[var(--color-prestige-canvas)] text-[var(--color-prestige-dark)] flex flex-col">
-      <header className="w-full border-b border-[var(--color-prestige-line)] px-6 md:px-12 py-4 flex justify-between items-center bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="flex items-center space-x-6">
-          <span className="font-mono text-xs uppercase tracking-wider text-neutral-400">{LECTURE_DATA.id}</span>
-          <span className="font-mono text-xs text-neutral-300">|</span>
-          <h2 className="font-serif text-lg tracking-tight">{LECTURE_DATA.title}</h2>
+    <main className="w-full bg-[var(--color-canvas-soft)] text-[var(--color-t4c-black)] flex flex-col rounded overflow-hidden">
+      <header className="w-full border-b border-[var(--color-t4c-black)]/10 px-4 sm:px-6 md:px-8 py-3 sm:py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-white/80 backdrop-blur-sm sticky top-0 z-20">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+          <span className="font-mono text-[10px] sm:text-xs uppercase tracking-wider text-neutral-400 shrink-0">{LECTURE_DATA.id}</span>
+          <span className="font-mono text-xs text-neutral-300 hidden sm:inline">|</span>
+          <h2 className="font-display text-sm sm:text-base font-semibold tracking-tight truncate leading-tight">{LECTURE_DATA.title}</h2>
         </div>
-        <span className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest hidden sm:inline">
+        <span className="font-mono text-[9px] sm:text-[10px] text-neutral-500 uppercase tracking-widest shrink-0">
           [ Active Learning Session Node ]
         </span>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 lg:h-[calc(100vh-57px)] w-full gap-0 overflow-hidden">
-        <div className="bg-[var(--color-prestige-dark)] relative flex flex-col justify-center items-center overflow-hidden border-r border-[var(--color-prestige-line)] aspect-video lg:aspect-auto">
-          <div className="w-full max-w-5xl aspect-[16/9] border-t border-b lg:border border-[var(--color-prestige-line-dark)] relative bg-neutral-950">
+      <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-0">
+        <div className="bg-[var(--color-t4c-black)] relative flex flex-col justify-center items-center overflow-hidden border-b lg:border-b-0 lg:border-r border-[var(--color-t4c-black)]/10">
+          <div className="w-full aspect-[16/9] relative bg-neutral-950">
             <video
               ref={videoRef}
-              className="w-full h-full object-cover filtering-none grayscale-[10%]"
+              className="w-full h-full object-cover"
               src={LECTURE_DATA.videoSrc}
               autoPlay
               muted
@@ -90,26 +90,25 @@ export const ClassroomWorkspace: React.FC = () => {
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
             />
-            <div className="absolute top-4 left-4 pointer-events-none">
-              <span className="font-mono text-[9px] bg-black/60 text-neutral-400 px-2 py-1 tracking-widest uppercase border border-neutral-800">
+            <div className="absolute top-2 left-2 sm:top-4 sm:left-4 pointer-events-none">
+              <span className="font-mono text-[8px] sm:text-[9px] bg-black/60 text-neutral-300 px-2 py-1 tracking-widest uppercase border border-neutral-800 rounded">
                 {isPlaying ? "STREAM ACTIVE // FEED_01" : "STREAM PAUSED"}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="overflow-y-auto px-6 md:px-16 py-12 bg-[var(--color-prestige-canvas)] selection:bg-neutral-200">
-          <div className="max-w-2xl mx-auto space-y-6">
-            <div className="border-b border-[var(--color-prestige-line)] pb-4 mb-8">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400 mb-1">
+        <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-6 sm:py-8 lg:py-10 bg-[var(--color-canvas-soft)] max-h-[60vh] lg:max-h-[520px] overflow-y-auto">
+          <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6">
+            <div className="border-b border-[var(--color-t4c-black)]/10 pb-3 sm:pb-4 mb-4 sm:mb-6">
+              <p className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-neutral-400 mb-1">
                 {LECTURE_DATA.chapter}
               </p>
-              <h1 className="font-serif text-3xl font-normal text-[var(--color-prestige-dark)] tracking-tight">
+              <h1 className="font-display text-xl sm:text-2xl lg:text-3xl font-medium text-[var(--color-t4c-black)] tracking-tight leading-tight">
                 Analytical Documentation & Text Schema
               </h1>
             </div>
-
-            <article className="font-sans text-base text-neutral-800 leading-relaxed space-y-6 prose prose-neutral prose-headings:font-serif prose-headings:font-normal prose-headings:tracking-tight prose-headings:text-[var(--color-prestige-dark)] prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:text-neutral-700 prose-p:leading-relaxed prose-ul:list-none prose-ul:pl-0 prose-ul:space-y-2 prose-strong:font-medium prose-strong:text-black">
+            <article className="font-sans text-[14px] sm:text-[15px] text-neutral-800 leading-relaxed space-y-4 sm:space-y-6 prose prose-neutral max-w-none prose-headings:font-display prose-headings:font-medium prose-headings:tracking-tight prose-headings:text-[var(--color-t4c-black)] prose-h3:text-lg sm:prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:text-neutral-700 prose-p:leading-relaxed prose-ul:space-y-2 prose-strong:font-semibold">
               <ReactMarkdown>{LECTURE_DATA.transcriptMarkdown}</ReactMarkdown>
             </article>
           </div>
