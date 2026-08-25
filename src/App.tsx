@@ -13,9 +13,13 @@ import { StudentAttendance } from './components/student/StudentAttendance';
 import { StudentMessages } from './components/student/StudentMessages';
 import { StudentNotifications } from './components/student/StudentNotifications';
 import { StudentLectures } from './components/student/StudentLectures';
+import { OnboardingFlow } from './components/onboarding/OnboardingFlow';
 
 function AppInner() {
-  const [currentRoute, setCurrentRoute] = useState('dashboard');
+  const [currentRoute, setCurrentRoute] = useState(() => {
+    const p = window.location.pathname.replace(/^\//, '');
+    return p || 'dashboard';
+  });
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleNavigate = (route: string) => {
@@ -26,6 +30,9 @@ function AppInner() {
   };
 
   const renderView = () => {
+    if (currentRoute === 'onboarding') {
+      return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs overflow-hidden"><OnboardingFlow /></div>;
+    }
     switch (currentRoute) {
       case 'lectures': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs overflow-hidden"><StudentLectures /></div>;
       case 'timetable': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded shadow-xs p-3 sm:p-6 overflow-hidden"><StudentTimetable /></div>;
