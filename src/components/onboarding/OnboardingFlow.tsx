@@ -7,6 +7,9 @@ import { GraduationCap, Users, CheckCircle2, ArrowRight, ArrowLeft } from 'lucid
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Card } from '../ui/card';
+import { auth, db } from '../../lib/firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const DEPARTMENTS = ["Faculty of Applied Sciences", "Faculty of Commerce", "Faculty of Education", "Faculty of Engineering"];
 
@@ -23,6 +26,8 @@ type FormValues = z.infer<typeof combinedSchema>;
 export const OnboardingFlow: React.FC = () => {
   const [step, setStep] = useState(1);
   const [completed, setCompleted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(combinedSchema),
@@ -39,9 +44,39 @@ export const OnboardingFlow: React.FC = () => {
   };
   const back = () => setStep(s => Math.max(1, s - 1));
 
-  const onSubmit = (data: FormValues) => {
-    console.log("onboarding", data);
-    setCompleted(true);
+  const onSubmit = async (data: FormValues) => {
+    setError(null);
+    setSubmitting(true);
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      await updateProfile(cred.user, { displayName: data.name });
+      const collectionName = data.role === 'teacher' ? 'teachers' : 'students';
+      const payload: Record<string, unknown> = {
+        uid: cred.user.uid,
+        role: data.role,
+        department: data.department,
+        name: data.name,
+        email: data.email,
+        createdAt: serverTimestamp(),
+      };
+      if (data.role === 'teacher') {
+        const bioEl = document.querySelector<HTMLTextAreaElement>('textarea[placeholder*="Distributed Systems"]');
+        if (bioEl?.value) payload.bio = bioEl.value;
+        payload.verificationStatus = 'pending';
+      } else {
+        payload.enrollmentStatus = 'active';
+        payload.level = 'NQF-8';
+      }
+      await setDoc(doc(db, collectionName, cred.user.uid), payload);
+      // Also create a minimal users index for RBAC routing
+      await setDoc(doc(db, 'users', cred.user.uid), { uid: cred.user.uid, role: data.role, email: data.email, createdAt: serverTimestamp() }, { merge: true });
+      setCompleted(true);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Registration failed';
+      setError(msg);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const role = form.watch("role");
@@ -191,11 +226,12 @@ export const OnboardingFlow: React.FC = () => {
                     <textarea className="w-full min-h-[96px] rounded-[6px] border border-[#E2E8F0] bg-white p-3 text-sm focus:outline-none focus:border-[var(--color-t4c-green)]" placeholder="I teach Distributed Systems at..." />
                   </div>
                 )}
+                {error && <p className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded px-3 py-2">{error}</p>}
                 <div className="flex gap-3 pt-2">
-                  <Button variant="outline" onClick={back} className="gap-2"><ArrowLeft size={16} /> Back</Button>
-                  <Button onClick={form.handleSubmit(onSubmit)} className="ml-auto gap-2">Complete <CheckCircle2 size={16} /></Button>
+                  <Button variant="outline" onClick={back} className="gap-2" disabled={submitting}><ArrowLeft size={16} /> Back</Button>
+                  <Button onClick={form.handleSubmit(onSubmit)} className="ml-auto gap-2" disabled={submitting}>{submitting ? 'Creating...' : 'Complete'} <CheckCircle2 size={16} /></Button>
                 </div>
-                <p className="text-[11px] text-neutral-500 text-center">By completing you agree to POPIA data processing and role-based access via Custom Claims.</p>
+                <p className="text-[11px] text-neutral-500 text-center">By completing you agree to POPIA data processing and role-based access via Custom Claims. Data is stored separately in <span className="font-mono font-bold">{role === 'teacher' ? 'teachers' : 'students'}</span> collection.</p>
               </div>
             )}
           </motion.div>

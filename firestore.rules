@@ -1,13 +1,44 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ── Separate Student Ledger ──
+    match /students/{studentId} {
+      allow create: if request.auth != null
+                    && request.auth.uid == studentId
+                    && request.resource.data.role == 'learner';
+      allow read, update: if request.auth != null && request.auth.uid == studentId;
+    }
+
+    // ── Separate Teacher Ledger ──
+    match /teachers/{teacherId} {
+      allow create: if request.auth != null
+                    && request.auth.uid == teacherId
+                    && request.resource.data.role == 'teacher';
+      allow read, update: if request.auth != null && request.auth.uid == teacherId;
+    }
+
+    // ── Legacy: Assignment Submissions (student-scoped) ──
     match /submissions/{submissionId} {
       allow read, update: if request.auth != null && request.auth.uid == resource.data.studentId;
       allow create: if request.auth != null && request.auth.uid == request.resource.data.studentId;
     }
+
+    // ── Public Curriculum (read-only) ──
     match /curriculum/{courseId} {
       allow read: if true;
       allow write: if false;
+    }
+
+    // ── RBAC Index (single-doc per user for routing) ──
+    match /users/{userId} {
+      allow create, read, update: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ── Notifications (per-user) ──
+    match /notifications/{notifId} {
+      allow read, update: if request.auth != null && request.auth.uid == resource.data.studentId;
+      allow create: if request.auth != null;
     }
   }
 }
