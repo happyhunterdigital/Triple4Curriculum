@@ -1,11 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", sans-serif;
   --font-display: "Outfit", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", monospace;
 
-  /* Prestige Crest Identity Palette Applied to the Specifications */
+  /* Custom Exact Breakpoints:
+     - mobile: <= 480px (portrait)
+     - mobile-lg: <= 768px (landscape)
+     - tablet: <= 834px (portrait)
+     - tablet-lg: <= 1024px (landscape)
+     - laptop: <= 1440px
+     - desktop: > 1440px
+  */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-tablet: 834px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-laptop: 1440px;
+  --breakpoint-2xl: 1536px;
+
+  /* Prestige Crest Identity Palette */
   --color-t4c-green: #084228;
   --color-t4c-yellow: #E9C444;
   --color-t4c-black: #111214;
@@ -14,9 +33,15 @@
   --color-canvas-line: rgba(17, 18, 20, 0.08);
 }
 
-* { -webkit-tap-highlight-color: transparent; }
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
 
-html { overflow-x: hidden; scroll-behavior: smooth; }
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
 
 body {
   background-color: var(--color-canvas-soft);
@@ -24,6 +49,7 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  min-width: 320px;
 }
 
 #root {

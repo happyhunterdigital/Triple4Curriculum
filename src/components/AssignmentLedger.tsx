@@ -29,13 +29,17 @@ export const AssignmentLedger: React.FC = () => {
 
   return (
     <section className="w-full">
-      <div className="mb-6 sm:mb-8">
-        <p className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-neutral-400 mb-1">Academic Submissions</p>
-        <h2 className="font-display text-xl sm:text-2xl lg:text-3xl font-medium text-[var(--color-t4c-black)] tracking-tight">Assignment Registry</h2>
+      <div className="mb-4 sm:mb-6 md:mb-8">
+        <p className="font-mono text-[9px] xs:text-[10px] sm:text-xs uppercase tracking-[0.2em] text-neutral-400 mb-1">
+          Academic Submissions
+        </p>
+        <h2 className="font-display text-lg xs:text-xl sm:text-2xl lg:text-3xl font-medium text-[var(--color-t4c-black)] tracking-tight">
+          Assignment Registry
+        </h2>
       </div>
 
-      {/* Desktop Table */}
-      <div className="hidden md:block overflow-x-auto -mx-2">
+      {/* Desktop / Laptop Table View (>= 768px) */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[640px]">
           <thead>
             <tr className="border-b border-[var(--color-t4c-black)]/10 font-mono text-[10px] sm:text-[11px] text-neutral-400 uppercase tracking-wider">
@@ -55,7 +59,7 @@ export const AssignmentLedger: React.FC = () => {
                 <td className="py-4 sm:py-5 font-display text-sm sm:text-base font-medium text-[var(--color-t4c-black)] pr-4">{row.title}</td>
                 <td className="py-4 sm:py-5 font-mono text-xs text-neutral-500">{row.deadline}</td>
                 <td className="py-4 sm:py-5">
-                  <span className={`font-mono text-[9px] sm:text-[10px] px-2 py-0.5 border whitespace-nowrap ${
+                  <span className={`font-mono text-[9px] sm:text-[10px] px-2 py-0.5 border whitespace-nowrap rounded-[4px] ${
                     row.status === 'GRANTED' ? 'border-emerald-200 text-emerald-700 bg-emerald-50/30' :
                     row.status === 'PENDING' ? 'border-amber-200 text-amber-700 bg-amber-50/30' :
                     'border-rose-200 text-rose-700 bg-rose-50/30'
@@ -79,16 +83,20 @@ export const AssignmentLedger: React.FC = () => {
         </table>
       </div>
 
-      {/* Mobile Cards */}
-      <div className="md:hidden space-y-3">
+      {/* Mobile Card Stack (< 768px) */}
+      <div className="md:hidden space-y-2.5 xs:space-y-3">
         {submissions.map((row) => (
-          <div key={row.id} className="border border-[var(--color-t4c-black)]/10 rounded-lg p-4 bg-[var(--color-canvas-soft)] space-y-3">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="font-mono text-[10px] text-neutral-400 uppercase tracking-wider">{row.id} • {row.code}</p>
-                <h3 className="font-display font-semibold text-[15px] leading-tight text-[var(--color-t4c-black)] mt-1">{row.title}</h3>
+          <div key={row.id} className="border border-[var(--color-t4c-black)]/10 rounded-[10px] p-3.5 xs:p-4 bg-[var(--color-canvas-soft)] space-y-2.5 xs:space-y-3">
+            <div className="flex items-start justify-between gap-2.5">
+              <div className="min-w-0">
+                <p className="font-mono text-[9px] xs:text-[10px] text-neutral-400 uppercase tracking-wider">
+                  {row.id} • {row.code}
+                </p>
+                <h3 className="font-display font-semibold text-sm xs:text-[15px] leading-snug text-[var(--color-t4c-black)] mt-0.5">
+                  {row.title}
+                </h3>
               </div>
-              <span className={`font-mono text-[9px] px-2 py-1 border shrink-0 whitespace-nowrap ${
+              <span className={`font-mono text-[8px] xs:text-[9px] px-2 py-0.5 border shrink-0 whitespace-nowrap rounded-[4px] ${
                 row.status === 'GRANTED' ? 'border-emerald-200 text-emerald-700 bg-emerald-50' :
                 row.status === 'PENDING' ? 'border-amber-200 text-amber-700 bg-amber-50' :
                 'border-rose-200 text-rose-700 bg-rose-50'
@@ -96,12 +104,17 @@ export const AssignmentLedger: React.FC = () => {
                 {row.status}
               </span>
             </div>
+
             <div className="flex items-center justify-between pt-2 border-t border-black/5">
-              <span className="font-mono text-[11px] text-neutral-500">{row.deadline}</span>
+              <span className="font-mono text-[10px] xs:text-[11px] text-neutral-500">
+                Due: {row.deadline}
+              </span>
               {row.status === 'GRANTED' ? (
-                <span className="font-mono text-[11px] text-emerald-600 font-bold">[ VERIFIED ]</span>
+                <span className="font-mono text-[10px] xs:text-[11px] text-emerald-700 font-bold">
+                  [ VERIFIED ]
+                </span>
               ) : (
-                <label className="font-mono text-[11px] font-bold text-[var(--color-t4c-green)] uppercase cursor-pointer active:scale-95 transition-transform bg-[var(--color-t4c-yellow)] px-3 py-1.5 rounded border border-amber-600">
+                <label className="font-mono text-[10px] xs:text-[11px] font-bold text-[var(--color-t4c-black)] uppercase cursor-pointer active:scale-95 transition-transform bg-[var(--color-t4c-yellow)] px-3 py-1.5 rounded-[6px] border border-amber-600 shadow-xs">
                   {uploadingId === row.id ? 'Registering...' : 'Transmit File +'}
                   <input type="file" className="hidden" disabled={uploadingId === row.id} onChange={() => handleFileRegistration(row.id)} />
                 </label>

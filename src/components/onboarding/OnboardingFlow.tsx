@@ -48,13 +48,13 @@ export const OnboardingFlow: React.FC = () => {
   const dept = form.watch("department");
 
   return (
-    <div className="w-full max-w-[640px] mx-auto px-4 py-8 sm:py-12">
-      <div className="mb-8 space-y-4">
+    <div className="w-full max-w-[640px] mx-auto px-3 xs:px-4 py-6 xs:py-8 sm:py-12">
+      <div className="mb-6 xs:mb-8 space-y-3 xs:space-y-4">
         <div className="flex items-center justify-between">
-          <p className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">Step {completed ? 4 : step} of 4</p>
-          <div className="flex gap-1.5">
+          <p className="font-mono text-[10px] xs:text-[11px] uppercase tracking-widest text-neutral-500">Step {completed ? 4 : step} of 4</p>
+          <div className="flex gap-1 xs:gap-1.5">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className={`h-1.5 w-8 rounded-full transition-colors ${ (completed || step >= i) ? 'bg-[var(--color-t4c-green)]' : 'bg-[#E2E8F0]'}`} />
+              <div key={i} className={`h-1.5 w-6 xs:w-8 rounded-full transition-colors ${ (completed || step >= i) ? 'bg-[var(--color-t4c-green)]' : 'bg-[#E2E8F0]'}`} />
             ))}
           </div>
         </div>
@@ -84,12 +84,12 @@ export const OnboardingFlow: React.FC = () => {
             transition={{ duration: 0.22 }}
           >
             {step === 1 && (
-              <div className="space-y-6">
+              <div className="space-y-4 xs:space-y-6">
                 <div>
-                  <h1 className="text-[28px] sm:text-[32px] font-medium tracking-tight text-[var(--color-t4c-black)]" style={{ fontFamily: 'Playfair Display, serif' }}>How are you joining the academy today?</h1>
-                  <p className="font-sans text-sm text-neutral-600 mt-2">One tap instantly advances — we’ll tailor the next steps.</p>
+                  <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight text-[var(--color-t4c-black)] leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>How are you joining the academy today?</h1>
+                  <p className="font-sans text-xs xs:text-sm text-neutral-600 mt-2">One tap instantly advances — we’ll tailor the next steps.</p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4">
                   {[
                     { id: 'learner', title: 'Learner', desc: 'Access lectures, assignments & progress', icon: <GraduationCap size={28} /> },
                     { id: 'teacher', title: 'Teacher', desc: 'Manage classes, grading & cohorts', icon: <Users size={28} /> },
@@ -114,10 +114,10 @@ export const OnboardingFlow: React.FC = () => {
             )}
 
             {step === 2 && (
-              <div className="space-y-6">
+              <div className="space-y-4 xs:space-y-6">
                 <div>
-                  <h1 className="text-[28px] sm:text-[32px] font-medium tracking-tight" style={{ fontFamily: 'Playfair Display, serif' }}>Which department are you interested in?</h1>
-                  <p className="text-sm text-neutral-600 mt-2">Select one — you can change later in settings.</p>
+                  <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>Which department are you interested in?</h1>
+                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Select one — you can change later in settings.</p>
                 </div>
                 <div className="space-y-2">
                   {DEPARTMENTS.map(d => (
@@ -140,10 +140,10 @@ export const OnboardingFlow: React.FC = () => {
             )}
 
             {step === 3 && (
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 xs:space-y-6">
                 <div>
-                  <h1 className="text-[28px] sm:text-[32px] font-medium tracking-tight" style={{ fontFamily: 'Playfair Display, serif' }}>Create your account</h1>
-                  <p className="text-sm text-neutral-600 mt-2">Use your institutional email if you have one.</p>
+                  <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>Create your account</h1>
+                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Use your institutional email if you have one.</p>
                 </div>
                 <div className="space-y-4">
                   <div className="space-y-2">
@@ -170,12 +170,12 @@ export const OnboardingFlow: React.FC = () => {
             )}
 
             {step === 4 && (
-              <div className="space-y-6">
+              <div className="space-y-4 xs:space-y-6">
                 <div>
-                  <h1 className="text-[28px] sm:text-[32px] font-medium tracking-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
                     {role === 'learner' ? 'Secure your enrolment' : 'Set up your teaching profile'}
                   </h1>
-                  <p className="text-sm text-neutral-600 mt-2">
+                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">
                     {role === 'learner' ? 'Payment is handled by Stripe and synced to Firestore — test mode for now.' : 'Tell learners what you teach — you can invite a class right after.'}
                   </p>
                 </div>

@@ -20,21 +20,28 @@ const BRAND_PARTNERS: LogoItem[] = [
 export const MarqueeScroller: React.FC = () => {
   const doubleList = [...BRAND_PARTNERS, ...BRAND_PARTNERS];
   return (
-    <div className="w-full overflow-hidden relative py-4 mask-gradient my-2 sm:my-6">
+    <div className="w-full overflow-hidden relative py-2 sm:py-4 mask-gradient my-1 sm:my-3 md:my-6">
       <style>{`
-        .animate-marquee { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 28s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .mask-gradient { mask-image: linear-gradient(to right, transparent, white 15%, white 85%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, white 15%, white 85%, transparent); }
+        .mask-gradient {
+          mask-image: linear-gradient(to right, transparent, white 10%, white 90%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, white 10%, white 90%, transparent);
+        }
       `}</style>
-      <div className="animate-marquee gap-4 sm:gap-6">
+      <div className="animate-marquee gap-3 xs:gap-4 sm:gap-6">
         {doubleList.map((logo, index) => (
           <div
             key={index}
-            className="group relative h-16 w-32 sm:h-24 sm:w-40 shrink-0 flex items-center justify-center rounded-full bg-white border border-neutral-200/60 shadow-xs hover:border-[var(--color-t4c-yellow)] transition-all overflow-hidden cursor-pointer"
+            className="group relative h-12 w-24 xs:h-14 xs:w-28 sm:h-20 sm:w-36 md:h-24 md:w-40 shrink-0 flex items-center justify-center rounded-full bg-white border border-neutral-200/60 shadow-xs hover:border-[var(--color-t4c-yellow)] transition-all overflow-hidden cursor-pointer"
           >
             <div className={`absolute inset-0 bg-gradient-to-br ${logo.gradient} scale-150 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 ease-out z-0`} />
-            <img src={logo.url} alt={logo.name} className="h-6 sm:h-7 max-w-[80px] sm:max-w-[100px] object-contain relative z-10 transition-all duration-300 group-hover:brightness-0 group-hover:invert" />
+            <img
+              src={logo.url}
+              alt={logo.name}
+              className="h-4 xs:h-5 sm:h-7 max-w-[60px] xs:max-w-[70px] sm:max-w-[100px] object-contain relative z-10 transition-all duration-300 group-hover:brightness-0 group-hover:invert"
+            />
           </div>
         ))}
       </div>
