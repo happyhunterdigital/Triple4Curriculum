@@ -8,7 +8,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Card } from '../ui/card';
 import { auth, db } from '../../lib/firebase';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const DEPARTMENTS = ["Faculty of Applied Sciences", "Faculty of Commerce", "Faculty of Education", "Faculty of Engineering"];
@@ -57,6 +57,7 @@ export const OnboardingFlow: React.FC = () => {
         department: data.department,
         name: data.name,
         email: data.email,
+        provider: 'email',
         createdAt: serverTimestamp(),
       };
       if (data.role === 'teacher') {
@@ -68,12 +69,45 @@ export const OnboardingFlow: React.FC = () => {
         payload.level = 'NQF-8';
       }
       await setDoc(doc(db, collectionName, cred.user.uid), payload);
-      // Also create a minimal users index for RBAC routing
-      await setDoc(doc(db, 'users', cred.user.uid), { uid: cred.user.uid, role: data.role, email: data.email, createdAt: serverTimestamp() }, { merge: true });
+      await setDoc(doc(db, 'users', cred.user.uid), { uid: cred.user.uid, role: data.role, email: data.email, provider: 'email', createdAt: serverTimestamp() }, { merge: true });
       setCompleted(true);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Registration failed';
       setError(msg);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGoogle = async () => {
+    if (!form.getValues('role')) { form.setError('role', { message: 'Select a role first' }); return; }
+    if (!form.getValues('department')) { setError('Select a department first (Step 2)'); setStep(2); return; }
+    setError(null);
+    setSubmitting(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      const cred = await signInWithPopup(auth, provider);
+      const data = form.getValues();
+      const collectionName = data.role === 'teacher' ? 'teachers' : 'students';
+      const payload: Record<string, unknown> = {
+        uid: cred.user.uid,
+        role: data.role,
+        department: data.department,
+        name: cred.user.displayName || data.name || cred.user.email?.split('@')[0] || 'Google User',
+        email: cred.user.email || data.email,
+        photoURL: cred.user.photoURL || null,
+        provider: 'google',
+        createdAt: serverTimestamp(),
+      };
+      if (data.role === 'teacher') payload.verificationStatus = 'pending';
+      else { payload.enrollmentStatus = 'active'; payload.level = 'NQF-8'; }
+      await setDoc(doc(db, collectionName, cred.user.uid), payload, { merge: true });
+      await setDoc(doc(db, 'users', cred.user.uid), { uid: cred.user.uid, role: data.role, email: cred.user.email, provider: 'google', createdAt: serverTimestamp() }, { merge: true });
+      setCompleted(true);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Google sign-in failed';
+      setError(msg.includes('popup') ? 'Popup blocked — allow popups for this site and retry' : msg);
     } finally {
       setSubmitting(false);
     }
@@ -178,8 +212,12 @@ export const OnboardingFlow: React.FC = () => {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 xs:space-y-6">
                 <div>
                   <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>Create your account</h1>
-                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Use your institutional email if you have one.</p>
+                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Use your institutional email — or continue with Google. <span className="font-mono text-[10px]">Public name will be <span className="font-bold">Triple4Curriculum</span></span></p>
                 </div>
+                <button type="button" onClick={handleGoogle} disabled={submitting} className="w-full flex items-center justify-center gap-2 h-10 rounded-[6px] border border-[#E2E8F0] bg-white hover:bg-neutral-50 text-sm font-medium transition-colors disabled:opacity-50">
+                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" className="w-4 h-4" /> Continue with Google
+                </button>
+                <div className="flex items-center gap-3"><div className="h-px flex-1 bg-[#E2E8F0]" /><span className="text-[11px] text-neutral-400 uppercase tracking-widest">or</span><div className="h-px flex-1 bg-[#E2E8F0]" /></div>
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <label className="text-xs font-medium">Full name</label>
