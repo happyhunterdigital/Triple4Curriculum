@@ -16,6 +16,7 @@ import { StudentLectures } from './components/student/StudentLectures';
 import { OnboardingFlow } from './components/onboarding/OnboardingFlow';
 import { StudentHomeDashboard } from './components/dashboard/StudentHomeDashboard';
 import { TeacherHomeDashboard } from './components/dashboard/TeacherHomeDashboard';
+import { AdminHomeDashboard } from './components/dashboard/AdminHomeDashboard';
 import { useAuth } from './lib/authContext';
 import { auth, db } from './lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
@@ -23,7 +24,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 function AppInner() {
   const { currentUser } = useAuth();
-  const [fbRole, setFbRole] = useState<'learner' | 'teacher' | null>(null);
+  const [fbRole, setFbRole] = useState<'learner' | 'teacher' | 'admin' | null>(null);
   const [currentRoute, setCurrentRoute] = useState(() => {
     const p = window.location.pathname.replace(/^\//, '');
     return p || 'dashboard';
@@ -76,8 +77,12 @@ function AppInner() {
       case 'attendance': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded-lg sm:rounded-xl shadow-xs p-3 xs:p-4 sm:p-6 lg:p-8 overflow-hidden"><StudentAttendance /></div>;
       case 'discussions': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded-lg sm:rounded-xl shadow-xs p-3 xs:p-4 sm:p-6 lg:p-8 overflow-hidden"><StudentMessages /></div>;
       case 'notices': return <div className="bg-white border border-[var(--color-t4c-black)]/10 rounded-lg sm:rounded-xl shadow-xs p-3 xs:p-4 sm:p-6 lg:p-8 overflow-hidden"><StudentNotifications /></div>;
+      case 'admin':
+      case 'admin-dashboard':
+        return <AdminHomeDashboard />;
       default: {
-        const role = fbRole || (currentUser?.role === 'lecturer' ? 'teacher' : currentUser?.role === 'student' ? 'learner' : null);
+        const role = fbRole || (currentUser?.role === 'admin' ? 'admin' : currentUser?.role === 'lecturer' ? 'teacher' : currentUser?.role === 'student' ? 'learner' : null);
+        if (role === 'admin') return <AdminHomeDashboard />;
         if (role === 'teacher') return <TeacherHomeDashboard onNavigate={handleNavigate} />;
         if (role === 'learner') return <StudentHomeDashboard onNavigate={handleNavigate} />;
         // Fallback for guests / legacy: show hero + classroom + ledger
