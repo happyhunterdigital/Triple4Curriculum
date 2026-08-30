@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {
-  Users, GraduationCap, TrendingUp, AlertTriangle, Search, X, Mail, Phone, MapPin, Calendar, BookOpen, Clock, CheckCircle, DollarSign, FileText, Shield, ArrowUpRight, ChevronRight
+  Users, GraduationCap, TrendingUp, AlertTriangle, Search, X, Mail, Phone, MapPin, Calendar, BookOpen, Clock, CheckCircle, DollarSign, FileText, Shield, ArrowUpRight, ChevronRight, Award
 } from 'lucide-react';
 
 type UserRole = 'teacher' | 'learner';
