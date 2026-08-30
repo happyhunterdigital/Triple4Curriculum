@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {
-  Users, GraduationCap, TrendingUp, AlertTriangle, Search, X, Mail, Phone, MapPin, Calendar, BookOpen, Clock, CheckCircle, DollarSign, FileText, Shield, ArrowUpRight, ChevronRight, Award
+  Users, GraduationCap, TrendingUp, AlertTriangle, Search, X, Mail, MapPin, BookOpen, Clock, DollarSign, FileText, Shield, ArrowUpRight, ChevronRight, Award
 } from 'lucide-react';
 
 type UserRole = 'teacher' | 'learner';
@@ -54,97 +54,93 @@ export const AdminHomeDashboard: React.FC = () => {
   }, [selectedProfileId]);
 
   return (
-    <div className="min-h-[80vh] bg-slate-950 text-slate-100 rounded-xl overflow-hidden relative">
-      <div className="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] rounded-full bg-purple-900/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[35rem] h-[35rem] rounded-full bg-blue-900/10 blur-[100px] pointer-events-none" />
-      <div className="relative p-4 sm:p-6 lg:p-8">
-        {/* Header */}
-        <header className="mb-6 border-b border-slate-800/80 pb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div className="w-full bg-[#F8FAFC] text-[#1E293B] font-sans antialiased -m-3 xs:-m-4 sm:-m-5 md:-m-6 lg:-m-6 xl:-m-8">
+      <div className="px-6 xs:px-8 sm:px-10 pt-6 sm:pt-8 pb-3 sm:pb-4">
+        <header className="mb-6 border-b border-[#E2E8F0] pb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-purple-400 mb-1">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" /> Institutional Control Unit
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#2563EB] mb-1">
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> Institutional Control Unit
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Nexus Academic Command</h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">System-wide oversight • Compliance • User management • Resource allocation</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-[#0F172A]">Nexus Academic Command</h1>
+            <p className="text-xs sm:text-sm text-[#64748B] mt-1">System-wide oversight • Compliance • User management • Resource allocation</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="bg-slate-900/90 border border-slate-800 px-4 py-2 rounded-xl flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-sm text-white">A</div>
-              <div><div className="text-xs font-medium text-slate-200">Admin Account</div><div className="text-[11px] font-mono text-slate-500">Triple 4C • Superadmin</div></div>
+            <div className="bg-white border border-[#E2E8F0] px-4 py-2 rounded-lg flex items-center gap-3 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+              <div className="w-8 h-8 rounded-lg bg-[#0F172A] flex items-center justify-center font-bold text-sm text-white">A</div>
+              <div><div className="text-xs font-semibold text-[#0F172A]">Admin Account</div><div className="text-[11px] font-mono text-[#64748B]">Triple 4C • Superadmin</div></div>
             </div>
           </div>
         </header>
 
         {/* System-Wide Analytics */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {[
-            { title: 'Total Faculty Pool', value: '142', detail: '3 Open Postings', icon: Users, color: 'text-purple-400 bg-purple-500/10 border-purple-500/20' },
-            { title: 'Registered Cohorts', value: '2,840', detail: '+12% Active Yield', icon: GraduationCap, color: 'text-blue-400 bg-blue-500/10 border-blue-500/20' },
-            { title: 'Retention Baseline', value: '94.2%', detail: 'Within Target Matrix', icon: TrendingUp, color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
-            { title: 'System-Level Logs', value: '12 Flags', detail: 'Require Admin Review', icon: AlertTriangle, color: 'text-amber-400 bg-amber-500/10 border-amber-500/20' },
+            { title: 'Total Faculty Pool', value: '142', detail: '3 Open Postings', icon: Users, accent: 'bg-[#2563EB]' },
+            { title: 'Registered Cohorts', value: '2,840', detail: '+12% Active Yield', icon: GraduationCap, accent: 'bg-[#0F172A]' },
+            { title: 'Retention Baseline', value: '94.2%', detail: 'Within Target Matrix', icon: TrendingUp, accent: 'bg-emerald-600' },
+            { title: 'System-Level Logs', value: '12 Flags', detail: 'Require Admin Review', icon: AlertTriangle, accent: 'bg-amber-500' },
           ].map(kpi => (
-            <div key={kpi.title} className={`bg-slate-900 border rounded-xl p-4 flex items-center justify-between ${kpi.color.split(' ').slice(2).join(' ')}`}>
+            <div key={kpi.title} className="bg-white border border-[#E2E8F0] rounded-lg p-4 flex items-center justify-between hover:border-[#94A3B8] transition-colors">
               <div>
-                <p className="text-[11px] font-mono uppercase tracking-widest text-slate-400">{kpi.title}</p>
-                <p className="text-xl font-bold text-white mt-1">{kpi.value}</p>
-                <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">{kpi.detail} <ArrowUpRight size={12} /></p>
+                <p className="text-[11px] font-mono uppercase tracking-widest text-[#64748B]">{kpi.title}</p>
+                <p className="text-xl font-bold text-[#0F172A] mt-1">{kpi.value}</p>
+                <p className="text-xs text-[#64748B] mt-0.5 flex items-center gap-1">{kpi.detail} <ArrowUpRight size={12} className="text-[#94A3B8]" /></p>
               </div>
-              <div className={`w-10 h-10 rounded-lg border flex items-center justify-center ${kpi.color}`}><kpi.icon size={18} /></div>
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white ${kpi.accent}`}><kpi.icon size={18} /></div>
             </div>
           ))}
         </div>
 
         {/* Cohort Directories Control */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 p-3 sm:p-4 border-b border-slate-800">
-            <div className="flex gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800 w-fit">
-              <button onClick={() => { setActiveTab('teacher'); setStatusFilter('All'); }} className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${activeTab === 'teacher' ? 'bg-slate-800 text-purple-300 border border-slate-700 shadow' : 'text-slate-400 hover:text-slate-200'}`}>Faculty Matrix ({MOCK_TEACHERS.length})</button>
-              <button onClick={() => { setActiveTab('learner'); setStatusFilter('All'); }} className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${activeTab === 'learner' ? 'bg-slate-800 text-blue-300 border border-slate-700 shadow' : 'text-slate-400 hover:text-slate-200'}`}>Learner Registry ({MOCK_LEARNERS.length})</button>
+        <div className="bg-white border border-[#E2E8F0] rounded-lg overflow-hidden">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 p-3 sm:p-4 border-b border-[#E2E8F0] bg-[#F8FAFC]">
+            <div className="flex gap-1.5 bg-white p-1 rounded-lg border border-[#E2E8F0] w-fit">
+              <button onClick={() => { setActiveTab('teacher'); setStatusFilter('All'); }} className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-md text-xs sm:text-sm font-semibold transition-all ${activeTab === 'teacher' ? 'bg-[#F1F5F9] text-[#2563EB] border border-[#E2E8F0] shadow-sm' : 'text-[#64748B] hover:text-[#0F172A]'}`}>Faculty Matrix ({MOCK_TEACHERS.length})</button>
+              <button onClick={() => { setActiveTab('learner'); setStatusFilter('All'); }} className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-md text-xs sm:text-sm font-semibold transition-all ${activeTab === 'learner' ? 'bg-[#F1F5F9] text-[#0F172A] border border-[#E2E8F0] shadow-sm' : 'text-[#64748B] hover:text-[#0F172A]'}`}>Learner Registry ({MOCK_LEARNERS.length})</button>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <div className="relative flex-1 sm:w-72">
-                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                <input type="text" placeholder="Search members by name, ID or email..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-slate-700" />
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+                <input type="text" placeholder="Search members by name, ID or email..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full bg-white border border-[#E2E8F0] rounded-lg pl-9 pr-4 py-2 text-xs sm:text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#94A3B8]" />
               </div>
-              <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-300 focus:outline-none">
+              <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="bg-white border border-[#E2E8F0] rounded-lg px-3 py-2 text-xs sm:text-sm text-[#334155] focus:outline-none">
                 <option>All Standings</option><option>Active</option><option>On Leave</option><option>Probation</option>
               </select>
             </div>
           </div>
 
-          {/* Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[720px]">
               <thead>
-                <tr className="border-b border-slate-800 text-[11px] font-mono uppercase tracking-widest text-slate-500">
-                  <th className="py-3 px-4 font-normal">Identified Profile</th>
-                  <th className="py-3 px-4 font-normal">System Key / ID</th>
-                  <th className="py-3 px-4 font-normal">{activeTab === 'teacher' ? 'Department Cluster' : 'Core Major Tracking'}</th>
-                  <th className="py-3 px-4 font-normal">{activeTab === 'teacher' ? 'Aggregate Score' : 'Calculated GPA'}</th>
-                  <th className="py-3 px-4 font-normal">System Standing</th>
-                  <th className="py-3 px-4 font-normal text-right">Action Protocol</th>
+                <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-mono uppercase tracking-widest text-[#64748B]">
+                  <th className="py-3 px-4 font-medium">Identified Profile</th>
+                  <th className="py-3 px-4 font-medium">System Key / ID</th>
+                  <th className="py-3 px-4 font-medium">{activeTab === 'teacher' ? 'Department Cluster' : 'Core Major Tracking'}</th>
+                  <th className="py-3 px-4 font-medium">{activeTab === 'teacher' ? 'Aggregate Score' : 'Calculated GPA'}</th>
+                  <th className="py-3 px-4 font-medium">System Standing</th>
+                  <th className="py-3 px-4 font-medium text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-[#F1F5F9]">
                 {filteredData.length === 0 ? (
-                  <tr><td colSpan={6} className="py-12 text-center"><p className="text-sm text-slate-400">No system records match your query filter criteria.</p><button onClick={() => { setSearchQuery(''); setStatusFilter('All'); }} className="mt-2 text-xs text-purple-400 underline underline-offset-4">Clear all filters</button></td></tr>
+                  <tr><td colSpan={6} className="py-12 text-center"><p className="text-sm text-[#64748B]">No system records match your query.</p><button onClick={() => { setSearchQuery(''); setStatusFilter('All'); }} className="mt-2 text-xs text-[#2563EB] underline underline-offset-4">Clear all filters</button></td></tr>
                 ) : filteredData.map(user => (
-                  <tr key={user.id} onClick={() => setSelectedProfileId(user.id)} className="hover:bg-slate-800/40 cursor-pointer transition-colors group">
+                  <tr key={user.id} onClick={() => setSelectedProfileId(user.id)} className="hover:bg-[#F8FAFC] cursor-pointer transition-colors group">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
-                        <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover border border-slate-700" />
-                        <div><p className="text-sm font-semibold text-white group-hover:text-purple-300">{user.name}</p><p className="text-xs text-slate-400 flex items-center gap-1"><Mail size={10} /> {user.email}</p></div>
+                        <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover border border-[#E2E8F0]" />
+                        <div><p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#2563EB]">{user.name}</p><p className="text-xs text-[#64748B]">{user.email}</p></div>
                       </div>
                     </td>
-                    <td className="py-3 px-4"><span className="font-mono text-xs px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">{user.id}</span></td>
-                    <td className="py-3 px-4 text-xs text-slate-300">{user.role === 'teacher' ? (user as TeacherProfile).department : (user as LearnerProfile).major}</td>
+                    <td className="py-3 px-4"><span className="font-mono text-xs px-2 py-1 rounded bg-[#F1F5F9] border border-[#E2E8F0] text-[#334155]">{user.id}</span></td>
+                    <td className="py-3 px-4 text-xs text-[#334155]">{user.role === 'teacher' ? (user as TeacherProfile).department : (user as LearnerProfile).major}</td>
                     <td className="py-3 px-4">
                       {user.role === 'teacher'
-                        ? <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-300"><Award size={12} /> {(user as TeacherProfile).rating} / 5.0</span>
-                        : <span className={`text-xs font-bold px-2 py-0.5 rounded border ${(user as LearnerProfile).gpa >= 3.5 ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30' : (user as LearnerProfile).gpa < 2.5 ? 'bg-rose-500/10 text-rose-300 border-rose-500/30' : 'bg-amber-500/10 text-amber-300 border-amber-500/30'}`}>{(user as LearnerProfile).gpa.toFixed(2)}</span>}
+                        ? <span className="inline-flex items-center gap-1 text-xs font-bold text-[#92400E] bg-[#FEF3C7] border border-amber-200 px-2 py-0.5 rounded"><Award size={12} /> {(user as TeacherProfile).rating} / 5.0</span>
+                        : <span className={`text-xs font-bold px-2 py-0.5 rounded border ${(user as LearnerProfile).gpa >= 3.5 ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : (user as LearnerProfile).gpa < 2.5 ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>{(user as LearnerProfile).gpa.toFixed(2)}</span>}
                     </td>
-                    <td className="py-3 px-4"><span className={`text-[11px] font-mono px-2 py-1 rounded-full border ${user.status === 'Active' ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30' : user.status === 'On Leave' ? 'bg-amber-500/10 text-amber-300 border-amber-500/30' : 'bg-rose-500/10 text-rose-300 border-rose-500/30'}`}>{user.status}</span></td>
-                    <td className="py-3 px-4 text-right"><span className="inline-flex items-center gap-1 text-xs font-mono text-slate-400 group-hover:text-white">Inspect <ChevronRight size={12} /></span></td>
+                    <td className="py-3 px-4"><span className={`text-[11px] font-mono px-2 py-1 rounded-full border ${user.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : user.status === 'On Leave' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-rose-50 text-rose-700 border-rose-200'}`}>{user.status}</span></td>
+                    <td className="py-3 px-4 text-right"><span className="inline-flex items-center gap-1 text-xs font-medium text-[#64748B] group-hover:text-[#0F172A]">Inspect <ChevronRight size={12} /></span></td>
                   </tr>
                 ))}
               </tbody>
@@ -153,24 +149,24 @@ export const AdminHomeDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Detailed Slide-Over Overlay Panel */}
-      <div className={`fixed inset-y-0 right-0 w-full md:w-[600px] bg-slate-900 border-l border-slate-800 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto ${currentSelectedProfile ? 'translate-x-0' : 'translate-x-full'}`}>
+      {/* Detailed Slide-Over */}
+      <div className={`fixed inset-y-0 right-0 w-full md:w-[600px] bg-white border-l border-[#E2E8F0] shadow-2xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto ${currentSelectedProfile ? 'translate-x-0' : 'translate-x-full'}`}>
         {currentSelectedProfile && (
           <div className="p-4 sm:p-6 space-y-6">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
-                <span className={`px-2.5 py-1 rounded-md text-[10px] uppercase font-bold tracking-widest border ${currentSelectedProfile.role === 'teacher' ? 'bg-purple-500/10 text-purple-300 border-purple-500/30' : 'bg-blue-500/10 text-blue-300 border-blue-500/30'}`}>{currentSelectedProfile.role} Account</span>
-                <span className="font-mono text-xs text-slate-500">{currentSelectedProfile.id}</span>
+                <span className={`px-2.5 py-1 rounded-md text-[10px] uppercase font-bold tracking-widest border ${currentSelectedProfile.role === 'teacher' ? 'bg-[#EFF6FF] text-[#2563EB] border-blue-200' : 'bg-[#F1F5F9] text-[#0F172A] border-[#E2E8F0]'}`}>{currentSelectedProfile.role} Account</span>
+                <span className="font-mono text-xs text-[#64748B]">{currentSelectedProfile.id}</span>
               </div>
-              <button onClick={() => setSelectedProfileId(null)} className="p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 hover:text-white"><X size={16} /></button>
+              <button onClick={() => setSelectedProfileId(null)} className="p-2 rounded-lg bg-white border border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A] hover:border-[#94A3B8]"><X size={16} /></button>
             </div>
 
-            <div className="flex gap-4 border border-slate-800 rounded-xl p-4 bg-slate-950">
-              <img src={currentSelectedProfile.avatar} alt={currentSelectedProfile.name} className="w-16 h-16 rounded-xl object-cover border border-slate-700" />
+            <div className="flex gap-4 border border-[#E2E8F0] rounded-lg p-4 bg-[#F8FAFC]">
+              <img src={currentSelectedProfile.avatar} alt={currentSelectedProfile.name} className="w-16 h-16 rounded-lg object-cover border border-[#E2E8F0]" />
               <div className="flex-1 min-w-0">
-                <h2 className="text-lg font-bold text-white">{currentSelectedProfile.name}</h2>
-                <p className="text-xs text-slate-400">{currentSelectedProfile.role === 'teacher' ? (currentSelectedProfile as TeacherProfile).department : (currentSelectedProfile as LearnerProfile).major}</p>
-                <div className="flex flex-wrap gap-2 mt-2 text-[11px] font-mono text-slate-400">
+                <h2 className="text-lg font-bold text-[#0F172A]">{currentSelectedProfile.name}</h2>
+                <p className="text-xs text-[#64748B]">{currentSelectedProfile.role === 'teacher' ? (currentSelectedProfile as TeacherProfile).department : (currentSelectedProfile as LearnerProfile).major}</p>
+                <div className="flex flex-wrap gap-2 mt-2 text-[11px] font-mono text-[#64748B]">
                   <span className="flex items-center gap-1"><Mail size={10} /> {currentSelectedProfile.email}</span>
                   <span className="flex items-center gap-1"><MapPin size={10} /> {currentSelectedProfile.location}</span>
                 </div>
@@ -180,31 +176,31 @@ export const AdminHomeDashboard: React.FC = () => {
             <div className="grid grid-cols-2 gap-3">
               {currentSelectedProfile.role === 'teacher' ? (
                 <>
-                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Evaluation Performance</p><p className="text-lg font-bold text-white mt-1">{(currentSelectedProfile as TeacherProfile).rating} <span className="text-xs font-normal text-slate-400">/ 5.0</span></p></div>
-                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Turnaround Buffer</p><p className="text-lg font-bold text-white mt-1">{(currentSelectedProfile as TeacherProfile).gradingTurnaround}</p></div>
-                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Salary Band</p><p className="text-sm font-bold text-white mt-1 flex items-center gap-1"><DollarSign size={12} /> {(currentSelectedProfile as TeacherProfile).salary}</p></div>
-                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Contracted Courses</p><p className="text-lg font-bold text-white mt-1">{(currentSelectedProfile as TeacherProfile).coursesCount}</p></div>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-[#64748B]">Evaluation Performance</p><p className="text-lg font-bold text-[#0F172A] mt-1">{(currentSelectedProfile as TeacherProfile).rating} <span className="text-xs font-normal text-[#64748B]">/ 5.0</span></p></div>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-[#64748B]">Turnaround Buffer</p><p className="text-lg font-bold text-[#0F172A] mt-1">{(currentSelectedProfile as TeacherProfile).gradingTurnaround}</p></div>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-[#64748B]">Salary Band</p><p className="text-sm font-bold text-[#0F172A] mt-1 flex items-center gap-1"><DollarSign size={12} /> {(currentSelectedProfile as TeacherProfile).salary}</p></div>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-[#64748B]">Contracted Courses</p><p className="text-lg font-bold text-[#0F172A] mt-1">{(currentSelectedProfile as TeacherProfile).coursesCount}</p></div>
                 </>
               ) : (
                 <>
-                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Calculated Transcript GPA</p><p className="text-lg font-bold text-white mt-1">{(currentSelectedProfile as LearnerProfile).gpa.toFixed(2)}</p></div>
-                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Attendance Compliance</p><p className="text-lg font-bold text-white mt-1">{(currentSelectedProfile as LearnerProfile).attendance}</p></div>
-                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Credits Earned</p><p className="text-lg font-bold text-white mt-1">{(currentSelectedProfile as LearnerProfile).creditsEarned}</p></div>
-                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Outstanding Balance</p><p className={`text-sm font-bold mt-1 flex items-center gap-1 ${currentSelectedProfile.outstandingBalance !== '$0.00' ? 'text-rose-300' : 'text-emerald-300'}`}><DollarSign size={12} /> {currentSelectedProfile.outstandingBalance}</p></div>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-[#64748B]">Calculated GPA</p><p className="text-lg font-bold text-[#0F172A] mt-1">{(currentSelectedProfile as LearnerProfile).gpa.toFixed(2)}</p></div>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-[#64748B]">Attendance Compliance</p><p className="text-lg font-bold text-[#0F172A] mt-1">{(currentSelectedProfile as LearnerProfile).attendance}</p></div>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-[#64748B]">Credits Earned</p><p className="text-lg font-bold text-[#0F172A] mt-1">{(currentSelectedProfile as LearnerProfile).creditsEarned}</p></div>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3"><p className="text-[10px] font-mono uppercase tracking-widest text-[#64748B]">Outstanding Balance</p><p className={`text-sm font-bold mt-1 flex items-center gap-1 ${currentSelectedProfile.outstandingBalance !== '$0.00' ? 'text-rose-600' : 'text-emerald-600'}`}><DollarSign size={12} /> {currentSelectedProfile.outstandingBalance}</p></div>
                 </>
               )}
             </div>
 
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-slate-300 mb-3 flex items-center gap-2"><BookOpen size={14} /> {currentSelectedProfile.role === 'teacher' ? 'Allocated Class Clusters' : 'Enrolled Course Progress'}</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-[#334155] mb-3 flex items-center gap-2"><BookOpen size={14} /> {currentSelectedProfile.role === 'teacher' ? 'Allocated Class Clusters' : 'Enrolled Course Progress'}</h3>
               <div className="space-y-2">
                 {currentSelectedProfile.courses.map((course: any) => (
-                  <div key={course.id} className="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center justify-between">
-                    <div><p className="text-xs font-mono text-slate-400">{course.id}</p><p className="text-sm font-semibold text-white">{course.name}</p></div>
+                  <div key={course.id} className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3 flex items-center justify-between">
+                    <div><p className="text-xs font-mono text-[#64748B]">{course.id}</p><p className="text-sm font-semibold text-[#0F172A]">{course.name}</p></div>
                     <div className="text-right">
                       {currentSelectedProfile.role === 'teacher'
-                        ? <><p className="text-xs text-slate-300 flex items-center gap-1 justify-end"><Users size={12} /> {course.students} Students</p><p className="text-[11px] font-mono text-slate-500">{course.averageGrade} avg</p></>
-                        : <><p className="text-xs font-bold text-white">{course.currentGrade}</p><p className="text-[11px] font-mono text-slate-400">Progress: {course.progress}%</p><div className="w-20 h-1 bg-slate-700 rounded-full overflow-hidden mt-1 ml-auto"><div className="h-full bg-blue-500" style={{ width: `${course.progress}%` }} /></div></>}
+                        ? <><p className="text-xs text-[#334155] flex items-center gap-1 justify-end"><Users size={12} /> {course.students} Students</p><p className="text-[11px] font-mono text-[#64748B]">{course.averageGrade} avg</p></>
+                        : <><p className="text-xs font-bold text-[#0F172A]">{course.currentGrade}</p><p className="text-[11px] font-mono text-[#64748B]">Progress: {course.progress}%</p><div className="w-20 h-1 bg-[#E2E8F0] rounded-full overflow-hidden mt-1 ml-auto"><div className="h-full bg-[#2563EB]" style={{ width: `${course.progress}%` }} /></div></>}
                     </div>
                   </div>
                 ))}
@@ -212,24 +208,24 @@ export const AdminHomeDashboard: React.FC = () => {
             </div>
 
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-slate-300 mb-3 flex items-center gap-2"><Clock size={14} /> Live Platform Audit Logs</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-[#334155] mb-3 flex items-center gap-2"><Clock size={14} /> Live Platform Audit Logs</h3>
               <div className="space-y-2">
                 {currentSelectedProfile.recentLogs.map((log: any) => (
-                  <div key={log.id} className="flex gap-3 border-l-2 border-slate-700 pl-3 py-1">
-                    <div className="flex-1"><p className="text-xs text-slate-200">{log.action}</p><p className="text-[11px] font-mono text-slate-500">{log.time}</p></div>
+                  <div key={log.id} className="flex gap-3 border-l-2 border-[#E2E8F0] pl-3 py-1">
+                    <div className="flex-1"><p className="text-xs text-[#1E293B]">{log.action}</p><p className="text-[11px] font-mono text-[#64748B]">{log.time}</p></div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex gap-2 pt-4 border-t border-slate-800">
-              <button className="flex-1 h-9 rounded-xl bg-white text-slate-900 text-xs font-bold flex items-center justify-center gap-1.5"><FileText size={14} /> Export Profile PDF</button>
-              <button className="flex-1 h-9 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs font-bold flex items-center justify-center gap-1.5"><Shield size={14} /> Modify Credentials</button>
+            <div className="flex gap-2 pt-4 border-t border-[#E2E8F0]">
+              <button className="flex-1 h-9 rounded-lg bg-[#0F172A] text-white text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-black"><FileText size={14} /> Export Profile PDF</button>
+              <button className="flex-1 h-9 rounded-lg bg-white border border-[#E2E8F0] text-[#0F172A] text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#F8FAFC]"><Shield size={14} /> Modify Credentials</button>
             </div>
           </div>
         )}
       </div>
-      {currentSelectedProfile && <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40" onClick={() => setSelectedProfileId(null)} />}
+      {currentSelectedProfile && <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40" onClick={() => setSelectedProfileId(null)} />}
     </div>
   );
 };
