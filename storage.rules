@@ -1,0 +1,34 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.role == 'admin' ||
+        request.auth.token.admin == true
+      );
+    }
+
+    function validMeta() {
+      return request.resource.size > 0
+        && request.resource.size < 10 * 1024 * 1024
+        && (request.resource.contentType.matches('image/(jpeg|jpg|png|webp)')
+            || request.resource.contentType.matches('application/pdf'));
+    }
+
+    // Registration documents: owner-only write, owner or admin read
+    match /registrations/{uid}/{file} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow write: if isOwner(uid) && validMeta();
+    }
+
+    // Legacy/other paths: deny all
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

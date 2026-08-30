@@ -10,11 +10,13 @@ import {
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Card } from '../ui/card';
-import { auth, db } from '../../lib/firebase';
+import { FileUpload, type UploadedFileMeta } from '../ui/FileUpload';
+import { auth, db, storage } from '../../lib/firebase';
 import {
   createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup, type User as FbUser
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const DEPARTMENTS = ["Faculty of Applied Sciences", "Faculty of Commerce", "Faculty of Education", "Faculty of Engineering"];
 const TOTAL_STEPS = 6;
@@ -66,6 +68,37 @@ export const OnboardingFlow: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [googleUser, setGoogleUser] = useState<FbUser | null>(null);
 
+  // ── Real file upload state (Firebase Storage) ──
+  const [uploads, setUploads] = useState<Record<string, UploadedFileMeta[]>>({
+    teacherIdDoc: [], addressDoc: [], teacherDegreeDocs: [],
+    learnerTranscripts: [], scholarshipDoc: [], teacherResume: [],
+  });
+  const [uploadErrors, setUploadErrors] = useState<Record<string, string | undefined>>({});
+
+  const uploadToStorage = async (file: File): Promise<UploadedFileMeta> => {
+    const uid = googleUser?.uid || auth.currentUser?.uid;
+    if (!uid) throw new Error('Sign in (Step 3) before uploading documents.');
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const path = `registrations/${uid}/${Date.now()}_${safeName}`;
+    const storageRef = ref(storage, path);
+    await uploadBytes(storageRef, file, { contentType: file.type });
+    const url = await getDownloadURL(storageRef);
+    return { path, name: file.name, size: file.size, type: file.type, downloadURL: url } as UploadedFileMeta;
+  };
+
+  const makeUploadHandler = (key: string, required = false) => ({
+    onUploaded: (files: UploadedFileMeta[]) => {
+      setUploads(prev => ({ ...prev, [key]: files }));
+      setUploadErrors(prev => ({ ...prev, [key]: undefined }));
+      if (required && files.length === 0) {
+        setUploadErrors(prev => ({ ...prev, [key]: 'At least one document is required.' }));
+      }
+    },
+    uploaded: uploads[key] || [],
+    uploadFile: uploadToStorage,
+    error: uploadErrors[key],
+  });
+
   const form = useForm<FormValues>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
@@ -110,11 +143,13 @@ export const OnboardingFlow: React.FC = () => {
     if (step === 4 && role === 'teacher') {
       if (!v.idNumber || v.idNumber.length < 4) { setErr('idNumber', 'Government ID number required'); valid = false; }
       if (!v.addressVerified) { setErr('addressVerified', 'Proof of address must be confirmed'); valid = false; }
+      if (uploads.teacherIdDoc.length === 0) { setUploadErrors(p => ({ ...p, teacherIdDoc: 'Government photo ID upload is required.' })); valid = false; }
     }
 
     if (step === 5 && role === 'learner') {
       if (!v.previousSchool || v.previousSchool.length < 2) { setErr('previousSchool', 'Previous school required'); valid = false; }
       if (!v.lastGrade) { setErr('lastGrade', 'Last grade completed required'); valid = false; }
+      if (uploads.learnerTranscripts.length === 0) { setUploadErrors(p => ({ ...p, learnerTranscripts: 'At least one report card / transcript / placement result is required.' })); valid = false; }
       if (!v.agreeConduct) { setErr('agreeConduct', 'Code of conduct must be accepted'); valid = false; }
       if (!v.agreePrivacy) { setErr('agreePrivacy', 'Privacy policy must be accepted'); valid = false; }
     }
@@ -122,15 +157,21 @@ export const OnboardingFlow: React.FC = () => {
       if (!v.highestDegree || v.highestDegree.length < 2) { setErr('highestDegree', 'Highest degree required'); valid = false; }
       if (!v.degreeField || v.degreeField.length < 2) { setErr('degreeField', 'Field of study required'); valid = false; }
       if (!v.teachingCertificate || v.teachingCertificate.length < 2) { setErr('teachingCertificate', 'Teaching certificate required'); valid = false; }
+      if (uploads.teacherDegreeDocs.length === 0) { setUploadErrors(p => ({ ...p, teacherDegreeDocs: 'Degree / certificate scans are required.' })); valid = false; }
       if (!v.backgroundCheckConsent) { setErr('backgroundCheckConsent', 'Criminal record clearance consent required'); valid = false; }
     }
 
     if (step === 6 && role === 'learner') {
       if (!v.payerName || v.payerName.length < 2) { setErr('payerName', 'Payer name required'); valid = false; }
+      if (v.paymentMethod === 'scholarship' && uploads.scholarshipDoc.length === 0) {
+        setUploadErrors(p => ({ ...p, scholarshipDoc: 'Scholarship documentation is required for scholarship applications.' }));
+        valid = false;
+      }
     }
     if (step === 6 && role === 'teacher') {
       if (!v.yearsExperience) { setErr('yearsExperience', 'Years of experience required'); valid = false; }
       if (!v.referenceContact || v.referenceContact.length < 5) { setErr('referenceContact', 'Verified reference contact required'); valid = false; }
+      if (uploads.teacherResume.length === 0) { setUploadErrors(p => ({ ...p, teacherResume: 'Resume upload is required.' })); valid = false; }
       if (!v.taxId || v.taxId.length < 4) { setErr('taxId', 'Tax identification number required'); valid = false; }
       if (!v.bankDetails || v.bankDetails.length < 4) { setErr('bankDetails', 'Banking details required for payroll'); valid = false; }
     }
@@ -179,6 +220,8 @@ export const OnboardingFlow: React.FC = () => {
         provider, createdAt: serverTimestamp(),
       };
 
+      const fileMetas = (key: string) => (uploads[key] || []).map(f => ({ path: f.path, name: f.name, size: f.size, type: f.type, downloadURL: (f as any).downloadURL || '' }));
+
       if (data.role === 'learner') {
         await setDoc(doc(db, 'students', fbUser.uid), {
           ...base,
@@ -189,7 +232,8 @@ export const OnboardingFlow: React.FC = () => {
           },
           academic: {
             previousSchool: data.previousSchool || '', lastGrade: data.lastGrade || '',
-            transcriptsProvided: true,
+            transcriptsProvided: uploads.learnerTranscripts.length > 0,
+            documents: fileMetas('learnerTranscripts'),
           },
           legal: {
             codeOfConductAccepted: !!data.agreeConduct,
@@ -200,6 +244,7 @@ export const OnboardingFlow: React.FC = () => {
             method: data.paymentMethod || 'tuition',
             payerName: data.payerName || '',
             status: data.paymentMethod === 'scholarship' ? 'scholarship_pending_verification' : 'invoice_pending',
+            documents: fileMetas('scholarshipDoc'),
           },
           enrollmentStatus: 'active', level: 'NQF-8',
         });
@@ -210,16 +255,20 @@ export const OnboardingFlow: React.FC = () => {
             idType: data.idType || 'national_id',
             idNumberMasked: mask(data.idNumber),
             addressProofVerified: !!data.addressVerified,
+            idDocuments: fileMetas('teacherIdDoc'),
+            addressDocuments: fileMetas('addressDoc'),
           },
           qualifications: {
             highestDegree: data.highestDegree || '', degreeField: data.degreeField || '',
             teachingCertificate: data.teachingCertificate || '',
+            documents: fileMetas('teacherDegreeDocs'),
           },
           backgroundCheck: { consented: !!data.backgroundCheckConsent, status: 'clearance_pending' },
           professional: {
             yearsExperience: data.yearsExperience || '',
             referenceContact: data.referenceContact || '',
-            resumeProvided: true,
+            resumeProvided: uploads.teacherResume.length > 0,
+            documents: fileMetas('teacherResume'),
           },
           payroll: {
             taxIdMasked: mask(data.taxId),
@@ -444,10 +493,18 @@ export const OnboardingFlow: React.FC = () => {
                         <p className="text-[11px] text-neutral-400 flex items-center gap-1"><ShieldCheck size={12} /> Stored masked (****+last 3) under POPIA</p>
                       </div>
                     </div>
-                    <div className="p-3 bg-[var(--color-canvas-soft)] border border-[#E2E8F0] rounded-[12px] space-y-2">
-                      <label className={`${label} flex items-center gap-2`}><Upload size={14} /> Government-issued photo ID (upload)</label>
-                      <input type="file" className="text-xs text-neutral-500" />
-                      <p className="text-[11px] text-neutral-400">Placeholder — production files go to Firebase Storage, never public URLs.</p>
+                    <FileUpload
+                      label="Government-issued photo ID"
+                      required
+                      hint="Passport / national ID / driver's license photo page. Encrypted at rest, POPIA protected."
+                      {...makeUploadHandler('teacherIdDoc', true)}
+                    />
+                    <div className="p-3 bg-[var(--color-canvas-soft)] border border-[#E2E8F0] rounded-[12px]">
+                      <FileUpload
+                        label="Proof of address (utility bill / lease, ≤ 3 months)"
+                        hint="Optional but speeds up verification."
+                        {...makeUploadHandler('addressDoc')}
+                      />
                     </div>
                     <label className="flex items-start gap-2 text-xs font-medium cursor-pointer">
                       <input type="checkbox" {...form.register('addressVerified')} className="w-4 h-4 mt-0.5 accent-[var(--color-t4c-green)]" />
@@ -492,10 +549,13 @@ export const OnboardingFlow: React.FC = () => {
                         {form.formState.errors.lastGrade && <p className={errText}>{form.formState.errors.lastGrade.message as string}</p>}
                       </div>
                     </div>
-                    <div className="p-3 bg-[var(--color-canvas-soft)] border border-[#E2E8F0] rounded-[12px] space-y-2">
-                      <label className={`${label} flex items-center gap-2`}><FileText size={14} /> Report cards / transcripts / placement test (upload)</label>
-                      <input type="file" multiple className="text-xs text-neutral-500" />
-                    </div>
+                    <FileUpload
+                      label="Report cards / transcripts / placement results"
+                      required
+                      multiple
+                      hint="PDF or photo scans. Admin reviews these before final placement."
+                      {...makeUploadHandler('learnerTranscripts', true)}
+                    />
                     <div className="space-y-3">
                       <label className="flex items-start gap-2 text-xs font-medium cursor-pointer">
                         <input type="checkbox" {...form.register('agreeConduct')} className="w-4 h-4 mt-0.5 accent-[var(--color-t4c-green)]" />
@@ -528,10 +588,13 @@ export const OnboardingFlow: React.FC = () => {
                       <Input placeholder="SACE Registration No. / PGCE" {...form.register('teachingCertificate')} />
                       {form.formState.errors.teachingCertificate && <p className={errText}>{form.formState.errors.teachingCertificate.message as string}</p>}
                     </div>
-                    <div className="p-3 bg-[var(--color-canvas-soft)] border border-[#E2E8F0] rounded-[12px] space-y-2">
-                      <label className={`${label} flex items-center gap-2`}><Award size={14} /> Degree / certificate scans (upload)</label>
-                      <input type="file" multiple className="text-xs text-neutral-500" />
-                    </div>
+                    <FileUpload
+                      label="Degree / certificate scans"
+                      required
+                      multiple
+                      hint="University degrees, teaching certificates, professional licenses."
+                      {...makeUploadHandler('teacherDegreeDocs', true)}
+                    />
                     <label className="flex items-start gap-2 text-xs font-medium cursor-pointer">
                       <input type="checkbox" {...form.register('backgroundCheckConsent')} className="w-4 h-4 mt-0.5 accent-[var(--color-t4c-green)]" />
                       <span>I consent to a <span className="font-bold text-[var(--color-t4c-green)]">criminal record / police check</span> for child safety clearance</span>
@@ -585,10 +648,13 @@ export const OnboardingFlow: React.FC = () => {
                         <div className="mt-3 h-10 rounded-[6px] border bg-white flex items-center px-3 text-xs text-neutral-400">Card number • MM/YY • CVC (Stripe Elements placeholder)</div>
                       </Card>
                     ) : (
-                      <div className="p-3 bg-[var(--color-canvas-soft)] border border-[#E2E8F0] rounded-[12px] space-y-2">
-                        <label className={`${label} flex items-center gap-2`}><FileText size={14} /> Scholarship documentation (upload)</label>
-                        <input type="file" className="text-xs text-neutral-500" />
-                      </div>
+                      <FileUpload
+                        label="Scholarship documentation"
+                        required
+                        multiple
+                        hint="Bursary letters, award letters or sponsorship proof."
+                        {...makeUploadHandler('scholarshipDoc', true)}
+                      />
                     )}
                   </div>
                 ) : (
@@ -605,10 +671,12 @@ export const OnboardingFlow: React.FC = () => {
                         {form.formState.errors.referenceContact && <p className={errText}>{form.formState.errors.referenceContact.message as string}</p>}
                       </div>
                     </div>
-                    <div className="p-3 bg-[var(--color-canvas-soft)] border border-[#E2E8F0] rounded-[12px] space-y-2">
-                      <label className={`${label} flex items-center gap-2`}><Briefcase size={14} /> Detailed resume (upload)</label>
-                      <input type="file" className="text-xs text-neutral-500" />
-                    </div>
+                    <FileUpload
+                      label="Detailed resume"
+                      required
+                      hint="CV / resume including verified employment history."
+                      {...makeUploadHandler('teacherResume', true)}
+                    />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className={`${label} flex items-center gap-1.5`}><Landmark size={13} /> Tax identification number</label>
