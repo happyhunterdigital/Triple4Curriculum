@@ -49,6 +49,7 @@ const registrationSchema = z.object({
   highestDegree: z.string().optional(),
   degreeField: z.string().optional(),
   teachingCertificate: z.string().optional(),
+  teachingPhase: z.string().optional(),
   backgroundCheckConsent: z.boolean().optional(),
   // Teacher — Professional + Financial
   yearsExperience: z.string().optional(),
@@ -107,7 +108,7 @@ export const OnboardingFlow: React.FC = () => {
       previousSchool: '', lastGrade: '', agreeConduct: false, agreePrivacy: false,
       paymentMethod: 'tuition', payerName: '',
       idType: 'national_id', idNumber: '', addressVerified: false,
-      highestDegree: '', degreeField: '', teachingCertificate: '', backgroundCheckConsent: false,
+      highestDegree: '', degreeField: '', teachingCertificate: '', teachingPhase: '', backgroundCheckConsent: false,
       yearsExperience: '', referenceContact: '', taxId: '', bankDetails: '',
     },
     mode: 'onChange',
@@ -155,6 +156,7 @@ export const OnboardingFlow: React.FC = () => {
       if (!v.highestDegree || v.highestDegree.length < 2) { setErr('highestDegree', 'Highest degree required'); valid = false; }
       if (!v.degreeField || v.degreeField.length < 2) { setErr('degreeField', 'Field of study required'); valid = false; }
       if (!v.teachingCertificate || v.teachingCertificate.length < 2) { setErr('teachingCertificate', 'Teaching certificate required'); valid = false; }
+      if (!v.teachingPhase) { setErr('teachingPhase', 'Teaching phase is required'); valid = false; }
       if (!v.backgroundCheckConsent) { setErr('backgroundCheckConsent', 'Criminal record clearance consent required'); valid = false; }
     }
 
@@ -253,6 +255,7 @@ export const OnboardingFlow: React.FC = () => {
           qualifications: {
             highestDegree: data.highestDegree || '', degreeField: data.degreeField || '',
             teachingCertificate: data.teachingCertificate || '',
+            teachingPhase: data.teachingPhase || '',
             documents: fileMetas('teacherDegreeDocs'),
           },
           backgroundCheck: { consented: !!data.backgroundCheckConsent, status: 'clearance_pending' },
@@ -595,6 +598,32 @@ export const OnboardingFlow: React.FC = () => {
                       <label className={label}>Teaching certificate / professional license</label>
                       <Input placeholder="SACE Registration No. / PGCE" {...form.register('teachingCertificate')} />
                       {form.formState.errors.teachingCertificate && <p className={errText}>{form.formState.errors.teachingCertificate.message as string}</p>}
+                    </div>
+                    <div className="space-y-2">
+                      <label className={label}>Teaching phase <span className="text-[11px] text-neutral-500 font-normal">— which phase do you teach?</span></label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {[
+                          { id: 'Foundation', label: 'Foundation Phase — Grade R–3', icon: '🧸' },
+                          { id: 'Intermediate', label: 'Intermediate Phase — Grade 4–6', icon: '📚' },
+                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '📖' },
+                          { id: 'FET', label: 'FET Phase — Grade 10–12', icon: '🎓' },
+                        ].map(phase => {
+                          const active = form.watch('teachingPhase') === phase.id;
+                          return (
+                            <button
+                              key={phase.id}
+                              type="button"
+                              onClick={() => form.setValue('teachingPhase', phase.id, { shouldValidate: true })}
+                              className={`text-left px-3 py-3 rounded-[12px] border text-sm font-medium flex items-center gap-3 transition-colors ${active ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)]' : 'bg-white border-[#E2E8F0] hover:border-[var(--color-t4c-green)]'}`}
+                            >
+                              <span className="text-lg">{phase.icon}</span>
+                              <span>{phase.label}</span>
+                              {active && <span className="ml-auto text-[var(--color-t4c-yellow)]">✓</span>}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {form.formState.errors.teachingPhase && <p className={errText}>{form.formState.errors.teachingPhase.message as string}</p>}
                     </div>
                     <FileUpload
                       label="Degree / certificate scans"
