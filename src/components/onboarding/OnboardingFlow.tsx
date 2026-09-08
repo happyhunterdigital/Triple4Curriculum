@@ -143,13 +143,11 @@ export const OnboardingFlow: React.FC = () => {
     if (step === 4 && role === 'teacher') {
       if (!v.idNumber || v.idNumber.length < 4) { setErr('idNumber', 'Government ID number required'); valid = false; }
       if (!v.addressVerified) { setErr('addressVerified', 'Proof of address must be confirmed'); valid = false; }
-      if (uploads.teacherIdDoc.length === 0) { setUploadErrors(p => ({ ...p, teacherIdDoc: 'Government photo ID upload is required.' })); valid = false; }
     }
 
     if (step === 5 && role === 'learner') {
       if (!v.previousSchool || v.previousSchool.length < 2) { setErr('previousSchool', 'Previous school required'); valid = false; }
       if (!v.lastGrade) { setErr('lastGrade', 'Last grade completed required'); valid = false; }
-      if (uploads.learnerTranscripts.length === 0) { setUploadErrors(p => ({ ...p, learnerTranscripts: 'At least one report card / transcript / placement result is required.' })); valid = false; }
       if (!v.agreeConduct) { setErr('agreeConduct', 'Code of conduct must be accepted'); valid = false; }
       if (!v.agreePrivacy) { setErr('agreePrivacy', 'Privacy policy must be accepted'); valid = false; }
     }
@@ -157,21 +155,15 @@ export const OnboardingFlow: React.FC = () => {
       if (!v.highestDegree || v.highestDegree.length < 2) { setErr('highestDegree', 'Highest degree required'); valid = false; }
       if (!v.degreeField || v.degreeField.length < 2) { setErr('degreeField', 'Field of study required'); valid = false; }
       if (!v.teachingCertificate || v.teachingCertificate.length < 2) { setErr('teachingCertificate', 'Teaching certificate required'); valid = false; }
-      if (uploads.teacherDegreeDocs.length === 0) { setUploadErrors(p => ({ ...p, teacherDegreeDocs: 'Degree / certificate scans are required.' })); valid = false; }
       if (!v.backgroundCheckConsent) { setErr('backgroundCheckConsent', 'Criminal record clearance consent required'); valid = false; }
     }
 
     if (step === 6 && role === 'learner') {
       if (!v.payerName || v.payerName.length < 2) { setErr('payerName', 'Payer name required'); valid = false; }
-      if (v.paymentMethod === 'scholarship' && uploads.scholarshipDoc.length === 0) {
-        setUploadErrors(p => ({ ...p, scholarshipDoc: 'Scholarship documentation is required for scholarship applications.' }));
-        valid = false;
-      }
     }
     if (step === 6 && role === 'teacher') {
       if (!v.yearsExperience) { setErr('yearsExperience', 'Years of experience required'); valid = false; }
       if (!v.referenceContact || v.referenceContact.length < 5) { setErr('referenceContact', 'Verified reference contact required'); valid = false; }
-      if (uploads.teacherResume.length === 0) { setUploadErrors(p => ({ ...p, teacherResume: 'Resume upload is required.' })); valid = false; }
       if (!v.taxId || v.taxId.length < 4) { setErr('taxId', 'Tax identification number required'); valid = false; }
       if (!v.bankDetails || v.bankDetails.length < 4) { setErr('bankDetails', 'Banking details required for payroll'); valid = false; }
     }
@@ -495,10 +487,10 @@ export const OnboardingFlow: React.FC = () => {
                     </div>
                     <FileUpload
                       label="Government-issued photo ID"
-                      required
-                      hint="Passport / national ID / driver's license photo page. Encrypted at rest, POPIA protected."
-                      {...makeUploadHandler('teacherIdDoc', true)}
+                      hint="Mandatory — upload now or skip and upload later from dashboard. Encrypted at rest, POPIA protected."
+                      {...makeUploadHandler('teacherIdDoc')}
                     />
+                    {uploads.teacherIdDoc.length === 0 && <p className="text-[11px] text-amber-600 flex items-center gap-1">⚠️ Required — you can upload later from dashboard if needed.</p>}
                     <div className="p-3 bg-[var(--color-canvas-soft)] border border-[#E2E8F0] rounded-[12px]">
                       <FileUpload
                         label="Proof of address (utility bill / lease, ≤ 3 months)"
@@ -551,11 +543,11 @@ export const OnboardingFlow: React.FC = () => {
                     </div>
                     <FileUpload
                       label="Report cards / transcripts / placement results"
-                      required
                       multiple
-                      hint="PDF or photo scans. Admin reviews these before final placement."
-                      {...makeUploadHandler('learnerTranscripts', true)}
+                      hint="Mandatory — upload now or upload later from learner dashboard."
+                      {...makeUploadHandler('learnerTranscripts')}
                     />
+                    {uploads.learnerTranscripts.length === 0 && <p className="text-[11px] text-amber-600">⚠️ Required — you can skip now and upload later from dashboard.</p>}
                     <div className="space-y-3">
                       <label className="flex items-start gap-2 text-xs font-medium cursor-pointer">
                         <input type="checkbox" {...form.register('agreeConduct')} className="w-4 h-4 mt-0.5 accent-[var(--color-t4c-green)]" />
@@ -590,11 +582,11 @@ export const OnboardingFlow: React.FC = () => {
                     </div>
                     <FileUpload
                       label="Degree / certificate scans"
-                      required
                       multiple
-                      hint="University degrees, teaching certificates, professional licenses."
-                      {...makeUploadHandler('teacherDegreeDocs', true)}
+                      hint="Mandatory — upload now or upload later from teacher dashboard."
+                      {...makeUploadHandler('teacherDegreeDocs')}
                     />
+                    {uploads.teacherDegreeDocs.length === 0 && <p className="text-[11px] text-amber-600">⚠️ Required — you can skip and upload later.</p>}
                     <label className="flex items-start gap-2 text-xs font-medium cursor-pointer">
                       <input type="checkbox" {...form.register('backgroundCheckConsent')} className="w-4 h-4 mt-0.5 accent-[var(--color-t4c-green)]" />
                       <span>I consent to a <span className="font-bold text-[var(--color-t4c-green)]">criminal record / police check</span> for child safety clearance</span>
@@ -648,13 +640,15 @@ export const OnboardingFlow: React.FC = () => {
                         <div className="mt-3 h-10 rounded-[6px] border bg-white flex items-center px-3 text-xs text-neutral-400">Card number • MM/YY • CVC (Stripe Elements placeholder)</div>
                       </Card>
                     ) : (
-                      <FileUpload
-                        label="Scholarship documentation"
-                        required
-                        multiple
-                        hint="Bursary letters, award letters or sponsorship proof."
-                        {...makeUploadHandler('scholarshipDoc', true)}
-                      />
+                      <>
+                        <FileUpload
+                          label="Scholarship documentation"
+                          multiple
+                          hint="Mandatory for scholarship — upload now or later from dashboard."
+                          {...makeUploadHandler('scholarshipDoc')}
+                        />
+                        {uploads.scholarshipDoc.length === 0 && form.watch('paymentMethod') === 'scholarship' && <p className="text-[11px] text-amber-600">⚠️ Required for scholarship — can be uploaded later.</p>}
+                      </>
                     )}
                   </div>
                 ) : (
@@ -673,10 +667,10 @@ export const OnboardingFlow: React.FC = () => {
                     </div>
                     <FileUpload
                       label="Detailed resume"
-                      required
-                      hint="CV / resume including verified employment history."
-                      {...makeUploadHandler('teacherResume', true)}
+                      hint="Mandatory — upload now or upload later from dashboard."
+                      {...makeUploadHandler('teacherResume')}
                     />
+                    {uploads.teacherResume.length === 0 && <p className="text-[11px] text-amber-600">⚠️ Required — you can skip now and upload later.</p>}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className={`${label} flex items-center gap-1.5`}><Landmark size={13} /> Tax identification number</label>
