@@ -1,5 +1,7 @@
 import React from 'react';
-import { Search, Bell, ChevronDown, HelpCircle, Menu, X } from 'lucide-react';
+import { useState } from 'react';
+import { Search, Bell, ChevronDown, HelpCircle, Menu, X, LogOut, User } from 'lucide-react';
+import { useAuth } from '../lib/authContext';
 
 interface ModernNavbarProps {
   onToggleMenu?: () => void;
@@ -7,6 +9,8 @@ interface ModernNavbarProps {
 }
 
 export const ModernNavbar: React.FC<ModernNavbarProps> = ({ onToggleMenu, menuOpen }) => {
+  const { logout, currentUser } = useAuth();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   return (
     <header className="w-full h-14 sm:h-16 md:h-[70px] lg:h-[74px] bg-[var(--color-t4c-green)] px-3 sm:px-5 md:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-50 border-b border-[var(--color-t4c-black)]/30 shadow-md transition-all">
       
@@ -75,16 +79,37 @@ export const ModernNavbar: React.FC<ModernNavbarProps> = ({ onToggleMenu, menuOp
           <HelpCircle size={16} />
         </button>
 
-        {/* User Identity Module */}
-        <button className="flex items-center gap-1.5 sm:gap-2.5 pl-1.5 sm:pl-2 sm:border-l border-white/10 h-full cursor-pointer hover:bg-white/5 px-1 sm:px-2 transition-all">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--color-t4c-black)] text-white font-mono font-bold flex items-center justify-center text-[10px] sm:text-xs border-2 border-[var(--color-t4c-yellow)] shrink-0 shadow-xs">
-            SS
-          </div>
-          <div className="text-left hidden xl:block">
-            <p className="text-xs font-bold text-white leading-none">S. Student</p>
-          </div>
-          <ChevronDown size={12} className="text-emerald-200 hidden sm:block" />
-        </button>
+        {/* User Identity Module with Logout */}
+        <div className="relative h-full flex items-center">
+          <button onClick={() => setUserMenuOpen(o => !o)} className="flex items-center gap-1.5 sm:gap-2.5 pl-1.5 sm:pl-2 sm:border-l border-white/10 h-full cursor-pointer hover:bg-white/5 px-1 sm:px-2 transition-all">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--color-t4c-black)] text-white font-mono font-bold flex items-center justify-center text-[10px] sm:text-xs border-2 border-[var(--color-t4c-yellow)] shrink-0 shadow-xs">
+              {(currentUser?.name?.[0] || 'S').toUpperCase()}
+            </div>
+            <div className="text-left hidden xl:block">
+              <p className="text-xs font-bold text-white leading-none truncate max-w-[120px]">{currentUser?.name || 'S. Student'}</p>
+              <p className="text-[9px] font-mono text-emerald-200 uppercase hidden 2xl:block">{currentUser?.email || 'student@triple4c.ac.za'}</p>
+            </div>
+            <ChevronDown size={12} className={`text-emerald-200 hidden sm:block transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {userMenuOpen && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
+              <div className="absolute right-0 top-full mt-1 w-56 bg-white border border-[#E2E8F0] rounded-[12px] shadow-xl z-50 overflow-hidden">
+                <div className="px-4 py-3 border-b border-[#E2E8F0] bg-[#F8FAFC]">
+                  <p className="text-xs font-bold text-[#0F172A] truncate">{currentUser?.name || 'S. Student'}</p>
+                  <p className="text-[11px] font-mono text-[#64748B] truncate">{currentUser?.email || 'guest@triple4c.ac.za'}</p>
+                  <span className="inline-flex mt-1 text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#EFF6FF] border border-blue-200 text-[#2563EB] uppercase">{currentUser?.role || 'student'}</span>
+                </div>
+                <div className="p-1.5">
+                  <a href="/onboarding" className="flex items-center gap-2 px-3 py-2 text-xs font-medium hover:bg-[#F8FAFC] rounded-[6px] text-[#1E293B]"><User size={14} /> Profile / Switch account</a>
+                  <button onClick={() => { setUserMenuOpen(false); logout(); }} className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold hover:bg-rose-50 rounded-[6px] text-rose-700">
+                    <LogOut size={14} /> Log out
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
     </header>

@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, UserRole, PushNotification } from '../types';
 import { api } from './api';
+import { auth as fbAuth } from './firebase';
+import { signOut } from 'firebase/auth';
 
 interface AuthContextType {
   currentUser: User | null;
@@ -72,10 +74,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try { await signOut(fbAuth); } catch {}
     setCurrentUser(null);
     setToken(null);
     localStorage.removeItem('444_current_user_id');
+    localStorage.removeItem('firebase:authUser:' + fbAuth.config.apiKey + ':[DEFAULT]');
+    window.location.href = '/onboarding';
   };
 
   const switchUserByRole = async (role: UserRole) => {

@@ -6,6 +6,7 @@ import {
   CheckSquare, MessageSquare, Bell, Settings,
   LogOut, ChevronLeft, ChevronRight, Plus, FolderPlus, FilePlus, X
 } from 'lucide-react';
+import { useAuth } from '../lib/authContext';
 
 interface MenuItem {
   id: string;
@@ -23,6 +24,7 @@ interface ModernSidebarProps {
 }
 
 export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, currentRoute = 'dashboard', open = false, onClose }) => {
+  const { logout } = useAuth();
   const [isExpanded, setIsExpanded] = useState(false);
   const [showCreateFlyout, setShowCreateFlyout] = useState(false);
   const [unreadLectures, setUnreadLectures] = useState(0);
@@ -252,11 +254,12 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
               {(isExpanded || open) && <span className="ml-3">System Settings</span>}
             </button>
             <button
-              title="Terminate Link"
+              title="Terminate Link — Log out"
+              onClick={() => logout()}
               className={`w-full flex items-center ${(isExpanded || open) ? 'px-3' : 'justify-center px-2'} py-2 text-xs font-bold rounded text-red-800 hover:bg-red-900/10 text-left cursor-pointer`}
             >
               <LogOut size={18} strokeWidth={2.4} className="shrink-0" />
-              {(isExpanded || open) && <span className="ml-3">Terminate Link</span>}
+              {(isExpanded || open) && <span className="ml-3">Log out</span>}
             </button>
           </div>
         </aside>
