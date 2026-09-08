@@ -526,20 +526,36 @@ export const OnboardingFlow: React.FC = () => {
 
                 {role === 'learner' ? (
                   <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className={label}>Previous school</label>
-                        <Input placeholder="Western Cape High" {...form.register('previousSchool')} />
-                        {form.formState.errors.previousSchool && <p className={errText}>{form.formState.errors.previousSchool.message as string}</p>}
+                    <div className="space-y-2">
+                      <label className={label}>Previous school</label>
+                      <Input placeholder="Western Cape High" {...form.register('previousSchool')} />
+                      {form.formState.errors.previousSchool && <p className={errText}>{form.formState.errors.previousSchool.message as string}</p>}
+                    </div>
+                    <div className="space-y-2">
+                      <label className={label}>Learner Phase <span className="text-[11px] text-neutral-500 font-normal">— select your current phase</span></label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {[
+                          { id: 'Foundation', label: 'Foundation Phase — Grade R–3', icon: '🧸' },
+                          { id: 'Intermediate', label: 'Intermediate Phase — Grade 4–6', icon: '📚' },
+                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '📖' },
+                          { id: 'FET', label: 'FET Phase — Grade 10–12', icon: '🎓' },
+                        ].map(phase => {
+                          const active = form.watch('lastGrade') === phase.id;
+                          return (
+                            <button
+                              key={phase.id}
+                              type="button"
+                              onClick={() => form.setValue('lastGrade', phase.id, { shouldValidate: true })}
+                              className={`text-left px-3 py-3 rounded-[12px] border text-sm font-medium flex items-center gap-3 transition-colors ${active ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)]' : 'bg-white border-[#E2E8F0] hover:border-[var(--color-t4c-green)]'}`}
+                            >
+                              <span className="text-lg">{phase.icon}</span>
+                              <span>{phase.label}</span>
+                              {active && <span className="ml-auto text-[var(--color-t4c-yellow)]">✓</span>}
+                            </button>
+                          );
+                        })}
                       </div>
-                      <div className="space-y-2">
-                        <label className={label}>Last grade completed</label>
-                        <select {...form.register('lastGrade')} className="w-full h-10 rounded-[6px] border border-[#E2E8F0] bg-white px-3 text-sm focus:border-[var(--color-t4c-green)] focus:outline-none">
-                          <option value="">Select grade…</option>
-                          {['Grade 10', 'Grade 11', 'Grade 12 / Matric', 'Post-matric'].map(g => <option key={g} value={g}>{g}</option>)}
-                        </select>
-                        {form.formState.errors.lastGrade && <p className={errText}>{form.formState.errors.lastGrade.message as string}</p>}
-                      </div>
+                      {form.formState.errors.lastGrade && <p className={errText}>{form.formState.errors.lastGrade.message as string}</p>}
                     </div>
                     <FileUpload
                       label="Report cards / transcripts / placement results"
