@@ -540,7 +540,7 @@ export const OnboardingFlow: React.FC = () => {
                         {[
                           { id: 'Foundation', label: 'Foundation Phase — Grade R–3', icon: '🧸' },
                           { id: 'Intermediate', label: 'Intermediate Phase — Grade 4–6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '�-' },
+                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '�-' },
                           { id: 'FET', label: 'FET Phase — Grade 10–12', icon: '🎓' },
                         ].map(phase => {
                           const active = form.watch('lastGrade') === phase.id;
@@ -575,7 +575,7 @@ export const OnboardingFlow: React.FC = () => {
                       {form.formState.errors.agreeConduct && <p className={errText}>{form.formState.errors.agreeConduct.message as string}</p>}
                       <label className="flex items-start gap-2 text-xs font-medium cursor-pointer">
                         <input type="checkbox" {...form.register('agreePrivacy')} className="w-4 h-4 mt-0.5 accent-[var(--color-t4c-green)]" />
-                        <span>I accept the <span className="font-bold text-[var(--color-t4c-green)]">Privacy Policy</span> (POPIA Act 4 of 2013)</span>
+                        <span>I accept the <a href="/privacy" target="_blank" rel="noreferrer" className="font-bold text-[var(--color-t4c-green)] underline">Privacy Policy</a> (POPIA Act 4 of 2013)</span>
                       </label>
                       {form.formState.errors.agreePrivacy && <p className={errText}>{form.formState.errors.agreePrivacy.message as string}</p>}
                     </div>
@@ -605,7 +605,7 @@ export const OnboardingFlow: React.FC = () => {
                         {[
                           { id: 'Foundation', label: 'Foundation Phase — Grade R–3', icon: '🧸' },
                           { id: 'Intermediate', label: 'Intermediate Phase — Grade 4–6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '�-' },
+                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '�-' },
                           { id: 'FET', label: 'FET Phase — Grade 10–12', icon: '🎓' },
                         ].map(phase => {
                           const active = form.watch('teachingPhase') === phase.id;

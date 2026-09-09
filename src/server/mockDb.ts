@@ -1,6 +1,13 @@
-import { 
-  User, Department, Course, Lecture, TimetableSlot, 
-  Assignment, AssignmentSubmission, AttendanceRecord, 
+/**
+ * DEMO SEED DATA — ENTIRELY FICTIONAL.
+ * All names, emails, IDs, IPs and grades below are invented placeholders for
+ * local development. Do NOT treat as real learner records. Production must
+ * use Firestore/Postgres (see server/lib + docs). Raw IPs here are
+ * fictional; runtime audit writes must use hashIp() (server/lib/security.ts).
+ */
+import {
+  User, Department, Course, Lecture, TimetableSlot,
+  Assignment, AssignmentSubmission, AttendanceRecord,
   Badge, AuditLog, PushNotification, ChatMessage, SystemAnnouncement,
   LearnerCourseProgress, TeacherSummary
 } from '../types';
@@ -1608,11 +1615,14 @@ The scaling factor sqrt(d_k) prevents small gradients when the dimensionality of
     }
   ];
 
-  // Helper method to add audit log
+  // Helper method to add audit log (IDs via crypto; callers must pass hashed IPs)
   addAuditLog(entry: Omit<AuditLog, 'id' | 'timestamp'>) {
+    const uid = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+      ? crypto.randomUUID().replace(/-/g, '').slice(0, 8)
+      : Math.random().toString(36).slice(2, 10);
     const newLog: AuditLog = {
       ...entry,
-      id: `log_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
+      id: `log_${Date.now()}_${uid}`,
       timestamp: new Date().toISOString().replace('T', ' ').substr(0, 19)
     };
     this.auditLogs.unshift(newLog);

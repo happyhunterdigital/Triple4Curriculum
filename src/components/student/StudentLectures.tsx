@@ -96,14 +96,14 @@ export const StudentLectures: React.FC = () => {
               Interactive E-Learning Hub
             </span>
             <span className="text-xs font-bold text-yellow-800 flex items-center gap-1">
-              <Shield className="w-3.5 h-3.5" /> DRM Encrypted
+              <Shield className="w-3.5 h-3.5" /> Demo Watermark (DRM Roadmap)
             </span>
           </div>
           <h1 className="text-2xl font-black text-neutral-900 mt-1">
             Course Lectures & Cognitive Modules
           </h1>
           <p className="text-xs text-neutral-500">
-            Powered by Adaptive Bitrate Streaming (ABS) and Dynamic Watermark Protection
+            Powered by Demo Streaming (Adaptive Bitrate + DRM on Roadmap)
           </p>
         </div>
 

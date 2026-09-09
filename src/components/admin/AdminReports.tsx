@@ -38,8 +38,8 @@ export const AdminReports: React.FC = () => {
 
       triggerToast({
         id: `toast_${Date.now()}`,
-        title: '📊 SA-SAMS Sync Certified',
-        message: 'Master cohort performance, attendance matrices, and POPIA declarations exported to DBE standard format.',
+        title: '📊 SA-SAMS Export (Demo)',
+        message: 'Demo preview only — certified DBE export is on the roadmap, not yet implemented.',
         category: 'academic',
         timestamp: 'Just now',
         read: false,
@@ -59,7 +59,7 @@ export const AdminReports: React.FC = () => {
               Department of Higher Education & Training (DHET)
             </span>
             <span className="text-xs font-bold text-yellow-800 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" /> SA-SAMS Automated Sync Protocol
+              <ShieldCheck className="w-3.5 h-3.5" /> SA-SAMS Export (Roadmap)
             </span>
           </div>
           <h1 className="text-2xl font-black text-neutral-900 mt-1">

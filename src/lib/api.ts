@@ -1,27 +1,58 @@
-import { 
-  User, Department, Course, Lecture, TimetableSlot, 
-  Assignment, AssignmentSubmission, AttendanceRecord, 
+import {
+  User, Department, Course, Lecture, TimetableSlot,
+  Assignment, AssignmentSubmission, AttendanceRecord,
   Badge, AuditLog, PushNotification, ChatMessage, SystemAnnouncement,
   LearnerCourseProgress, TeacherSummary
 } from '../types';
+import { auth as fbAuth } from './firebase';
 
 const API_BASE = '/api/v1';
 
+function getDevHeaders(): Record<string, string> {
+  // Dev fallback so the demo API works without Firebase configured.
+  // Production uses Firebase ID tokens (Authorization: Bearer ...).
+  try {
+    const uid = localStorage.getItem('444_current_user_id');
+    const role = localStorage.getItem('444_current_user_role');
+    const headers: Record<string, string> = {};
+    if (uid) headers['x-dev-user-id'] = uid;
+    if (role) headers['x-dev-role'] = role;
+    return headers;
+  } catch {
+    return {};
+  }
+}
+
 export async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
   try {
+    let idToken = '';
+    try {
+      idToken = (await fbAuth.currentUser?.getIdToken()) || '';
+    } catch {
+      idToken = '';
+    }
     const res = await fetch(`${API_BASE}${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
+        ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+        ...getDevHeaders(),
         ...options?.headers,
       },
       ...options,
     });
+    if (res.status === 401) {
+      throw new Error('Session expired or missing. Please sign in again.');
+    }
+    if (res.status === 403) {
+      throw new Error('You do not have permission to perform this action.');
+    }
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({ error: res.statusText }));
-      throw new Error(errorData.message || errorData.error || `Request failed with status ${res.status}`);
+      throw new Error(errorData.message || errorData.error || `Request failed (${res.status}). Please retry.`);
     }
     return await res.json();
   } catch (error) {
+    // Keep console diagnostics for devs, but callers must surface user-facing states.
     console.error(`API Error on ${endpoint}:`, error);
     throw error;
   }
@@ -29,21 +60,25 @@ export async function fetchApi<T>(endpoint: string, options?: RequestInit): Prom
 
 export const api = {
   // Auth
-  login: (email: string, role?: string) => 
+  login: (email: string, role?: string) =>
     fetchApi<{ token: string; user: User }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, role })
     }),
-  
-  register: (payload: { name: string; email: string; role: string; departmentId: string }) =>
+
+  register: (payload: { name: string; email: string; role: string; departmentId: string; agreePrivacy: boolean; agreeConduct?: boolean }) =>
     fetchApi<{ message: string; user: User; token: string }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(payload)
     }),
 
+  getPrivacy: () => fetchApi<{ title: string; summary: string; contact: string }>('/privacy'),
+  exportMyData: (userId: string) =>
+    fetchApi<unknown>(`/auth/export-my-data?userId=${encodeURIComponent(userId)}`),
+
   // Departments
   getDepartments: () => fetchApi<Department[]>('/departments'),
-  createDepartment: (dept: Partial<Department>) => 
+  createDepartment: (dept: Partial<Department>) =>
     fetchApi<Department>('/departments', {
       method: 'POST',
       body: JSON.stringify(dept)
@@ -73,7 +108,7 @@ export const api = {
 
   // Assignments & SpeedGrader
   getAssignments: () => fetchApi<Assignment[]>('/assignments'),
-  getSubmissions: (assignmentId?: string) => 
+  getSubmissions: (assignmentId?: string) =>
     fetchApi<AssignmentSubmission[]>(assignmentId ? `/submissions?assignmentId=${assignmentId}` : '/submissions'),
   submitAssignment: (assignmentId: string, payload: { studentId: string; fileName: string; contentNotes: string }) =>
     fetchApi<{ message: string; submission: AssignmentSubmission }>(`/assignments/${assignmentId}/submit`, {
@@ -94,7 +129,7 @@ export const api = {
       body: JSON.stringify({ studentId, courseId, method })
     }),
 
-  // Audit Logs
+  // Audit Logs (admin only)
   getAuditLogs: (params?: { role?: string; action?: string; search?: string }) => {
     const query = new URLSearchParams();
     if (params?.role) query.set('role', params.role);
@@ -104,7 +139,7 @@ export const api = {
   },
 
   // Reports
-  getReportsSummary: () => fetchApi<any>('/reports/summary'),
+  getReportsSummary: () => fetchApi<unknown>('/reports/summary'),
 
   // Notifications & Announcements
   getNotifications: () => fetchApi<PushNotification[]>('/notifications'),
@@ -131,7 +166,7 @@ export const api = {
 
   // Users & Badges
   getUsers: () => fetchApi<User[]>('/users'),
-  createUser: (payload: Partial<User>) =>
+  createUser: (payload: Partial<User> & { agreePrivacy?: boolean }) =>
     fetchApi<{ message: string; user: User; token: string }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(payload)

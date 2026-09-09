@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Users, BookOpen, Search, Filter, ArrowUpDown, 
   CheckCircle2, AlertTriangle, XCircle, Award, 
-  Send, Award, FileSpreadsheet, ChevronRight, 
+  Send, FileSpreadsheet, ChevronRight, 
   Calendar, Clock, TrendingUp, Flame, MessageSquare, 
   Edit3, Check, RefreshCw, Eye, UserCheck, ShieldAlert,
   GraduationCap, Bell, BarChart3, Download

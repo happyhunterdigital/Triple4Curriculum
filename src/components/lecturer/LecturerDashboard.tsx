@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Users, BookOpen, Clock, CheckCircle2, 
   ArrowRight, FileText, ClipboardCheck, Award, Video, Calendar,
-  TrendingUp, Award, AlertTriangle, Send, Eye, ShieldAlert
+  TrendingUp, AlertTriangle, Send, Eye, ShieldAlert
 } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
 import { api } from '../../lib/api';

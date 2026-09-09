@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   X, Award, Send, MessageSquare, User, BookOpen, 
-  HelpCircle, RefreshCw, Award, ArrowRight, Zap 
+  HelpCircle, RefreshCw, ArrowRight, Zap 
 } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
 

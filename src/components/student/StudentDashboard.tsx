@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Flame, Award, BookOpen, Clock, CheckCircle2, 
-  ArrowRight, ShieldCheck, Zap, Award,
+  ArrowRight, ShieldCheck, Zap,
   ChevronRight, Compass, FileText, Check, Layers,
   Shield, Play
 } from 'lucide-react';

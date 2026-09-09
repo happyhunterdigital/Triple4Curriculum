@@ -2,26 +2,64 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Separate Student Ledger ──
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userRole() {
+      return signedIn() && request.auth.token.keys().hasAny(['role', 'admin'])
+        ? (request.auth.token.keys().hasAll(['role']) ? request.auth.token.role : (request.auth.token.admin == true ? 'admin' : ''))
+        : '';
+    }
+
+    function isAdmin() {
+      return signedIn() && (userRole() == 'admin' || request.auth.token.admin == true);
+    }
+
+    // Role is NEVER client-writable. Clients may create their own user doc with
+    // role fixed to 'learner'; role upgrades happen only via custom claims /
+    // admin SDK. Updates may not change the role field.
+    match /users/{userId} {
+      allow create: if signedIn()
+                    && request.auth.uid == userId
+                    && request.resource.data.role == 'learner';
+      allow read: if signedIn() && (request.auth.uid == userId || isAdmin());
+      allow update: if signedIn()
+                    && (request.auth.uid == userId || isAdmin())
+                    && request.resource.data.role == resource.data.role;
+      allow delete: if isAdmin();
+    }
+
+    // ── Separate Student Ledger (owner-only, role immutable) ──
     match /students/{studentId} {
-      allow create: if request.auth != null
+      allow create: if signedIn()
                     && request.auth.uid == studentId
                     && request.resource.data.role == 'learner';
-      allow read, update: if request.auth != null && request.auth.uid == studentId;
+      allow read, update: if signedIn()
+                    && (request.auth.uid == studentId || isAdmin())
+                    && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role);
+      allow delete: if isAdmin();
     }
 
-    // ── Separate Teacher Ledger ──
+    // ── Separate Teacher Ledger (owner-only, role immutable) ──
     match /teachers/{teacherId} {
-      allow create: if request.auth != null
+      allow create: if signedIn()
                     && request.auth.uid == teacherId
                     && request.resource.data.role == 'teacher';
-      allow read, update: if request.auth != null && request.auth.uid == teacherId;
+      allow read, update: if signedIn()
+                    && (request.auth.uid == teacherId || isAdmin())
+                    && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role);
+      allow delete: if isAdmin();
     }
 
-    // ── Legacy: Assignment Submissions (student-scoped) ──
+    // ── Assignment Submissions (student-scoped; teachers/admins of the course) ──
     match /submissions/{submissionId} {
-      allow read, update: if request.auth != null && request.auth.uid == resource.data.studentId;
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.studentId;
+      allow create: if signedIn() && request.auth.uid == request.resource.data.studentId;
+      allow read: if signedIn()
+                    && (request.auth.uid == resource.data.studentId || isAdmin());
+      allow update: if signedIn()
+                    && (request.auth.uid == resource.data.studentId || isAdmin());
+      allow delete: if isAdmin();
     }
 
     // ── Public Curriculum (read-only) ──
@@ -30,15 +68,18 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // ── RBAC Index (single-doc per user for routing) ──
-    match /users/{userId} {
-      allow create, read, update: if request.auth != null && request.auth.uid == userId;
+    // ── Notifications (per-user; create scoped to self or admin) ──
+    match /notifications/{notifId} {
+      allow read, update: if signedIn()
+                    && (request.auth.uid == resource.data.studentId || isAdmin());
+      allow create: if signedIn()
+                    && (request.auth.uid == request.resource.data.studentId || isAdmin());
+      allow delete: if isAdmin();
     }
 
-    // ── Notifications (per-user) ──
-    match /notifications/{notifId} {
-      allow read, update: if request.auth != null && request.auth.uid == resource.data.studentId;
-      allow create: if request.auth != null;
+    // ── Default deny ──
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
