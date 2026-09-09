@@ -12,7 +12,11 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          # Full history: gitleaks on pull_request scans a commit range
+          # (SHA^..SHA) which fails on shallow clones ("unknown revision").
+          fetch-depth: 0
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -37,7 +41,7 @@ jobs:
         run: bun run build
 
       - name: Gitleaks secret scan
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -46,7 +50,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
