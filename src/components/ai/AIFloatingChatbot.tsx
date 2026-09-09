@@ -104,29 +104,29 @@ I can explain accredited syllabus theorems, synthesize practice examinations, ca
         };
         sources = ['CSC-441 Distributed Systems Syllabus', 'Raft Protocol Reference v2.1'];
       } else if (lower.includes('raft') || lower.includes('consensus') || lower.includes('distributed')) {
-        aiResponseText = `**Distributed Consensus & Raft Architecture (CSC-441)**:
+        aiResponseText = `Distributed Consensus & Raft Architecture (CSC-441):
 
-1. **Leader Election**: 
+1. Leader Election: 
    - Followers transition to Candidates when randomized heartbeats (150-300ms) expire.
    - Candidates increment the current term and request peer votes. A majority confirms leader appointment.
 
-2. **Log Replication**: 
+2. Log Replication: 
    - Leaders write client entries to local logs and synchronize them via \`AppendEntries\` RPCs.
    - Entries committed on a majority of quorum nodes are executed on state machines.
 
-3. **Safety Invariant**: 
+3. Safety Invariant: 
    - A leader never overwrites or truncates committed log entries across terms.`;
         sources = ['CSC-441 Distributed Systems Syllabus', 'Raft Protocol Paper'];
       } else if (lower.includes('popia') || lower.includes('privacy') || lower.includes('ethics')) {
-        aiResponseText = `**POPIA Act 4 of 2013 & Academic Telemetry**:
+        aiResponseText = `POPIA Act 4 of 2013 & Academic Telemetry:
 
-- **Accountability**: Researchers and academic staff are legally accountable for lawful handling of telemetry.
-- **Processing Limitation**: Data collection must proceed strictly with verifiable digital consent.
-- **Purpose Specification**: Academic records cannot be monetized or transferred to third-party ad networks.
-- **Security Safeguards**: All student data in transit and at rest requires AES-256 cryptographic standards.`;
+- Accountability: Researchers and academic staff are legally accountable for lawful handling of telemetry.
+- Processing Limitation: Data collection must proceed strictly with verifiable digital consent.
+- Purpose Specification: Academic records cannot be monetized or transferred to third-party ad networks.
+- Security Safeguards: All student data in transit and at rest requires AES-256 cryptographic standards.`;
         sources = ['POPIA Act 4 of 2013 Guidelines', 'Senate AI Ethics Policy v4.2'];
       } else {
-        aiResponseText = `Under the Triple 4 Curriculum (444 Matrix) at **NQF Level 8**:
+        aiResponseText = `Under the Triple 4 Curriculum (444 Matrix) at NQF Level 8:
 - System components must be broken down into modular, mathematically verifiable abstractions.
 - All empirical claims must be ground in SA-SAMS statutory standards with strict ethics citations.
 

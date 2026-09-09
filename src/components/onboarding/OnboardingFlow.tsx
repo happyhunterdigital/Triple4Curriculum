@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -27,31 +27,31 @@ const registrationSchema = z.object({
   name: z.string().optional(),
   email: z.string().optional(),
   password: z.string().optional(),
-  // Learner — Personal
+  // Learner - Personal
   dob: z.string().optional(),
   homeAddress: z.string().optional(),
   isMinor: z.boolean().optional(),
   guardianName: z.string().optional(),
   guardianContact: z.string().optional(),
-  // Learner — Academic + Legal
+  // Learner - Academic + Legal
   previousSchool: z.string().optional(),
   lastGrade: z.string().optional(),
   agreeConduct: z.boolean().optional(),
   agreePrivacy: z.boolean().optional(),
-  // Learner — Payment
+  // Learner - Payment
   paymentMethod: z.string().optional(),
   payerName: z.string().optional(),
-  // Teacher — Identity
+  // Teacher - Identity
   idType: z.string().optional(),
   idNumber: z.string().optional(),
   addressVerified: z.boolean().optional(),
-  // Teacher — Qualifications + Background
+  // Teacher - Qualifications + Background
   highestDegree: z.string().optional(),
   degreeField: z.string().optional(),
   teachingCertificate: z.string().optional(),
   teachingPhase: z.string().optional(),
   backgroundCheckConsent: z.boolean().optional(),
-  // Teacher — Professional + Financial
+  // Teacher - Professional + Financial
   yearsExperience: z.string().optional(),
   referenceContact: z.string().optional(),
   taxId: z.string().optional(),
@@ -189,7 +189,7 @@ export const OnboardingFlow: React.FC = () => {
       setStep(4);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Google sign-in failed';
-      setError(msg.includes('popup') ? 'Popup blocked — allow popups and retry' : msg);
+      setError(msg.includes('popup') ? 'Popup blocked - allow popups and retry' : msg);
     } finally {
       setSubmitting(false);
     }
@@ -295,7 +295,7 @@ export const OnboardingFlow: React.FC = () => {
       <div className="mb-6 xs:mb-8 space-y-3 xs:space-y-4">
         <div className="flex items-center justify-between">
           <p className="font-mono text-[10px] xs:text-[11px] uppercase tracking-widest text-neutral-500">
-            Step {completed ? TOTAL_STEPS : step} of {TOTAL_STEPS} — {role === 'teacher' ? 'Educator' : role === 'learner' ? 'Learner' : 'Academy'} Registration
+            Step {completed ? TOTAL_STEPS : step} of {TOTAL_STEPS} - {role === 'teacher' ? 'Educator' : role === 'learner' ? 'Learner' : 'Academy'} Registration
           </p>
           <div className="flex gap-1 xs:gap-1.5">
             {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map(i => (
@@ -326,12 +326,12 @@ export const OnboardingFlow: React.FC = () => {
           </motion.div>
         ) : (
           <motion.div key={step} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.22 }}>
-            {/* STEP 1 — Role */}
+            {/* STEP 1 - Role */}
             {step === 1 && (
               <div className="space-y-4 xs:space-y-6">
                 <div>
                   <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight text-[var(--color-t4c-black)] leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>How are you joining the academy today?</h1>
-                  <p className="font-sans text-xs xs:text-sm text-neutral-600 mt-2">One tap instantly advances — full registration differs by role.</p>
+                  <p className="font-sans text-xs xs:text-sm text-neutral-600 mt-2">One tap instantly advances - full registration differs by role.</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4">
                   {[
@@ -352,12 +352,12 @@ export const OnboardingFlow: React.FC = () => {
               </div>
             )}
 
-            {/* STEP 2 — Department */}
+            {/* STEP 2 - Department */}
             {step === 2 && (
               <div className="space-y-4 xs:space-y-6">
                 <div>
                   <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>Which department are you interested in?</h1>
-                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Select one — you can change later in settings.</p>
+                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Select one - you can change later in settings.</p>
                 </div>
                 <div className="space-y-2">
                   {DEPARTMENTS.map(d => (
@@ -376,12 +376,12 @@ export const OnboardingFlow: React.FC = () => {
               </div>
             )}
 
-            {/* STEP 3 — Account */}
+            {/* STEP 3 - Account */}
             {step === 3 && (
               <div className="space-y-4 xs:space-y-6">
                 <div>
                   <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>Create your account</h1>
-                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Use your institutional email — or continue with Google.</p>
+                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Use your institutional email - or continue with Google.</p>
                 </div>
                 <button type="button" onClick={handleGoogle} disabled={submitting} className="w-full flex items-center justify-center gap-2 h-10 rounded-[6px] border border-[#E2E8F0] bg-white hover:bg-neutral-50 text-sm font-medium transition-colors disabled:opacity-50">
                   <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" className="w-4 h-4" /> Continue with Google
@@ -389,7 +389,7 @@ export const OnboardingFlow: React.FC = () => {
                 <div className="flex items-center gap-3"><div className="h-px flex-1 bg-[#E2E8F0]" /><span className="text-[11px] text-neutral-400 uppercase tracking-widest">or</span><div className="h-px flex-1 bg-[#E2E8F0]" /></div>
                 {googleUser && (
                   <div className="flex items-center gap-2 text-xs bg-emerald-50 border border-emerald-200 rounded-[6px] px-3 py-2">
-                    <CheckCircle2 size={14} className="text-emerald-600" /> Signed in as {googleUser.email} — continue below.
+                    <CheckCircle2 size={14} className="text-emerald-600" /> Signed in as {googleUser.email} - continue below.
                   </div>
                 )}
                 <div className="space-y-4">
@@ -418,7 +418,7 @@ export const OnboardingFlow: React.FC = () => {
               </div>
             )}
 
-            {/* STEP 4 — Learner: Personal Details / Teacher: Identity Verification */}
+            {/* STEP 4 - Learner: Personal Details / Teacher: Identity Verification */}
             {step === 4 && (
               <div className="space-y-4 xs:space-y-6">
                 <div>
@@ -426,7 +426,7 @@ export const OnboardingFlow: React.FC = () => {
                     {role === 'teacher' ? 'Identity verification' : 'Personal details'}
                   </h1>
                   <p className="text-xs xs:text-sm text-neutral-600 mt-2">
-                    {role === 'teacher' ? 'Government-issued photo ID and proof of address — POPIA protected.' : 'Date of birth, home address and guardian consent for minors.'}
+                    {role === 'teacher' ? 'Government-issued photo ID and proof of address - POPIA protected.' : 'Date of birth, home address and guardian consent for minors.'}
                   </p>
                 </div>
 
@@ -453,7 +453,7 @@ export const OnboardingFlow: React.FC = () => {
                       <Input placeholder="sarah@university.ac.za" {...form.register('email')} />
                     </div>
                     <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
-                      <input type="checkbox" {...form.register('isMinor')} className="w-4 h-4 accent-[var(--color-t4c-green)]" /> I am under 18 — guardian consent required
+                      <input type="checkbox" {...form.register('isMinor')} className="w-4 h-4 accent-[var(--color-t4c-green)]" /> I am under 18 - guardian consent required
                     </label>
                     {isMinor && (
                       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3 bg-[var(--color-canvas-soft)] border border-[#E2E8F0] rounded-[12px]">
@@ -490,10 +490,10 @@ export const OnboardingFlow: React.FC = () => {
                     </div>
                     <FileUpload
                       label="Government-issued photo ID"
-                      hint="Mandatory — upload now or skip and upload later from dashboard. Encrypted at rest, POPIA protected."
+                      hint="Mandatory - upload now or skip and upload later from dashboard. Encrypted at rest, POPIA protected."
                       {...makeUploadHandler('teacherIdDoc')}
                     />
-                    {uploads.teacherIdDoc.length === 0 && <p className="text-[11px] text-amber-600 flex items-center gap-1">⚠️ Required — you can upload later from dashboard if needed.</p>}
+                    {uploads.teacherIdDoc.length === 0 && <p className="text-[11px] text-amber-600 flex items-center gap-1">⚠️ Required - you can upload later from dashboard if needed.</p>}
                     <div className="p-3 bg-[var(--color-canvas-soft)] border border-[#E2E8F0] rounded-[12px]">
                       <FileUpload
                         label="Proof of address (utility bill / lease, ≤ 3 months)"
@@ -515,7 +515,7 @@ export const OnboardingFlow: React.FC = () => {
               </div>
             )}
 
-            {/* STEP 5 — Learner: Academic + Legal / Teacher: Qualifications + Background */}
+            {/* STEP 5 - Learner: Academic + Legal / Teacher: Qualifications + Background */}
             {step === 5 && (
               <div className="space-y-4 xs:space-y-6">
                 <div>
@@ -523,7 +523,7 @@ export const OnboardingFlow: React.FC = () => {
                     {role === 'teacher' ? 'Qualifications & background checks' : 'Academic records & legal agreements'}
                   </h1>
                   <p className="text-xs xs:text-sm text-neutral-600 mt-2">
-                    {role === 'teacher' ? 'Degrees, teaching certificates and child-safety clearance.' : 'Past report cards, transcripts or placement results — then sign the agreements.'}
+                    {role === 'teacher' ? 'Degrees, teaching certificates and child-safety clearance.' : 'Past report cards, transcripts or placement results - then sign the agreements.'}
                   </p>
                 </div>
 
@@ -535,13 +535,13 @@ export const OnboardingFlow: React.FC = () => {
                       {form.formState.errors.previousSchool && <p className={errText}>{form.formState.errors.previousSchool.message as string}</p>}
                     </div>
                     <div className="space-y-2">
-                      <label className={label}>Learner Phase <span className="text-[11px] text-neutral-500 font-normal">— select your current phase</span></label>
+                      <label className={label}>Learner Phase <span className="text-[11px] text-neutral-500 font-normal">- select your current phase</span></label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {[
-                          { id: 'Foundation', label: 'Foundation Phase — Grade R–3', icon: '🧸' },
-                          { id: 'Intermediate', label: 'Intermediate Phase — Grade 4–6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '�-' },
-                          { id: 'FET', label: 'FET Phase — Grade 10–12', icon: '🎓' },
+                          { id: 'Foundation', label: 'Foundation Phase - Grade R–3', icon: '🧸' },
+                          { id: 'Intermediate', label: 'Intermediate Phase - Grade 4–6', icon: '📚' },
+                          { id: 'Senior', label: 'Senior Phase - Grade 7–9', icon: '📖' },
+                          { id: 'FET', label: 'FET Phase - Grade 10–12', icon: '🎓' },
                         ].map(phase => {
                           const active = form.watch('lastGrade') === phase.id;
                           return (
@@ -563,10 +563,10 @@ export const OnboardingFlow: React.FC = () => {
                     <FileUpload
                       label="Report cards / transcripts / placement results"
                       multiple
-                      hint="Mandatory — upload now or upload later from learner dashboard."
+                      hint="Mandatory - upload now or upload later from learner dashboard."
                       {...makeUploadHandler('learnerTranscripts')}
                     />
-                    {uploads.learnerTranscripts.length === 0 && <p className="text-[11px] text-amber-600">⚠️ Required — you can skip now and upload later from dashboard.</p>}
+                    {uploads.learnerTranscripts.length === 0 && <p className="text-[11px] text-amber-600">⚠️ Required - you can skip now and upload later from dashboard.</p>}
                     <div className="space-y-3">
                       <label className="flex items-start gap-2 text-xs font-medium cursor-pointer">
                         <input type="checkbox" {...form.register('agreeConduct')} className="w-4 h-4 mt-0.5 accent-[var(--color-t4c-green)]" />
@@ -600,13 +600,13 @@ export const OnboardingFlow: React.FC = () => {
                       {form.formState.errors.teachingCertificate && <p className={errText}>{form.formState.errors.teachingCertificate.message as string}</p>}
                     </div>
                     <div className="space-y-2">
-                      <label className={label}>Teaching phase <span className="text-[11px] text-neutral-500 font-normal">— which phase do you teach?</span></label>
+                      <label className={label}>Teaching phase <span className="text-[11px] text-neutral-500 font-normal">- which phase do you teach?</span></label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {[
-                          { id: 'Foundation', label: 'Foundation Phase — Grade R–3', icon: '🧸' },
-                          { id: 'Intermediate', label: 'Intermediate Phase — Grade 4–6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '�-' },
-                          { id: 'FET', label: 'FET Phase — Grade 10–12', icon: '🎓' },
+                          { id: 'Foundation', label: 'Foundation Phase - Grade R–3', icon: '🧸' },
+                          { id: 'Intermediate', label: 'Intermediate Phase - Grade 4–6', icon: '📚' },
+                          { id: 'Senior', label: 'Senior Phase - Grade 7–9', icon: '📖' },
+                          { id: 'FET', label: 'FET Phase - Grade 10–12', icon: '🎓' },
                         ].map(phase => {
                           const active = form.watch('teachingPhase') === phase.id;
                           return (
@@ -628,10 +628,10 @@ export const OnboardingFlow: React.FC = () => {
                     <FileUpload
                       label="Degree / certificate scans"
                       multiple
-                      hint="Mandatory — upload now or upload later from teacher dashboard."
+                      hint="Mandatory - upload now or upload later from teacher dashboard."
                       {...makeUploadHandler('teacherDegreeDocs')}
                     />
-                    {uploads.teacherDegreeDocs.length === 0 && <p className="text-[11px] text-amber-600">⚠️ Required — you can skip and upload later.</p>}
+                    {uploads.teacherDegreeDocs.length === 0 && <p className="text-[11px] text-amber-600">⚠️ Required - you can skip and upload later.</p>}
                     <label className="flex items-start gap-2 text-xs font-medium cursor-pointer">
                       <input type="checkbox" {...form.register('backgroundCheckConsent')} className="w-4 h-4 mt-0.5 accent-[var(--color-t4c-green)]" />
                       <span>I consent to a <span className="font-bold text-[var(--color-t4c-green)]">criminal record / police check</span> for child safety clearance</span>
@@ -646,7 +646,7 @@ export const OnboardingFlow: React.FC = () => {
               </div>
             )}
 
-            {/* STEP 6 — Learner: Payment / Teacher: Professional + Payroll */}
+            {/* STEP 6 - Learner: Payment / Teacher: Professional + Payroll */}
             {step === 6 && (
               <div className="space-y-4 xs:space-y-6">
                 <div>
@@ -654,7 +654,7 @@ export const OnboardingFlow: React.FC = () => {
                     {role === 'teacher' ? 'Professional history & financial setup' : 'Payment details'}
                   </h1>
                   <p className="text-xs xs:text-sm text-neutral-600 mt-2">
-                    {role === 'teacher' ? 'Resume, verified references, tax number and banking for payroll.' : 'Tuition records or scholarship documentation — handled by Stripe.'}
+                    {role === 'teacher' ? 'Resume, verified references, tax number and banking for payroll.' : 'Tuition records or scholarship documentation - handled by Stripe.'}
                   </p>
                 </div>
 
@@ -689,10 +689,10 @@ export const OnboardingFlow: React.FC = () => {
                         <FileUpload
                           label="Scholarship documentation"
                           multiple
-                          hint="Mandatory for scholarship — upload now or later from dashboard."
+                          hint="Mandatory for scholarship - upload now or later from dashboard."
                           {...makeUploadHandler('scholarshipDoc')}
                         />
-                        {uploads.scholarshipDoc.length === 0 && form.watch('paymentMethod') === 'scholarship' && <p className="text-[11px] text-amber-600">⚠️ Required for scholarship — can be uploaded later.</p>}
+                        {uploads.scholarshipDoc.length === 0 && form.watch('paymentMethod') === 'scholarship' && <p className="text-[11px] text-amber-600">⚠️ Required for scholarship - can be uploaded later.</p>}
                       </>
                     )}
                   </div>
@@ -706,16 +706,16 @@ export const OnboardingFlow: React.FC = () => {
                       </div>
                       <div className="space-y-2">
                         <label className={label}>Verified reference contact</label>
-                        <Input placeholder="Prof. Dean — dean@university.ac.za" {...form.register('referenceContact')} />
+                        <Input placeholder="Prof. Dean - dean@university.ac.za" {...form.register('referenceContact')} />
                         {form.formState.errors.referenceContact && <p className={errText}>{form.formState.errors.referenceContact.message as string}</p>}
                       </div>
                     </div>
                     <FileUpload
                       label="Detailed resume"
-                      hint="Mandatory — upload now or upload later from dashboard."
+                      hint="Mandatory - upload now or upload later from dashboard."
                       {...makeUploadHandler('teacherResume')}
                     />
-                    {uploads.teacherResume.length === 0 && <p className="text-[11px] text-amber-600">⚠️ Required — you can skip now and upload later.</p>}
+                    {uploads.teacherResume.length === 0 && <p className="text-[11px] text-amber-600">⚠️ Required - you can skip now and upload later.</p>}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className={`${label} flex items-center gap-1.5`}><Landmark size={13} /> Tax identification number</label>
@@ -727,7 +727,7 @@ export const OnboardingFlow: React.FC = () => {
                         <label className={`${label} flex items-center gap-1.5`}><CreditCard size={13} /> Banking details (payroll)</label>
                         <Input placeholder="Bank • Account • Branch code" {...form.register('bankDetails')} />
                         {form.formState.errors.bankDetails && <p className={errText}>{form.formState.errors.bankDetails.message as string}</p>}
-                        <p className="text-[11px] text-neutral-400">Flag stored only — raw details go to encrypted payroll, not Firestore</p>
+                        <p className="text-[11px] text-neutral-400">Flag stored only - raw details go to encrypted payroll, not Firestore</p>
                       </div>
                     </div>
                   </div>

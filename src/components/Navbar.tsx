@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { Search, Bell, ChevronDown, HelpCircle, Menu, X, LogOut, User } from 'lucide-react';
 import { useAuth } from '../lib/authContext';
 
-interface ModernNavbarProps {
+interface NavbarProps {
   onToggleMenu?: () => void;
   menuOpen?: boolean;
 }
 
-export const ModernNavbar: React.FC<ModernNavbarProps> = ({ onToggleMenu, menuOpen }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
   const { logout, currentUser } = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   return (

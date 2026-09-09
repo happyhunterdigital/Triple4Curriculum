@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+﻿import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, UserRole, PushNotification } from '../types';
 import { api } from './api';
 import { auth as fbAuth } from './firebase';
@@ -82,7 +82,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           }
           return;
         }
-        // No Firebase session — restore saved demo session if present.
+        // No Firebase session - restore saved demo session if present.
         const savedUserId = localStorage.getItem('444_current_user_id');
         if (savedUserId) {
           try {

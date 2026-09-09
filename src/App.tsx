@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './lib/authContext';
-import { ModernNavbar } from './components/ModernNavbar';
-import { ModernSidebar } from './components/ModernSidebar';
-import { BrandedHero } from './components/BrandedHero';
+import { Navbar } from './components/Navbar';
+import { AppSidebar } from './components/AppSidebar';
+import { LandingHero } from './components/LandingHero';
 import { MarqueeScroller } from './components/MarqueeScroller';
 import { ClassroomWorkspace } from './components/learning/ClassroomWorkspace';
 import { AssignmentLedger } from './components/AssignmentLedger';
@@ -62,7 +62,7 @@ function DashboardRouter() {
   // Guest landing: hero + classroom + ledger.
   return (
     <>
-      <BrandedHero />
+      <LandingHero />
       <MarqueeScroller />
       <Card><ClassroomWorkspace /></Card>
       <div className="mt-3 xs:mt-4 sm:mt-6 bg-white border border-[var(--color-t4c-black)]/10 rounded-lg sm:rounded-xl shadow-xs p-3 xs:p-4 sm:p-6 lg:p-8 overflow-hidden">
@@ -87,9 +87,9 @@ function Shell() {
 
   return (
     <div className="w-full min-h-screen bg-[var(--color-canvas-soft)] flex flex-col antialiased overflow-x-hidden">
-      <ModernNavbar onToggleMenu={() => setMenuOpen((o) => !o)} menuOpen={menuOpen} />
+      <Navbar onToggleMenu={() => setMenuOpen((o) => !o)} menuOpen={menuOpen} />
       <div className="w-full flex flex-1 items-stretch overflow-hidden">
-        <ModernSidebar onNavigate={handleNavigate} currentRoute={currentRoute} open={menuOpen} onClose={() => setMenuOpen(false)} />
+        <AppSidebar onNavigate={handleNavigate} currentRoute={currentRoute} open={menuOpen} onClose={() => setMenuOpen(false)} />
         <div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden bg-[var(--color-canvas-soft)] p-3 xs:p-4 sm:p-5 md:p-6 lg:p-6 xl:p-8 gap-3 xs:gap-4 sm:gap-5 md:gap-6 min-w-0 max-w-full">
           <Routes>
             <Route path="/onboarding" element={<Card><OnboardingFlow /></Card>} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import {
@@ -16,23 +16,23 @@ interface MenuItem {
   subItems?: { label: string; count?: number }[];
 }
 
-interface ModernSidebarProps {
+interface AppSidebarProps {
   onNavigate?: (route: string) => void;
   currentRoute?: string;
   open?: boolean;
   onClose?: () => void;
 }
 
-export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, currentRoute = 'dashboard', open = false, onClose }) => {
-  const { logout } = useAuth();
+export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute = 'dashboard', open = false, onClose }) => {
+  const { logout, currentUser } = useAuth();
   const [isExpanded, setIsExpanded] = useState(false);
   const [showCreateFlyout, setShowCreateFlyout] = useState(false);
   const [unreadLectures, setUnreadLectures] = useState(0);
   const [unreadAssignments, setUnreadAssignments] = useState(0);
-  const currentStudentId = 'admin@school.edu';
 
   useEffect(() => {
-    const q = query(collection(db, 'notifications'), where('studentId', '==', currentStudentId), where('isRead', '==', false));
+    if (!currentUser?.id) return;
+    const q = query(collection(db, 'notifications'), where('studentId', '==', currentUser.id), where('isRead', '==', false));
     const unsub = onSnapshot(q, (snap) => {
       let l = 0, a = 0;
       snap.docs.forEach(d => {
@@ -43,7 +43,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
       setUnreadLectures(l); setUnreadAssignments(a);
     }, () => {});
     return () => unsub();
-  }, []);
+  }, [currentUser?.id]);
 
   const handleNavigate = (id: string) => {
     onNavigate?.(id);
@@ -254,7 +254,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ onNavigate, curren
               {(isExpanded || open) && <span className="ml-3">System Settings</span>}
             </button>
             <button
-              title="Terminate Link — Log out"
+              title="Terminate Link - Log out"
               onClick={() => logout()}
               className={`w-full flex items-center ${(isExpanded || open) ? 'px-3' : 'justify-center px-2'} py-2 text-xs font-bold rounded text-red-800 hover:bg-red-900/10 text-left cursor-pointer`}
             >

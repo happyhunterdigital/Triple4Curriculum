@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+﻿import React, { useRef, useState } from 'react';
 import { Upload, CheckCircle2, X, AlertCircle, FileText, Loader2 } from 'lucide-react';
 
 export interface UploadedFileMeta {
@@ -105,7 +105,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           <>
             <Upload size={18} className="mx-auto text-neutral-400" />
             <p className="text-xs text-neutral-600 mt-1.5 font-medium">Drag & drop or <span className="text-[var(--color-t4c-green)] underline underline-offset-2">browse</span></p>
-            <p className="text-[11px] text-neutral-400 mt-0.5">JPG, PNG, WebP or PDF — max {MAX_SIZE_MB}MB{multiple ? ' each, multiple allowed' : ''}</p>
+            <p className="text-[11px] text-neutral-400 mt-0.5">JPG, PNG, WebP or PDF - max {MAX_SIZE_MB}MB{multiple ? ' each, multiple allowed' : ''}</p>
           </>
         )}
       </div>

@@ -1,9 +1,9 @@
-# Triple4Curriculum (Triple 4C Online School)
+﻿# Triple4Curriculum (Triple 4C Online School)
 
 React 19 + TypeScript + Express + Firebase. Demo LMS/MOOC build deployed to
 Firebase Hosting (`triple4c.com`).
 
-> **Status: demo/hardened — not production.** See audit follow-ups below. Do not
+> **Status: demo/hardened - not production.** See audit follow-ups below. Do not
 > load real learner data until Firebase Auth + Firestore persistence are wired
 > end-to-end in production.
 
@@ -22,6 +22,22 @@ bun run lint     # tsc --noEmit
 bun run test     # vitest (auth, grading, POPIA helpers)
 bun run build    # vite + esbuild server bundle
 ```
+
+## Architecture (one pattern, not three)
+
+- **API: Express** (`server.ts` + `server/`). All product data flows through
+  `/api/v1/*`. Persistence is an in-memory `DatabaseStore`
+  (`src/server/mockDb.ts`, seeds bannered fictional) until the Firestore
+  migration lands. Covered by vitest (`tests/`).
+- **Firebase: hosting + auth + onboarding writes.** Hosting serves `dist/`;
+  the client SDK handles sessions (`src/lib/authContext.tsx`), role lookup
+  (`App.tsx`), notification badges (`AppSidebar.tsx`), and registration
+  artifacts - Auth accounts, `students/` + `teachers/` docs, `registrations/`
+  uploads (`OnboardingFlow.tsx`). Rules in `firestore.rules` / `storage.rules`
+  ship with hosting deploys.
+- Rule of thumb: product reads/writes go to the API; identity and
+  registration artifacts go to Firebase directly. Do not reintroduce a third
+  store.
 
 ## Security model (post-audit)
 

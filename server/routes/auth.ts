@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+﻿import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { db } from '../../src/server/mockDb.ts';
 import { hashIp, logEvent, newId } from '../lib/security.ts';
@@ -12,7 +12,7 @@ const gatewaySchema = z.object({
 });
 
 /**
- * Legacy gateway endpoint — hardcoded credentials REMOVED (audit 1.1).
+ * Legacy gateway endpoint - hardcoded credentials REMOVED (audit 1.1).
  * This endpoint now always rejects with 410 Gone and points callers to
  * the Firebase-backed /api/v1/auth/* flow. Kept as a stub so old clients
  * fail loudly instead of silently using a backdoor.

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { BookOpen, Calendar, GraduationCap, Inbox, Clock, AlertCircle, CheckCircle2, ChevronRight, MessageSquare } from 'lucide-react';
 
 interface Course { id: string; name: string; code: string; time: string; status: 'live' | 'upcoming' | 'completed'; }
@@ -132,9 +132,9 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
           </div>
         </div>
 
-        {/* ASCII Blueprint Alignment Bar — shows responsive grid fidelity */}
+        {/* ASCII Blueprint Alignment Bar - shows responsive grid fidelity */}
         <div className="hidden lg:flex items-center gap-2 text-[10px] font-mono text-[#94A3B8] border-t border-[#E2E8F0] pt-4">
-          <span>— Desk —</span><span className="flex-1 h-px bg-[#E2E8F0]" /><span>WEEK AT A GLANCE</span><span className="flex-1 h-px bg-[#E2E8F0]" /><span>PROGRESS TRACK</span>
+          <span>- Desk -</span><span className="flex-1 h-px bg-[#E2E8F0]" /><span>WEEK AT A GLANCE</span><span className="flex-1 h-px bg-[#E2E8F0]" /><span>PROGRESS TRACK</span>
         </div>
       </div>
     </div>

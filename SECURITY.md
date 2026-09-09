@@ -1,8 +1,8 @@
-# Security Policy
+﻿# Security Policy
 
 ## Supported versions
 
-Demo project — `main` only. Security fixes land on `main` and deploy via
+Demo project - `main` only. Security fixes land on `main` and deploy via
 Firebase Hosting (`triple4c.com`).
 
 ## Reporting a vulnerability

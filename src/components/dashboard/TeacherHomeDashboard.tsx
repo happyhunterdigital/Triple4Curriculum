@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { LayoutDashboard, Users, ClipboardList, MessageSquare, BookOpen, Clock, AlertTriangle, CheckCircle2, ChevronRight, TrendingDown } from 'lucide-react';
 
 interface QueuedTask { id: string; type: 'grade' | 'review' | 'respond'; title: string; context: string; count?: number; urgency: 'high' | 'medium' | 'low'; }
@@ -80,7 +80,7 @@ export const TeacherHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
                   <div key={alert.id} className="p-3 border border-[#E2E8F0] rounded-md flex items-start gap-3 hover:bg-[#F8FAFC] transition-colors">
                     <AlertTriangle className={`h-4 w-4 mt-0.5 shrink-0 ${alert.severity === 'high' ? 'text-[#EF4444]' : 'text-[#F59E0B]'}`} />
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-[#0F172A]">{alert.name} <span className="font-normal text-[#64748B]">— {alert.metric}</span></p>
+                      <p className="text-xs font-semibold text-[#0F172A]">{alert.name} <span className="font-normal text-[#64748B]">- {alert.metric}</span></p>
                       <p className="text-xs text-[#475569] mt-0.5 leading-relaxed">{alert.reason}</p>
                       <span className={`inline-flex mt-1.5 text-[10px] font-medium px-1.5 py-0.5 rounded ${alert.severity === 'high' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'}`}>{alert.severity === 'high' ? 'High' : 'Medium'} Risk</span>
                     </div>
@@ -111,7 +111,7 @@ export const TeacherHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
         </div>
 
         <div className="hidden lg:flex items-center gap-2 text-[10px] font-mono text-[#94A3B8] border-t border-[#E2E8F0] pt-4">
-          <span>— Overview —</span><span className="flex-1 h-px bg-[#E2E8F0]" /><span>ACTION REQUIRED</span><span className="flex-1 h-px bg-[#E2E8F0]" /><span>TODAY'S SCHEDULE</span>
+          <span>- Overview -</span><span className="flex-1 h-px bg-[#E2E8F0]" /><span>ACTION REQUIRED</span><span className="flex-1 h-px bg-[#E2E8F0]" /><span>TODAY'S SCHEDULE</span>
         </div>
       </div>
     </div>

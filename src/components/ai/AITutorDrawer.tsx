@@ -70,25 +70,25 @@ export const AITutorDrawer: React.FC<AITutorDrawerProps> = ({ isOpen, onClose, i
 
       const lower = query.toLowerCase();
       if (lower.includes('raft') || lower.includes('consensus') || lower.includes('distributed')) {
-        aiResponseText = `**Distributed Consensus & Raft in Triple 4C (CSC-441)**:
-1. **Leader Election**: Heartbeat timeouts trigger term increments and candidate voting.
-2. **Log Replication**: The leader accepts entries from clients, appends them locally, and broadcasts AppendEntries RPCs.
-3. **Safety Guarantee**: State machine safety ensures that if a server applies an entry at index *i*, no other server can apply a differing entry at *i*.
+        aiResponseText = `Distributed Consensus & Raft in Triple 4C (CSC-441):
+1. Leader Election: Heartbeat timeouts trigger term increments and candidate voting.
+2. Log Replication: The leader accepts entries from clients, appends them locally, and broadcasts AppendEntries RPCs.
+3. Safety Guarantee: State machine safety ensures that if a server applies an entry at index i, no other server can apply a differing entry at i.
 
 *Tip for Assignment 1*: Ensure your heartbeat jitter is between 150ms-300ms to avoid split votes in multi-node clusters!`;
         sources = ['CSC-441 Syllabus', 'Raft Protocol Paper'];
       } else if (lower.includes('ethics') || lower.includes('popia')) {
-        aiResponseText = `**POPIA & AI Ethics Framework (AI-442)**:
+        aiResponseText = `POPIA & AI Ethics Framework (AI-442):
 Under South African POPIA Section 444 and institutional guidelines:
-- **Fairness & Non-Bias**: Algorithmic models must be audited against regional socio-economic skew.
-- **Lawful Telemetry**: Student progress metrics cannot be commercialized and are restricted to academic counseling.
-- **Right to Explanation**: High-stakes grading predictions require human faculty signoff via SpeedGrader™.`;
+- Fairness & Non-Bias: Algorithmic models must be audited against regional socio-economic skew.
+- Lawful Telemetry: Student progress metrics cannot be commercialized and are restricted to academic counseling.
+- Right to Explanation: High-stakes grading predictions require human faculty signoff via SpeedGrader™.`;
         sources = ['POPIA Data Privacy Charter 2026', 'Senate AI Ethics Policy v4.2'];
       } else if (lower.includes('matrix') || lower.includes('444') || lower.includes('curriculum')) {
-        aiResponseText = `**The 4-4-4 Architectural Matrix**:
-- **4 Character Pillars**: Integrity, Digital Citizenship, Social Accountability, Resilience.
-- **4 Core Competencies**: Systems Modeling, Distributed Reasoning, Statistical Inference, Applied Ethics.
-- **4 Industry Modules**: Every term combines core theory, simulation labs, SpeedGrader peer review, and a capstone.`;
+        aiResponseText = `The 4-4-4 Architectural Matrix:
+- 4 Character Pillars: Integrity, Digital Citizenship, Social Accountability, Resilience.
+- 4 Core Competencies: Systems Modeling, Distributed Reasoning, Statistical Inference, Applied Ethics.
+- 4 Industry Modules: Every term combines core theory, simulation labs, SpeedGrader peer review, and a capstone.`;
         sources = ['The 4-4-4 Modular Paradigm v5.0'];
       } else {
         aiResponseText = `In the Triple 4 Curriculum framework for this topic, remember to ground your reasoning in the 4 pillars (Character, Competency, Critical Thinking, Creativity). 

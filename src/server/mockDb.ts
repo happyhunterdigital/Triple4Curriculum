@@ -1,5 +1,5 @@
-/**
- * DEMO SEED DATA — ENTIRELY FICTIONAL.
+﻿/**
+ * DEMO SEED DATA - ENTIRELY FICTIONAL.
  * All names, emails, IDs, IPs and grades below are invented placeholders for
  * local development. Do NOT treat as real learner records. Production must
  * use Firestore/Postgres (see server/lib + docs). Raw IPs here are

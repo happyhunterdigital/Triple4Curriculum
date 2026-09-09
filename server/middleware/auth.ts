@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from 'express';
+﻿import type { NextFunction, Request, Response } from 'express';
 import { db } from '../../src/server/mockDb.ts';
 import { logEvent } from '../lib/security.ts';
 
@@ -42,7 +42,7 @@ async function getAdminAuth() {
     try {
       initFn({ credential: certFn(cert) });
     } catch {
-      // Already initialised — safe to ignore.
+      // Already initialised - safe to ignore.
     }
     adminAuth = getAuthFn();
     return adminAuth;
@@ -112,7 +112,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
   } else if (devRole) {
     user = db.users.find((u) => u.role === normaliseRole(devRole)) || null;
   } else {
-    // No credentials supplied — treat as unauthenticated rather than
+    // No credentials supplied - treat as unauthenticated rather than
     // silently falling back to the first student (the old IDOR pattern).
     return res.status(401).json({
       error: 'Authentication required',

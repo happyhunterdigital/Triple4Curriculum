@@ -1,4 +1,4 @@
-# Privacy Notice (POPIA) — Demo Stub
+﻿# Privacy Notice (POPIA) - Demo Stub
 
 **Updated:** 2026-09-09 · **Contact:** privacy@triple4c.com
 
@@ -16,5 +16,5 @@ locally. Before production use with real learners you must:
 6. Wire persistence to Firestore/Postgres with server timestamps, soft-delete
    flags and `createdBy`/`updatedAt` audit fields.
 
-No biometric, SA-SAMS or DRM processing exists in this build — related UI copy
+No biometric, SA-SAMS or DRM processing exists in this build - related UI copy
 is labelled **Demo / Roadmap**.

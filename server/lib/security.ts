@@ -1,6 +1,6 @@
-import { createHash, randomUUID } from 'node:crypto';
+﻿import { createHash, randomUUID } from 'node:crypto';
 
-/** Prefix-scoped unique IDs — replaces Math.random() / Date.now() patterns. */
+/** Prefix-scoped unique IDs - replaces Math.random() / Date.now() patterns. */
 export function newId(prefix: string): string {
   return `${prefix}_${randomUUID().replace(/-/g, '').slice(0, 12)}`;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { 
   FileSpreadsheet, Download, ShieldCheck, CheckCircle2, 
   TrendingUp, Award, Users, AlertTriangle, RefreshCw 
@@ -39,7 +39,7 @@ export const AdminReports: React.FC = () => {
       triggerToast({
         id: `toast_${Date.now()}`,
         title: '📊 SA-SAMS Export (Demo)',
-        message: 'Demo preview only — certified DBE export is on the roadmap, not yet implemented.',
+        message: 'Demo preview only - certified DBE export is on the roadmap, not yet implemented.',
         category: 'academic',
         timestamp: 'Just now',
         read: false,

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 
-export const BrandedHero: React.FC = () => {
+export const LandingHero: React.FC = () => {
   return (
     <section className="relative w-full max-w-[1400px] mx-auto rounded-[24px] xs:rounded-[32px] md:rounded-[44px] lg:rounded-[48px] bg-white border border-[var(--color-t4c-black)]/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.03)] overflow-hidden h-[440px] xs:h-[480px] sm:h-[520px] md:h-[560px] lg:h-[600px] flex flex-col my-1 sm:my-3 md:my-6 shrink-0 transition-all">
       

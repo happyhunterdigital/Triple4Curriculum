@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 
 export interface CourseModule {
   id: string;
@@ -130,7 +130,7 @@ export const CurriculumRegistry: React.FC = () => {
                       <p className="font-mono text-[10px] uppercase text-neutral-400 mb-2 tracking-wider">Core Competencies</p>
                       <ul className="space-y-1">
                         {module.frameworks.map((f, i) => (
-                          <li key={i} className="font-mono text-xs text-neutral-600 leading-relaxed">— {f}</li>
+                          <li key={i} className="font-mono text-xs text-neutral-600 leading-relaxed">- {f}</li>
                         ))}
                       </ul>
                     </div>
