@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   ClipboardCheck, CheckCircle2, FileText, Send, 
-  Award, Sparkles, User, MessageSquare, Shield, ChevronLeft, ChevronRight 
+  Award, User, MessageSquare, Shield, ChevronLeft, ChevronRight 
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from '../../lib/authContext';

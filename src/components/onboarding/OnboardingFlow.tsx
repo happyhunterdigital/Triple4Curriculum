@@ -540,7 +540,7 @@ export const OnboardingFlow: React.FC = () => {
                         {[
                           { id: 'Foundation', label: 'Foundation Phase — Grade R–3', icon: '🧸' },
                           { id: 'Intermediate', label: 'Intermediate Phase — Grade 4–6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '📖' },
+                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '�-' },
                           { id: 'FET', label: 'FET Phase — Grade 10–12', icon: '🎓' },
                         ].map(phase => {
                           const active = form.watch('lastGrade') === phase.id;
@@ -605,7 +605,7 @@ export const OnboardingFlow: React.FC = () => {
                         {[
                           { id: 'Foundation', label: 'Foundation Phase — Grade R–3', icon: '🧸' },
                           { id: 'Intermediate', label: 'Intermediate Phase — Grade 4–6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '📖' },
+                          { id: 'Senior', label: 'Senior Phase — Grade 7–9', icon: '�-' },
                           { id: 'FET', label: 'FET Phase — Grade 10–12', icon: '🎓' },
                         ].map(phase => {
                           const active = form.watch('teachingPhase') === phase.id;

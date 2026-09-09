@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Users, BookOpen, Search, Filter, ArrowUpDown, 
   CheckCircle2, AlertTriangle, XCircle, Award, 
-  Send, Sparkles, FileSpreadsheet, ChevronRight, 
+  Send, Award, FileSpreadsheet, ChevronRight, 
   Calendar, Clock, TrendingUp, Flame, MessageSquare, 
   Edit3, Check, RefreshCw, Eye, UserCheck, ShieldAlert,
   GraduationCap, Bell, BarChart3, Download
@@ -768,7 +768,7 @@ export const LearnerProgressDashboard: React.FC<LearnerProgressDashboardProps> =
                               className="px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-bold border border-emerald-300 flex items-center gap-1 transition"
                               title="Send Kudos Recognition"
                             >
-                              <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                              <Award className="w-3.5 h-3.5 text-emerald-700" />
                               <span className="hidden sm:inline">Kudos</span>
                             </button>
                           )}
@@ -972,7 +972,7 @@ export const LearnerProgressDashboard: React.FC<LearnerProgressDashboardProps> =
                   onClick={() => handleSendSingleNudge(selectedLearner, 'praise')}
                   className="px-3.5 py-2 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-950 text-xs font-bold border border-emerald-300 flex items-center gap-1.5 transition"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                  <Award className="w-3.5 h-3.5 text-emerald-700" />
                   <span>Send Kudos Praise</span>
                 </button>
                 <button

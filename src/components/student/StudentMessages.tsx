@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Send, Users, Shield, Hash, Paperclip, Sparkles } from 'lucide-react';
+import { MessageSquare, Send, Users, Shield, Hash, Paperclip, Award } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
 import { api } from '../../lib/api';
 import { ChatMessage } from '../../types';

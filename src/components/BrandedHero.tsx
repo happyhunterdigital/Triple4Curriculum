@@ -51,9 +51,8 @@ export const BrandedHero: React.FC = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="flex items-center justify-between bg-white/95 backdrop-blur-2xl px-1.5 xs:px-2 py-1.5 xs:py-2 rounded-full shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-[var(--color-t4c-black)]/10"
         >
-          {/* Star Logo */}
-          <div className="w-7 h-7 xs:w-8 xs:h-8 sm:w-9 sm:h-9 rounded-full bg-[var(--color-t4c-black)] border border-[var(--color-t4c-yellow)] shadow-xs flex items-center justify-center text-[var(--color-t4c-yellow)] text-xs sm:text-sm font-bold shrink-0">
-            ✦
+          <div className="w-7 h-7 xs:w-8 xs:h-8 sm:w-9 sm:h-9 rounded-full bg-white border border-[var(--color-t4c-yellow)] shadow-xs flex items-center justify-center overflow-hidden shrink-0">
+            <img src="https://res.cloudinary.com/dka0498ns/image/upload/v1787254845/Triple_4_Curriculum_latest_logo_variant4_hjviza.png" alt="Triple 4C" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
 
           <div className="flex items-center gap-3 xs:gap-4 sm:gap-6">

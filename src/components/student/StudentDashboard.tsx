@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Flame, Award, BookOpen, Clock, CheckCircle2, 
-  ArrowRight, ShieldCheck, Zap, Sparkles,
+  ArrowRight, ShieldCheck, Zap, Award,
   ChevronRight, Compass, FileText, Check, Layers,
   Shield, Play
 } from 'lucide-react';
@@ -138,7 +138,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
                 : 'bg-white text-neutral-700 border-neutral-300 hover:border-deep-onyx'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-achievement-gold" />
+            <Award className="w-3.5 h-3.5 text-achievement-gold" />
             <span>Accreditation & 4-4-4 Matrix</span>
           </button>
         </div>
@@ -389,7 +389,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
                   <span className="text-[9px] font-mono tracking-widest text-neutral-500 uppercase">
                     [ AI // SYLLABUS COPILOT ]
                   </span>
-                  <Sparkles className="w-3.5 h-3.5 text-deep-onyx" />
+                  <Award className="w-3.5 h-3.5 text-deep-onyx" />
                 </div>
                 <div className="p-5 space-y-3">
                   <h3 className="text-lg font-serif font-bold text-deep-onyx">

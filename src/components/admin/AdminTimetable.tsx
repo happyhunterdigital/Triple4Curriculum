@@ -65,7 +65,7 @@ export const AdminTimetable: React.FC = () => {
 
       triggerToast({
         id: `toast_${Date.now()}`,
-        title: 'ğŸ—“ï¸ Class Scheduled',
+        title: 'ğŸ-“ï¸ Class Scheduled',
         message: `${newSlot.courseCode} booked in ${newSlot.room} on ${newSlot.dayOfWeek}. Zero clashes detected.`,
         category: 'academic',
         timestamp: 'Just now',

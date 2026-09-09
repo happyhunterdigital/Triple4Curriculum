@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   X, Eye, Compass, Box, Layers, Play, 
-  Sparkles, CheckCircle2, ChevronRight, Video, Cpu 
+  Award, CheckCircle2, ChevronRight, Video, Cpu 
 } from 'lucide-react';
 
 interface VirtualCampusModalProps {

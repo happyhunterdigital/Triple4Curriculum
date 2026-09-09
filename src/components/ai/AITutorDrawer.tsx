@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  X, Sparkles, Send, Bot, User, BookOpen, 
+  X, Award, Send, MessageSquare, User, BookOpen, 
   HelpCircle, RefreshCw, Award, ArrowRight, Zap 
 } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';

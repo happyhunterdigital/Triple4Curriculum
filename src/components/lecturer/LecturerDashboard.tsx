@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Users, BookOpen, Clock, CheckCircle2, 
-  ArrowRight, FileText, ClipboardCheck, Sparkles, Video, Calendar,
+  ArrowRight, FileText, ClipboardCheck, Award, Video, Calendar,
   TrendingUp, Award, AlertTriangle, Send, Eye, ShieldAlert
 } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
@@ -93,7 +93,7 @@ export const LecturerDashboard: React.FC<LecturerDashboardProps> = ({ onNavigate
               onClick={() => onNavigate('/lecturer/authoring')}
               className="px-4 py-2.5 rounded-xl bg-academic-green hover:bg-academic-green/90 text-white text-xs font-bold shadow-xs flex items-center gap-2 transition"
             >
-              <Sparkles className="w-4 h-4 text-achievement-gold" />
+              <Award className="w-4 h-4 text-achievement-gold" />
               <span>Create Lecture</span>
             </button>
             <button

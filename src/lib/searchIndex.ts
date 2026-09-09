@@ -155,7 +155,7 @@ export async function searchGlobalPlatform(query: string, filterCategory?: strin
         route: '/lecturer/authoring',
         badge: 'Faculty',
         category: 'Quick Actions',
-        iconName: 'Sparkles'
+        iconName: 'Award'
       }
     ];
 

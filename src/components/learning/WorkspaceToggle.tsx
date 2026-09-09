@@ -175,7 +175,7 @@ impl RaftNodeState {
                   className="px-4 py-2 bg-black/80 hover:bg-black text-white border border-white/40 font-mono text-xs uppercase tracking-widest cursor-pointer transition flex items-center gap-2"
                 >
                   <span>{isPlayingVideo ? 'PAUSE STREAM' : 'RESUME STREAM'}</span>
-                  <span>{isPlayingVideo ? '‚è∏' : '‚ñ∂'}</span>
+                  <span>{isPlayingVideo ? '‚è∏' : '‚-∂'}</span>
                 </button>
               </div>
 
@@ -260,7 +260,7 @@ impl RaftNodeState {
                       className="px-3.5 py-1.5 bg-deep-onyx hover:bg-black text-white font-mono text-xs uppercase tracking-wider transition cursor-pointer flex items-center gap-2 border border-deep-onyx"
                     >
                       <span>{isRunningProof ? 'PROVING...' : 'EXECUTE FORMAL PROOF'}</span>
-                      <span className="font-mono">‚ñ∂</span>
+                      <span className="font-mono">‚-∂</span>
                     </button>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Building2, Users, ShieldAlert, FileSpreadsheet, 
-  Calendar, CheckCircle2, AlertTriangle, ArrowRight, TrendingUp, Sparkles 
+  Calendar, CheckCircle2, AlertTriangle, ArrowRight, TrendingUp, Award 
 } from 'lucide-react';
 import { api } from '../../lib/api';
 import { Department, AuditLog } from '../../types';

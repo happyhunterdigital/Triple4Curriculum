@@ -378,7 +378,7 @@ export const LectureReel: React.FC = () => {
                     className="px-4 py-2 bg-deep-onyx hover:bg-black text-white font-mono text-xs uppercase tracking-wider transition cursor-pointer flex items-center gap-2"
                   >
                     <span>{isPlaying ? 'PAUSE PLAYHEAD' : 'ENGAGE PLAYHEAD'}</span>
-                    <span className="font-mono">{isPlaying ? '‚è∏' : '‚ñ∂'}</span>
+                    <span className="font-mono">{isPlaying ? '‚è∏' : '‚-∂'}</span>
                   </button>
 
                   <button
@@ -386,7 +386,7 @@ export const LectureReel: React.FC = () => {
                     disabled={activeChapterIndex === 0}
                     className="px-3 py-2 bg-white hover:bg-neutral-100 border border-neutral-300 font-mono text-xs text-deep-onyx uppercase disabled:opacity-40 cursor-pointer"
                   >
-                    |‚óÄ PREV CLIP
+                    |‚-Ä PREV CLIP
                   </button>
 
                   <button
@@ -394,7 +394,7 @@ export const LectureReel: React.FC = () => {
                     disabled={activeChapterIndex === activeReel.chapters.length - 1}
                     className="px-3 py-2 bg-white hover:bg-neutral-100 border border-neutral-300 font-mono text-xs text-deep-onyx uppercase disabled:opacity-40 cursor-pointer"
                   >
-                    NEXT CLIP ‚ñ∂|
+                    NEXT CLIP ‚-∂|
                   </button>
                 </div>
 

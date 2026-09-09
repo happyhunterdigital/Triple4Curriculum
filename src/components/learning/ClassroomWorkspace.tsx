@@ -17,11 +17,11 @@ const LECTURE_DATA: LectureAsset = {
   transcriptMarkdown: `
 ### I. Baseline Axioms of High-Throughput Delivery
 
-When building out specialized architectural infrastructure, developers routinely fail by leaning on **generic software layers** rather than optimizing for direct memory bandwidth. System execution is bound entirely by hardware mechanics, not algorithmic abstraction.
+When building out specialized architectural infrastructure, developers routinely fail by leaning on generic software layers rather than optimizing for direct memory bandwidth. System execution is bound entirely by hardware mechanics, not algorithmic abstraction.
 
-*   **Axiom A:** Memory access speed dictates real-world responsiveness.
-*   **Axiom B:** Unnecessary dependencies create systemic vulnerabilities.
-*   **Axiom C:** Design density always triumphs over aesthetic decoration.
+- Axiom A: Memory access speed dictates real-world responsiveness.
+- Axiom B: Unnecessary dependencies create systemic vulnerabilities.
+- Axiom C: Design density always triumphs over aesthetic decoration.
 
 ### II. Computational Compounding Metrics
 

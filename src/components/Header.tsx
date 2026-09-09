@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Bell, Shield, GraduationCap, 
   Briefcase, CheckCircle2, User, Menu, X, LogOut, ChevronDown, 
-  Sparkles, Search, FileText, ClipboardCheck, Settings, 
+  Award, Search, FileText, ClipboardCheck, Settings, 
   BookOpen, ShieldAlert, ArrowRight, Compass
 } from 'lucide-react';
 import { useAuth } from '../lib/authContext';
@@ -282,7 +282,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onClick={() => onNavigate('/lecturer/authoring')}
                     className="hidden lg:flex px-3 py-2 bg-white border border-neutral-300 hover:border-deep-onyx font-mono text-xs uppercase tracking-wider text-deep-onyx items-center gap-1.5 transition cursor-pointer rounded-none"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-deep-onyx" />
+                    <Award className="w-3.5 h-3.5 text-deep-onyx" />
                     <span>Author</span>
                     <span className="font-mono">→</span>
                   </button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Edit3, Sparkles, BookOpen, Plus, 
+  Edit3, Award, BookOpen, Plus, 
   CheckCircle2, Video, Lock, HelpCircle, Layers 
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -58,7 +58,7 @@ export const LecturerAuthoring: React.FC = () => {
 
       triggerToast({
         id: `toast_${Date.now()}`,
-        title: 'ðŸ¤– AI Checkpoint Generated',
+        title: 'ðŸ¤- AI Checkpoint Generated',
         message: 'High-yield quiz question and options constructed via server-side Gemini intelligence.',
         category: 'academic',
         timestamp: 'Just now',
@@ -250,7 +250,7 @@ export const LecturerAuthoring: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-1.5 text-yellow-900 font-black text-sm">
-                <Sparkles className="w-4 h-4 text-yellow-600" />
+                <Award className="w-4 h-4 text-yellow-600" />
                 <span>Embedded Checkpoint Assessment & AI Assistant</span>
               </div>
               <p className="text-xs text-neutral-600">
@@ -265,7 +265,7 @@ export const LecturerAuthoring: React.FC = () => {
               disabled={isGeneratingAi}
               className="px-3.5 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 disabled:opacity-50 text-yellow-300 text-xs font-bold shadow-xs flex items-center gap-1.5 transition"
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <Award className="w-3.5 h-3.5" />
               <span>{isGeneratingAi ? 'Synthesizing with Gemini...' : 'Generate with AI Assistant'}</span>
             </button>
           </div>

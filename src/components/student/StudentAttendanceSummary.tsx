@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   CheckCircle2, Clock, Calendar, ShieldCheck, 
-  Sparkles, QrCode, AlertCircle, ArrowRight, UserCheck, Check
+  Award, QrCode, AlertCircle, ArrowRight, UserCheck, Check
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from '../../lib/authContext';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Send, Bell, Megaphone, CheckCircle2, AlertTriangle, Sparkles, Users } from 'lucide-react';
+import { Send, Bell, Megaphone, CheckCircle2, AlertTriangle, Award, Users } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from '../../lib/authContext';
 import { api } from '../../lib/api';

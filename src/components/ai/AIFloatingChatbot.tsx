@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Sparkles, X, Send, 
+  Award, X, Send, 
   BookOpen, HelpCircle, RefreshCw,
   CheckCircle2, Maximize2, Minimize2, Copy, Check
 } from 'lucide-react';
