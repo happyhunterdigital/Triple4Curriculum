@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import { Search, Bell, ChevronDown, HelpCircle, Menu, X, LogOut, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, Bell, ChevronDown, HelpCircle, House, Menu, X, LogOut, User } from 'lucide-react';
 import { useAuth } from '../lib/authContext';
 
 interface NavbarProps {
@@ -10,6 +11,8 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
   const { logout, currentUser } = useAuth();
+  const navigate = useNavigate();
+  const goHome = () => navigate('/dashboard');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   return (
     <header className="w-full h-14 sm:h-16 md:h-[70px] lg:h-[74px] bg-[var(--color-t4c-green)] px-3 sm:px-5 md:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-50 border-b border-[var(--color-t4c-black)]/30 shadow-md transition-all">
@@ -25,28 +28,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
 
-        {/* Crest Logo Locked */}
-        <img
-          src="https://res.cloudinary.com/dka0498ns/image/upload/v1787254845/Triple_4_Curriculum_latest_logo_variant4_hjviza.png"
-          alt="Triple 4C"
-          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-[var(--color-t4c-yellow)] shadow-sm shrink-0 bg-white"
-          referrerPolicy="no-referrer"
-        />
-
-        {/* Brand Text: Responsive scale */}
-        <div className="hidden xs:block">
-          <h1 className="text-xs sm:text-sm font-extrabold tracking-tight text-white uppercase leading-none">
-            Triple 4C Platform
-          </h1>
-          <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-widest text-[var(--color-t4c-yellow)] font-bold mt-0.5">
-            Academic Core
-          </p>
-        </div>
-        <div className="xs:hidden">
-          <h1 className="text-xs font-extrabold tracking-tight text-white uppercase leading-none">
+        {/* Crest Logo - click returns home */}
+        <button
+          onClick={goHome}
+          className="flex items-center gap-2.5 sm:gap-3.5 cursor-pointer rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-t4c-yellow)]"
+          aria-label="Triple 4C home"
+        >
+          <img
+            src="https://res.cloudinary.com/dka0498ns/image/upload/v1787254845/Triple_4_Curriculum_latest_logo_variant4_hjviza.png"
+            alt="Triple 4C"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-[var(--color-t4c-yellow)] shadow-sm shrink-0 bg-white"
+            referrerPolicy="no-referrer"
+          />
+          <span className="hidden xs:block text-left">
+            <span className="block text-xs sm:text-sm font-extrabold tracking-tight text-white uppercase leading-none">
+              Triple 4C Platform
+            </span>
+            <span className="block text-[8px] sm:text-[9px] font-mono uppercase tracking-widest text-[var(--color-t4c-yellow)] font-bold mt-0.5">
+              Academic Core
+            </span>
+          </span>
+          <span className="xs:hidden text-xs font-extrabold tracking-tight text-white uppercase leading-none">
             Triple 4C
-          </h1>
-        </div>
+          </span>
+        </button>
       </div>
 
       {/* Saturated Query System / Center Block (Visible from >= 768px) */}
@@ -70,6 +75,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
         </button>
 
         <div className="hidden sm:block w-px h-5 sm:h-6 bg-white/10" />
+
+        {/* Home */}
+        <button
+          onClick={goHome}
+          className="flex items-center gap-1.5 text-emerald-100 hover:text-[var(--color-t4c-yellow)] cursor-pointer transition-colors p-1 font-mono text-[10px] uppercase tracking-widest"
+          aria-label="Home"
+        >
+          <House size={16} />
+          <span className="hidden lg:inline">Home</span>
+        </button>
 
         {/* Icon Utilities (Hidden on tiny screens <= 480px, visible >= 640px) */}
         <button className="hidden sm:flex text-emerald-100 hover:text-[var(--color-t4c-yellow)] cursor-pointer transition-colors p-1" aria-label="Notifications">

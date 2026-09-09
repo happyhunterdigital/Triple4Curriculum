@@ -1,8 +1,16 @@
 ﻿import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, UserRole, PushNotification } from '../types';
-import { api } from './api';
-import { auth as fbAuth } from './firebase';
-import { onAuthStateChanged, sendPasswordResetEmail, sendEmailVerification, signOut } from 'firebase/auth';
+import { auth as fbAuth, db } from './firebase';
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  sendEmailVerification,
+  signOut,
+  updateProfile,
+} from 'firebase/auth';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 interface AuthContextType {
   currentUser: User | null;
@@ -10,11 +18,9 @@ interface AuthContextType {
   token: string | null;
   loading: boolean;
   authError: string | null;
-  login: (email: string, role?: UserRole) => Promise<void>;
-  register: (payload: { name: string; email: string; role: string; departmentId: string; agreePrivacy: boolean }) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (payload: { name: string; email: string; password: string; role: string; departmentId: string; agreePrivacy: boolean }) => Promise<void>;
   logout: () => void;
-  /** Dev-only impersonation. Guarded by VITE_DEV_IMPERSONATION + audit. */
-  switchUserByRole: (role: UserRole) => Promise<void>;
   refreshCurrentUser: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   resendVerification: () => Promise<void>;
@@ -27,18 +33,50 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const DEV_IMPERSONATION = import.meta.env.VITE_DEV_IMPERSONATION === 'true';
+type StoredRole = 'learner' | 'teacher' | 'admin' | 'student' | 'lecturer';
 
-function persistSession(user: User, token: string) {
-  setCurrentUserSafe(user, token);
-  try {
-    localStorage.setItem('444_current_user_id', user.id);
-    localStorage.setItem('444_current_user_role', user.role);
-    localStorage.setItem('444_session_token', token);
-  } catch {}
+function toAppRole(raw: unknown): UserRole {
+  if (raw === 'teacher' || raw === 'lecturer') return 'lecturer';
+  if (raw === 'admin') return 'admin';
+  return 'student';
 }
 
-let setCurrentUserSafe: (u: User, t: string) => void = () => {};
+function toStoredRole(raw: string): StoredRole {
+  if (raw === 'teacher' || raw === 'lecturer') return 'teacher';
+  if (raw === 'admin') return 'admin';
+  return 'learner';
+}
+
+/** Resolve the app-level User from Firebase Auth + Firestore profile docs. */
+async function resolveUser(uid: string, email: string | null, displayName: string | null): Promise<User | null> {
+  const candidates = [doc(db, 'users', uid), doc(db, 'students', uid), doc(db, 'teachers', uid)];
+  for (const ref of candidates) {
+    try {
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        const d = snap.data() as Record<string, unknown>;
+        return {
+          id: uid,
+          name: (d.name as string) || displayName || email?.split('@')[0] || 'Learner',
+          email: (d.email as string) || email || '',
+          role: toAppRole(d.role),
+          departmentId: d.department as string | undefined ?? (d.departmentId as string | undefined),
+          departmentName: d.departmentName as string | undefined,
+          studentId: d.studentId as string | undefined,
+          employeeId: d.employeeId as string | undefined,
+          level: d.level as number | undefined,
+          xp: d.xp as number | undefined,
+          streakDays: d.streakDays as number | undefined,
+          badges: d.badges as string[] | undefined,
+          registeredDate: d.registeredDate as string | undefined,
+        } as User;
+      }
+    } catch {
+      // Firestore unavailable or denied - try next source.
+    }
+  }
+  return null;
+}
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -48,60 +86,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [unreadCount, setUnreadCount] = useState<number>(2);
   const [latestToast, setLatestToast] = useState<PushNotification | null>(null);
 
-  setCurrentUserSafe = (u, t) => {
-    setCurrentUser(u);
-    setToken(t);
-  };
-
-  // Session persistence: Firebase session wins; fall back to saved demo session.
+  // Firebase-native session: persists across refresh via the Auth SDK.
   useEffect(() => {
     let cancelled = false;
     const unsub = onAuthStateChanged(fbAuth, async (fbUser) => {
       try {
-        if (fbUser) {
-          const idToken = await fbUser.getIdToken().catch(() => '');
-          // Resolve profile from demo API (keyed by email when available).
-          const email = fbUser.email || '';
-          if (email) {
-            try {
-              const res = await api.login(email);
-              if (!cancelled) {
-                setCurrentUser(res.user);
-                setToken(idToken || res.token);
-                localStorage.setItem('444_current_user_id', res.user.id);
-                localStorage.setItem('444_current_user_role', res.user.role);
-                if (idToken) localStorage.setItem('444_session_token', idToken);
-              }
-              return;
-            } catch {
-              // Fall through to signed-in-but-unlinked state.
-            }
-          }
+        if (!fbUser) {
           if (!cancelled) {
-            setToken(idToken || null);
+            setCurrentUser(null);
+            setToken(null);
           }
           return;
         }
-        // No Firebase session - restore saved demo session if present.
-        const savedUserId = localStorage.getItem('444_current_user_id');
-        if (savedUserId) {
-          try {
-            const users = await api.getUsers();
-            const found = users.find((u) => u.id === savedUserId) || null;
-            if (!cancelled) {
-              setCurrentUser(found);
-              setToken(found ? localStorage.getItem('444_session_token') : null);
-            }
-          } catch {
-            if (!cancelled) {
-              setCurrentUser(null);
-              setToken(null);
-            }
-          }
-        } else if (!cancelled) {
-          // No auto-login: guests stay signed out until they sign in.
-          setCurrentUser(null);
-          setToken(null);
+        const [idToken, user] = await Promise.all([
+          fbUser.getIdToken().catch(() => ''),
+          resolveUser(fbUser.uid, fbUser.email, fbUser.displayName),
+        ]);
+        if (!cancelled) {
+          setCurrentUser(user);
+          setToken(idToken || null);
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -113,12 +116,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
   }, []);
 
-  const login = async (email: string, role?: UserRole) => {
+  const login = async (email: string, password: string) => {
     setLoading(true);
     setAuthError(null);
     try {
-      const res = await api.login(email, role);
-      persistSession(res.user, res.token);
+      await signInWithEmailAndPassword(fbAuth, email, password);
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Sign-in failed. Please retry.';
       setAuthError(msg);
@@ -128,15 +130,29 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const register = async (payload: { name: string; email: string; role: string; departmentId: string; agreePrivacy: boolean }) => {
+  const register = async (payload: { name: string; email: string; password: string; role: string; departmentId: string; agreePrivacy: boolean }) => {
     setLoading(true);
     setAuthError(null);
     try {
       if (!payload.agreePrivacy) {
         throw new Error('POPIA consent is required. Please accept the privacy notice.');
       }
-      const res = await api.register(payload);
-      persistSession(res.user, res.token);
+      const cred = await createUserWithEmailAndPassword(fbAuth, payload.email, payload.password);
+      if (payload.name) {
+        await updateProfile(cred.user, { displayName: payload.name }).catch(() => {});
+      }
+      const storedRole = toStoredRole(payload.role);
+      await setDoc(doc(db, 'users', cred.user.uid), {
+        uid: cred.user.uid,
+        name: payload.name,
+        email: payload.email,
+        role: storedRole,
+        departmentId: payload.departmentId || '',
+        privacyPolicyAccepted: true,
+        codeOfConductAccepted: true,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Registration failed. Please retry.';
       setAuthError(msg);
@@ -153,38 +169,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setCurrentUser(null);
     setToken(null);
     setAuthError(null);
-    try {
-      localStorage.removeItem('444_current_user_id');
-      localStorage.removeItem('444_current_user_role');
-      localStorage.removeItem('444_session_token');
-    } catch {}
     window.location.href = '/onboarding';
   };
 
-  const switchUserByRole = async (role: UserRole) => {
-    if (!DEV_IMPERSONATION) {
-      throw new Error('Role switching is disabled in this build.');
-    }
-    setLoading(true);
-    try {
-      const users = await api.getUsers();
-      const user = users.find((u) => u.role === role) || users[0];
-      if (!user) throw new Error('No users available');
-      persistSession(user, `dev-${user.role}-${user.id}`);
-      console.warn(`[audit] DEV impersonation: switched to ${user.id} (${user.role})`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const refreshCurrentUser = async () => {
-    if (!currentUser) return;
+    const fbUser = fbAuth.currentUser;
+    if (!fbUser) return;
     try {
-      const users = await api.getUsers();
-      const user = users.find((u) => u.id === currentUser.id);
-      if (user) {
-        setCurrentUser(user);
-      }
+      const user = await resolveUser(fbUser.uid, fbUser.email, fbUser.displayName);
+      if (user) setCurrentUser(user);
     } catch (e) {
       console.warn('Failed to refresh user', e);
     }
@@ -222,7 +215,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         login,
         register,
         logout,
-        switchUserByRole,
         refreshCurrentUser,
         resetPassword,
         resendVerification,

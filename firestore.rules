@@ -16,68 +16,145 @@ service cloud.firestore {
       return signedIn() && (userRole() == 'admin' || request.auth.token.admin == true);
     }
 
-    // Role is NEVER client-writable. Clients may create their own user doc with
-    // role fixed to 'learner'; role upgrades happen only via custom claims /
-    // admin SDK. Updates may not change the role field.
+    function profileRole() {
+      return signedIn()
+        ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role
+        : '';
+    }
+
+    function isStaff() {
+      return isAdmin() || userRole() in ['teacher', 'lecturer'] || profileRole() in ['teacher', 'admin'];
+    }
+
+    // Role is NEVER client-writable. Clients create their own user doc with
+    // role fixed to 'learner'; upgrades happen via custom claims / console.
+    // Signed-in directory reads support collaboration features.
     match /users/{userId} {
       allow create: if signedIn()
                     && request.auth.uid == userId
                     && request.resource.data.role == 'learner';
-      allow read: if signedIn() && (request.auth.uid == userId || isAdmin());
+      allow read: if signedIn();
       allow update: if signedIn()
                     && (request.auth.uid == userId || isAdmin())
                     && request.resource.data.role == resource.data.role;
       allow delete: if isAdmin();
     }
 
-    // ── Separate Student Ledger (owner-only, role immutable) ──
+    // Registration profiles written by onboarding flows.
     match /students/{studentId} {
       allow create: if signedIn()
                     && request.auth.uid == studentId
                     && request.resource.data.role == 'learner';
-      allow read, update: if signedIn()
-                    && (request.auth.uid == studentId || isAdmin())
+      allow read: if signedIn() && (request.auth.uid == studentId || isStaff());
+      allow update: if signedIn()
+                    && (request.auth.uid == studentId || isStaff())
                     && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role);
       allow delete: if isAdmin();
     }
 
-    // ── Separate Teacher Ledger (owner-only, role immutable) ──
     match /teachers/{teacherId} {
       allow create: if signedIn()
                     && request.auth.uid == teacherId
                     && request.resource.data.role == 'teacher';
-      allow read, update: if signedIn()
-                    && (request.auth.uid == teacherId || isAdmin())
+      allow read: if signedIn();
+      allow update: if signedIn()
+                    && (request.auth.uid == teacherId || isStaff())
                     && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role);
       allow delete: if isAdmin();
     }
 
-    // ── Assignment Submissions (student-scoped; teachers/admins of the course) ──
-    match /submissions/{submissionId} {
-      allow create: if signedIn() && request.auth.uid == request.resource.data.studentId;
-      allow read: if signedIn()
-                    && (request.auth.uid == resource.data.studentId || isAdmin());
-      allow update: if signedIn()
-                    && (request.auth.uid == resource.data.studentId || isAdmin());
+    // Public catalog reads; staff writes.
+    match /departments/{id} {
+      allow read: if signedIn();
+      allow create, update: if isStaff();
       allow delete: if isAdmin();
     }
 
-    // ── Public Curriculum (read-only) ──
+    match /courses/{id} {
+      allow read: if signedIn();
+      allow create, update: if isStaff();
+      allow delete: if isAdmin();
+    }
+
+    match /lectures/{id} {
+      allow read: if signedIn();
+      allow create, update: if isStaff();
+      allow delete: if isAdmin();
+    }
+
     match /curriculum/{courseId} {
       allow read: if true;
       allow write: if false;
     }
 
-    // ── Notifications (per-user; create scoped to self or admin) ──
-    match /notifications/{notifId} {
-      allow read, update: if signedIn()
-                    && (request.auth.uid == resource.data.studentId || isAdmin());
-      allow create: if signedIn()
-                    && (request.auth.uid == request.resource.data.studentId || isAdmin());
+    match /timetable/{id} {
+      allow read: if signedIn();
+      allow create, update: if isStaff();
       allow delete: if isAdmin();
     }
 
-    // ── Default deny ──
+    match /assignments/{id} {
+      allow read: if signedIn();
+      allow create, update: if isStaff();
+      allow delete: if isAdmin();
+    }
+
+    // Submissions: students create/read own; staff read all and grade.
+    match /submissions/{id} {
+      allow create: if signedIn() && request.auth.uid == request.resource.data.studentId;
+      allow read: if signedIn() && (request.auth.uid == resource.data.studentId || isStaff());
+      allow update: if signedIn() && (request.auth.uid == resource.data.studentId || isStaff());
+      allow delete: if isAdmin();
+    }
+
+    // Attendance: students check in as self; staff manage.
+    match /attendance/{id} {
+      allow create: if signedIn() && request.auth.uid == request.resource.data.studentId;
+      allow read: if signedIn() && (request.auth.uid == resource.data.studentId || isStaff());
+      allow update, delete: if isStaff();
+    }
+
+    // Learner progress: students read own; staff read/write.
+    match /learner_progress/{id} {
+      allow create: if isStaff();
+      allow read: if signedIn() && (request.auth.uid == resource.data.studentId || isStaff());
+      allow update: if isStaff();
+      allow delete: if isAdmin();
+    }
+
+    // Notifications: staff create; recipients read/update own.
+    match /notifications/{id} {
+      allow read, update: if signedIn()
+                    && (request.auth.uid == resource.data.recipientId || isStaff());
+      allow create: if isStaff();
+      allow delete: if isAdmin();
+    }
+
+    match /announcements/{id} {
+      allow read: if signedIn();
+      allow create, update: if isStaff();
+      allow delete: if isAdmin();
+    }
+
+    match /messages/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.auth.uid == request.resource.data.senderId;
+      allow update, delete: if isStaff();
+    }
+
+    match /badges/{id} {
+      allow read: if signedIn();
+      allow write: if isStaff();
+    }
+
+    // Audit trail: staff write, admins read.
+    match /audit_logs/{id} {
+      allow read: if isAdmin();
+      allow create: if signedIn();
+      allow update, delete: if false;
+    }
+
+    // Default deny.
     match /{document=**} {
       allow read, write: if false;
     }

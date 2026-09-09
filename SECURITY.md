@@ -16,14 +16,14 @@ Email **security@triple4c.com** with:
 We aim to acknowledge within 72 hours. Please do not test against the live
 site with real learner data or disruptive payloads.
 
-## Known posture (post-audit, Sep 2026)
+## Known posture (Firebase-native, Sep 2026)
 
-- Hardcoded credentials removed; all state-changing API routes require auth +
-  role checks in demo mode.
-- Production still requires `FIREBASE_SERVICE_ACCOUNT_JSON` +
-  `ALLOW_DEV_AUTH=false` + Firestore wiring before handling real PII.
-- Secret scanning: GitHub secret scanning + gitleaks (see `.gitleaks.toml`
-  if present). Never commit `.env`.
+- No custom backend. All enforcement is in `firestore.rules` /
+  `storage.rules`: owner-scoped writes, staff-gated management, admin-only
+  audit reads, `role` never client-writable.
+- Auth is Firebase email/Google; sessions persist via the Auth SDK.
+- `VITE_GEMINI_API_KEY` (if set) is a client key - restrict it to
+  triple4c.com HTTP referrers in Google Cloud Console.
 
 ## Hardening checklist for production
 

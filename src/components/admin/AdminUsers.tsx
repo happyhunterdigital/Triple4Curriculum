@@ -44,7 +44,7 @@ export const AdminUsers: React.FC = () => {
     const selectedDept = departments.find(d => d.id === departmentId);
 
     try {
-      const newUser = await api.createUser({
+      const res = await api.createUser({
         name: name.trim(),
         email: email.trim(),
         role,
@@ -53,6 +53,7 @@ export const AdminUsers: React.FC = () => {
         ...(role === 'student' ? { studentId: studentOrEmployeeId || `444-STU-${Math.floor(1000 + Math.random() * 9000)}` } : {}),
         ...(role === 'lecturer' ? { employeeId: studentOrEmployeeId || `444-FAC-${Math.floor(100 + Math.random() * 900)}` } : {})
       });
+      const newUser = res.user;
 
       setUsers(prev => [newUser, ...prev]);
       setModalOpen(false);

@@ -274,7 +274,10 @@ export const OnboardingFlow: React.FC = () => {
       }
 
       await setDoc(doc(db, 'users', fbUser.uid), {
-        uid: fbUser.uid, role: data.role, email: base.email, provider, createdAt: serverTimestamp(),
+        uid: fbUser.uid, role: data.role, name: base.name, email: base.email,
+        departmentId: data.department || '', provider,
+        privacyPolicyAccepted: true, codeOfConductAccepted: true,
+        createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
       }, { merge: true });
 
       setCompleted(true);

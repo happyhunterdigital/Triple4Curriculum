@@ -1,64 +1,54 @@
 ﻿# Triple4Curriculum (Triple 4C Online School)
 
-React 19 + TypeScript + Express + Firebase. Demo LMS/MOOC build deployed to
-Firebase Hosting (`triple4c.com`).
+React 19 + TypeScript + Vite + Firebase. Demo LMS build, statically hosted on
+Firebase Hosting (`triple4c.com`), data live in Cloud Firestore.
 
-> **Status: demo/hardened - not production.** See audit follow-ups below. Do not
-> load real learner data until Firebase Auth + Firestore persistence are wired
-> end-to-end in production.
+> **Status: Firebase-native demo - not production.** No custom backend; all
+> enforcement lives in `firestore.rules` / `storage.rules`. Do not load real
+> learner data until roles use custom claims and the rules below are reviewed
+> against a real threat model.
 
 ## Quick start
 
 ```bash
 bun install
-cp .env.example .env   # fill Firebase + secrets
-bun run dev            # vite + express on :3000
+cp .env.example .env   # fill VITE_FIREBASE_* from Firebase Console
+bun run dev            # vite on :5173
 ```
 
 Build / verify:
 
 ```bash
 bun run lint     # tsc --noEmit
-bun run test     # vitest (auth, grading, POPIA helpers)
-bun run build    # vite + esbuild server bundle
+bun run test     # vitest (role mapping, registry integrity)
+bun run build    # tsc + vite build -> dist/
 ```
 
-## Architecture (one pattern, not three)
+Seed the catalog (departments, courses, lectures, timetable, assignments,
+badges, announcements) once per Firestore project:
 
-- **API: Express** (`server.ts` + `server/`). All product data flows through
-  `/api/v1/*`. Persistence is an in-memory `DatabaseStore`
-  (`src/server/mockDb.ts`, seeds bannered fictional) until the Firestore
-  migration lands. Covered by vitest (`tests/`).
-- **Firebase: hosting + auth + onboarding writes.** Hosting serves `dist/`;
-  the client SDK handles sessions (`src/lib/authContext.tsx`), role lookup
-  (`App.tsx`), notification badges (`AppSidebar.tsx`), and registration
-  artifacts - Auth accounts, `students/` + `teachers/` docs, `registrations/`
-  uploads (`OnboardingFlow.tsx`). Rules in `firestore.rules` / `storage.rules`
-  ship with hosting deploys.
-- Rule of thumb: product reads/writes go to the API; identity and
-  registration artifacts go to Firebase directly. Do not reintroduce a third
-  store.
+```bash
+FIREBASE_SERVICE_ACCOUNT_JSON='{...}' bun run seed
+```
 
-## Security model (post-audit)
+User-linked collections (submissions, attendance, learner progress,
+notifications, messages, audit logs) populate through real app use.
 
-- Legacy credential backdoor (`admin@school.edu / password123`) **removed**.
-  `/api/v1/auth/gateway` now returns `410 Gone`.
-- All `/api/v1/*` routes except health/curriculum/auth/privacy require
-  authentication (`server/middleware/auth.ts`):
-  - Production: Firebase ID token via `verifyIdToken` (set
-    `FIREBASE_SERVICE_ACCOUNT_JSON`).
-  - Dev/demo: `x-dev-user-id` / `x-dev-role` headers or `dev-<role>-<id>`
-    bearer. Lock with `ALLOW_DEV_AUTH=false` in production.
-- `requireRole('admin' | 'lecturer' | 'student')` on writes; students are
-  scoped to their own `uid` (no `studentId` body-param IDOR).
-- `firestore.rules`: `role` is never client-writable; reads scoped to
-  owner/admin; notifications create scoped; default deny.
-- API hardening: `helmet`, CORS whitelist (`ALLOWED_ORIGINS`), rate limits on
-  `/auth/*` and `/ai/*`, zod validation on every write body, `crypto.randomUUID`
-  IDs, central error handler (no stacks in prod), `dotenv/config` loaded.
-- POPIA: consent checkbox enforced server-side (`agreePrivacy: true`),
-  `/privacy` notice + `/api/v1/privacy`, export-my-data + delete-my-account
-  stubs, IPs truncated+hashed (`hashIp`), audit logs admin-only and sanitised.
+## Architecture (one pattern: Firebase)
+
+- **Hosting** serves `dist/` (`firebase.json`, rewrites to `/index.html`).
+- **Auth**: Firebase email/Google sessions (`src/lib/authContext.tsx`).
+  Profile resolves from `users/{uid}` with fallback to `students/{uid}` /
+  `teachers/{uid}` written by onboarding. Stored roles are
+  `learner` / `teacher` / `admin`, mapped to app roles
+  `student` / `lecturer` / `admin` at the boundary (`toAppRole`).
+- **Data**: every screen reads/writes Firestore through one client,
+  `src/lib/api.ts` - same function names the UI has always used, now backed
+  by SDK calls. No `/api/*` endpoints exist.
+- **Static catalog**: `src/data/curriculum.ts` (registry text) ships in the
+  bundle; everything else is Firestore content (seed it, see above).
+- **Rules** (`firestore.rules`): owner-scoped writes, staff-gated management
+  calls, admin-only audit reads, role field immutable from clients.
 
 ## Routes (frontend)
 
@@ -69,19 +59,21 @@ React Router with guards (`src/components/RequireAuth.tsx`):
   `/discussions`, `/notices`
 - Admin: `/admin`, `/admin-dashboard`
 
-Dev impersonation (`switchUserByRole`) only works when
-`VITE_DEV_IMPERSONATION=true` and is audit-logged.
+The navbar logo and Home button both return to `/dashboard`.
 
-## Roadmap honesty
+## What changed in the Firebase migration
 
-Marketing copy that claimed certified POPIA/SA-SAMS/DRM/biometric features now
-reads **Demo / Roadmap** until the integrations exist. Health endpoint reports
-`standards: ['POPIA-Controls-In-Progress', 'Demo-Build-Not-Production']`.
+- Deleted: `server.ts`, `server/`, `src/server/` (mock DB), server-side
+  vitest suites, dead `Header.tsx` (role-switcher), `metadata.json`.
+- `package.json` is client-only Vite (`dev`, `build`, `preview`, `test`,
+  `seed`); express/cors/helmet/rate-limit/dotenv/supertest/tsx removed.
+- AI quiz calls Gemini directly from the client when `VITE_GEMINI_API_KEY`
+  is set, else bundled fallback questions.
+- Staff provisioning (`AdminUsers`) creates directory profiles that activate
+  when the person registers with the same email.
 
-## Remaining work (Phase 2+)
+## Remaining work
 
-- Firestore persistence for users/courses/enrollments (replace in-memory
-  `DatabaseStore`; seeds marked fictional in `src/server/mockDb.ts`).
-- Real video pipeline (Storage → transcode → HLS signed URLs), certificates
-  with verifiable hash/QR, payments (PayFast/Stripe), email provider, Sentry +
-  uptime monitoring, Playwright e2e + rules-unit tests.
+- Custom claims for roles (remove profile-doc role reads from rules).
+- Real video pipeline, certificates, payments (PayFast/Stripe), email
+  provider, Sentry + uptime monitoring, Playwright e2e, rules-unit tests.
