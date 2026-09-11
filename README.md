@@ -25,11 +25,23 @@ bun run build    # tsc + vite build -> dist/
 ```
 
 Seed the catalog (departments, courses, lectures, timetable, assignments,
-badges, announcements) once per Firestore project:
+badges, announcements) plus public demo accounts - one click, no local keys
+needed:
 
-```bash
-FIREBASE_SERVICE_ACCOUNT_JSON='{...}' bun run seed
-```
+- GitHub: Actions tab > "Seed Firestore (manual)" > Run workflow
+  (uses the repo's `FIREBASE_SERVICE_ACCOUNT` secret; catalog skips
+  collections that already have data).
+
+Demo logins (public by design - rotate via the workflow's `demo_password`
+input, or delete them in Firebase Console > Authentication):
+
+- Student: `student@triple4c.demo`
+- Lecturer: `lecturer@triple4c.demo`
+- Admin: `admin@triple4c.demo`
+- Password: `Triple4-Demo-2026` (default; change at seed time)
+
+Or seed locally: `FIREBASE_SERVICE_ACCOUNT_JSON='{...}' bun run seed`
+(`DEMO_PASSWORD='...' bun scripts/seed-users.mjs` for the accounts).
 
 User-linked collections (submissions, attendance, learner progress,
 notifications, messages, audit logs) populate through real app use.
@@ -74,6 +86,9 @@ The navbar logo and Home button both return to `/dashboard`.
 
 ## Remaining work
 
+- Live AI quiz needs a `VITE_GEMINI_API_KEY` (or `GEMINI_API_KEY`) repo
+  secret - the build already wires it in; without it the tutor serves
+  bundled fallback questions. Restrict the key to triple4c.com referrers.
 - Custom claims for roles (remove profile-doc role reads from rules).
 - Real video pipeline, certificates, payments (PayFast/Stripe), email
   provider, Sentry + uptime monitoring, Playwright e2e, rules-unit tests.

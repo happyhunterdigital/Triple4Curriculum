@@ -1,0 +1,34 @@
+name: Seed Firestore (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      demo_password:
+        description: 'Password for the public demo accounts (min 8 chars). Rotate by re-running.'
+        required: true
+        default: 'Triple4-Demo-2026'
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Seed catalog collections
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: bun scripts/seed.mjs
+
+      - name: Seed demo users + roles
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          DEMO_PASSWORD: ${{ inputs.demo_password }}
+        run: bun scripts/seed-users.mjs
