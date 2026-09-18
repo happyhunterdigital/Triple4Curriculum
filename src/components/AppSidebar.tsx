@@ -158,8 +158,32 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
               )}
             </div>
 
-            {/* Core Registry Menu */}
+            {/* Site — PDF marketing (public) */}
             <nav className="px-2 space-y-0.5 mt-1 sm:mt-2">
+              {(isExpanded || open) && (
+                <p className="px-2 font-mono text-[8px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">Discover T4C</p>
+              )}
+              {[
+                { id:'', label:'Home' },
+                { id:'about', label:'About' },
+                { id:'how-it-works', label:'How it Works' },
+                { id:'curriculum', label:'Curriculum' },
+                { id:'admissions', label:'Admissions & Fees' },
+                { id:'faq', label:'FAQ' },
+                { id:'contact', label:'Contact' },
+              ].map(s=>(
+                <button
+                  key={s.id}
+                  onClick={() => handleNavigate(s.id)}
+                  className={`w-full flex items-center ${(isExpanded||open)?'px-3 justify-start':'justify-center px-2'} py-2 rounded text-[11px] font-bold transition-colors text-left cursor-pointer ${currentRoute===s.id ? 'bg-white text-[var(--color-t4c-black)] border border-black/10' : 'text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10 border border-transparent'}`}
+                >
+                  {(isExpanded||open) ? s.label : s.label[0]}
+                </button>
+              ))}
+            </nav>
+
+            {/* Core Registry Menu */}
+            <nav className="px-2 space-y-0.5 mt-3">
               {(isExpanded || open) && (
                 <p className="px-2 font-mono text-[8px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">
                   Core Registry

@@ -3,10 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from
 import { AuthProvider, useAuth } from './lib/authContext';
 import { Navbar } from './components/Navbar';
 import { AppSidebar } from './components/AppSidebar';
-import { LandingHero } from './components/LandingHero';
-import { MarqueeScroller } from './components/MarqueeScroller';
-import { ClassroomWorkspace } from './components/learning/ClassroomWorkspace';
-import { AssignmentLedger } from './components/AssignmentLedger';
 import { AIFloatingChatbot } from './components/ai/AIFloatingChatbot';
 import { StudentTimetable } from './components/student/StudentTimetable';
 import { StudentAssignments } from './components/student/StudentAssignments';
@@ -20,6 +16,14 @@ import { TeacherHomeDashboard } from './components/dashboard/TeacherHomeDashboar
 import { AdminHomeDashboard } from './components/dashboard/AdminHomeDashboard';
 import { RequireAuth } from './components/RequireAuth';
 import { Privacy } from './pages/Privacy';
+import { HomePage } from './pages/HomePage';
+import { AboutPage } from './pages/AboutPage';
+import { HowItWorksPage } from './pages/HowItWorksPage';
+import { CurriculumPage } from './pages/CurriculumPage';
+import { AdmissionsPage } from './pages/AdmissionsPage';
+import { FaqPage } from './pages/FaqPage';
+import { ContactPage } from './pages/ContactPage';
+import { SiteFooter } from './components/site/SiteFooter';
 import { auth, db } from './lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -59,17 +63,8 @@ function DashboardRouter() {
   if (role === 'admin') return <AdminHomeDashboard />;
   if (role === 'teacher') return <TeacherHomeDashboard onNavigate={() => {}} />;
   if (role === 'learner' && currentUser) return <StudentHomeDashboard onNavigate={() => {}} />;
-  // Guest landing: hero + classroom + ledger.
-  return (
-    <>
-      <LandingHero />
-      <MarqueeScroller />
-      <Card><ClassroomWorkspace /></Card>
-      <div className="mt-3 xs:mt-4 sm:mt-6 bg-white border border-[var(--color-t4c-black)]/10 rounded-lg sm:rounded-xl shadow-xs p-3 xs:p-4 sm:p-6 lg:p-8 overflow-hidden">
-        <AssignmentLedger />
-      </div>
-    </>
-  );
+  // Guest fallback points to marketing home for consistency.
+  return <HomePage />;
 }
 
 function Shell() {
@@ -92,6 +87,14 @@ function Shell() {
         <AppSidebar onNavigate={handleNavigate} currentRoute={currentRoute} open={menuOpen} onClose={() => setMenuOpen(false)} />
         <div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden bg-[var(--color-canvas-soft)] p-3 xs:p-4 sm:p-5 md:p-6 lg:p-6 xl:p-8 gap-3 xs:gap-4 sm:gap-5 md:gap-6 min-w-0 max-w-full">
           <Routes>
+            {/* Public marketing — PDF-aligned */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/how-it-works" element={<HowItWorksPage />} />
+            <Route path="/curriculum" element={<CurriculumPage />} />
+            <Route path="/admissions" element={<AdmissionsPage />} />
+            <Route path="/faq" element={<FaqPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/onboarding" element={<Card><OnboardingFlow /></Card>} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/lectures" element={<RequireAuth><Card><StudentLectures /></Card></RequireAuth>} />
@@ -103,7 +106,6 @@ function Shell() {
             <Route path="/admin" element={<RequireAuth roles={['admin']}><AdminHomeDashboard /></RequireAuth>} />
             <Route path="/admin-dashboard" element={<RequireAuth roles={['admin']}><AdminHomeDashboard /></RequireAuth>} />
             <Route path="/dashboard" element={<DashboardRouter />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route
               path="*"
               element={
@@ -119,6 +121,7 @@ function Shell() {
           </Routes>
         </div>
       </div>
+      <SiteFooter />
       <AIFloatingChatbot />
     </div>
   );

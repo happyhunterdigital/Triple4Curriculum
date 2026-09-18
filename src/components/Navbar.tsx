@@ -66,6 +66,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
         </div>
       </div>
 
+      {/* Public nav — PDF sections (desktop) */}
+      <nav className="hidden xl:flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest shrink-0" aria-label="Primary">
+        <a href="/about" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">About</a>
+        <a href="/how-it-works" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">How it Works</a>
+        <a href="/curriculum" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Curriculum</a>
+        <a href="/admissions" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Admissions</a>
+        <a href="/faq" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">FAQ</a>
+        <a href="/contact" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Contact</a>
+      </nav>
+
       {/* Control Utility Suite / Right Block */}
       <div className="flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-5 h-full shrink-0">
         {/* Dynamic Action Trigger Button */}
