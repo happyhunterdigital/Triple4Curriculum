@@ -14,7 +14,7 @@ export function SiteFooter() {
               />
               <span className="text-sm font-extrabold tracking-tight uppercase leading-none">Triple 4C Curriculum</span>
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-white/80">4 days a week, 4 hours a day, 4 lessons a day — live teachers, 16 students per class.</p>
+            <p className="mt-3 text-sm leading-relaxed text-white/80">4 days a week, 4 hours a day, 4 lessons a day, live teachers, 16 students per class.</p>
             <p className="mt-2 text-[11px] font-mono tracking-widest uppercase text-[var(--color-t4c-yellow)]">Preserving Fresh Minds Globally.</p>
           </div>
 
@@ -53,7 +53,7 @@ export function SiteFooter() {
 
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-2 justify-between text-xs text-white/60">
           <span>© {new Date().getFullYear()} Triple 4 Curriculum (T4C). All rights reserved.</span>
-          <span>Built for Grade R–12 · SACCAI-track NSC</span>
+          <span>Built for Grade R-12 · SACCAI-track NSC</span>
         </div>
       </div>
     </footer>

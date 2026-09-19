@@ -96,7 +96,7 @@ export const StudentTimetable: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-yellow-600 flex-shrink-0" />
-                  <span className="font-semibold">{slot.startTime} – {slot.endTime} SAST</span>
+                  <span className="font-semibold">{slot.startTime} - {slot.endTime} SAST</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-neutral-500 flex-shrink-0" />

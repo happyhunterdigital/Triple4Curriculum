@@ -541,10 +541,10 @@ export const OnboardingFlow: React.FC = () => {
                       <label className={label}>Learner Phase <span className="text-[11px] text-neutral-500 font-normal">- select your current phase</span></label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {[
-                          { id: 'Foundation', label: 'Foundation Phase - Grade R–3', icon: '🧸' },
-                          { id: 'Intermediate', label: 'Intermediate Phase - Grade 4–6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase - Grade 7–9', icon: '📖' },
-                          { id: 'FET', label: 'FET Phase - Grade 10–12', icon: '🎓' },
+                          { id: 'Foundation', label: 'Foundation Phase - Grade R-3', icon: '🧸' },
+                          { id: 'Intermediate', label: 'Intermediate Phase - Grade 4-6', icon: '📚' },
+                          { id: 'Senior', label: 'Senior Phase - Grade 7-9', icon: '📖' },
+                          { id: 'FET', label: 'FET Phase - Grade 10-12', icon: '🎓' },
                         ].map(phase => {
                           const active = form.watch('lastGrade') === phase.id;
                           return (
@@ -606,10 +606,10 @@ export const OnboardingFlow: React.FC = () => {
                       <label className={label}>Teaching phase <span className="text-[11px] text-neutral-500 font-normal">- which phase do you teach?</span></label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {[
-                          { id: 'Foundation', label: 'Foundation Phase - Grade R–3', icon: '🧸' },
-                          { id: 'Intermediate', label: 'Intermediate Phase - Grade 4–6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase - Grade 7–9', icon: '📖' },
-                          { id: 'FET', label: 'FET Phase - Grade 10–12', icon: '🎓' },
+                          { id: 'Foundation', label: 'Foundation Phase - Grade R-3', icon: '🧸' },
+                          { id: 'Intermediate', label: 'Intermediate Phase - Grade 4-6', icon: '📚' },
+                          { id: 'Senior', label: 'Senior Phase - Grade 7-9', icon: '📖' },
+                          { id: 'FET', label: 'FET Phase - Grade 10-12', icon: '🎓' },
                         ].map(phase => {
                           const active = form.watch('teachingPhase') === phase.id;
                           return (

@@ -3,7 +3,7 @@ import { Phone, MessageCircle, Mail, Share2 } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
 
 export function ContactPage() {
-  useEffect(() => { document.title = 'Contact — Triple 4 Curriculum'; }, []);
+  useEffect(() => { document.title = 'Contact: Triple 4 Curriculum'; }, []);
   const [sent, setSent] = useState(false);
   return (
     <div className="w-full bg-[var(--color-canvas-soft)]">
@@ -11,7 +11,7 @@ export function ContactPage() {
         <div className="rounded-[16px] bg-white border border-black/10 p-6 sm:p-8 lg:p-10">
           <SectionEyebrow>Contact</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95]">Talk to a real teacher.</h1>
-          <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">South Africa or UK — we reply within one school day. Mon–Thu live teaching, Fri admin &amp; support.</p>
+          <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">South Africa or UK, we reply within one school day. Mon-Thu live teaching, Fri admin &amp; support.</p>
           <a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest">Send WhatsApp → +44 757-7924-174</a>
         </div>
       </div>
@@ -52,9 +52,9 @@ export function ContactPage() {
           <div className="grid lg:grid-cols-5 gap-6">
             <div className="lg:col-span-3 bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
               <h3 className="font-semibold">Send a message</h3>
-              <p className="text-xs text-neutral-500 mt-1">We use your message only to reply — see Privacy.</p>
+              <p className="text-xs text-neutral-500 mt-1">We use your message only to reply, see Privacy.</p>
               {sent ? (
-                <div className="mt-6 rounded-[12px] bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-900">Thanks — your message is queued. We'll reply within one school day.</div>
+                <div className="mt-6 rounded-[12px] bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-900">Thanks, your message is queued. We'll reply within one school day.</div>
               ) : (
                 <form onSubmit={e=>{e.preventDefault(); setSent(true);}} className="mt-5 grid gap-4">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -70,14 +70,14 @@ export function ContactPage() {
             <div className="lg:col-span-2 bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
               <h3 className="font-semibold">Hours &amp; response</h3>
               <ul className="mt-3 space-y-2 text-sm leading-relaxed text-neutral-700">
-                <li>• Mon–Thu: live teaching — replies may be after lessons</li>
-                <li>• Friday: admin &amp; support — full response day</li>
-                <li>• Best time to call SA: 09:00–16:00 SAST</li>
+                <li>• Mon-Thu: live teaching, replies may be after lessons</li>
+                <li>• Friday: admin &amp; support, full response day</li>
+                <li>• Best time to call SA: 09:00-16:00 SAST</li>
                 <li>• WhatsApp UK monitored daily</li>
               </ul>
               <div className="mt-6 rounded-[12px] bg-[var(--color-canvas-soft)] border border-black/10 p-4">
                 <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">Admissions team</p>
-                <p className="text-sm mt-1"><a href="mailto:admissions@t4c.com" className="underline">admissions@t4c.com</a> — document checks, placement</p>
+                <p className="text-sm mt-1"><a href="mailto:admissions@t4c.com" className="underline">admissions@t4c.com</a>, document checks, placement</p>
               </div>
             </div>
           </div>
@@ -87,8 +87,8 @@ export function ContactPage() {
           <div className="bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
             <h3 className="font-semibold">Contact FAQs</h3>
             <div className="mt-3 divide-y divide-black/10 text-sm">
-              <details className="py-3"><summary className="list-none cursor-pointer font-medium">Which number should I call? — South Africa or UK?</summary><p className="mt-1 text-neutral-600">ZA families call +27 numbers; international / UK families use WhatsApp +44 757-7924-174. All emails reach the same admissions team.</p></details>
-              <details className="py-3"><summary className="list-none cursor-pointer font-medium">Do you reply on weekends?</summary><p className="mt-1 text-neutral-600">Replies target one school day — weekend messages are answered Monday.</p></details>
+              <details className="py-3"><summary className="list-none cursor-pointer font-medium">Which number should I call?, South Africa or UK?</summary><p className="mt-1 text-neutral-600">ZA families call +27 numbers; international / UK families use WhatsApp +44 757-7924-174. All emails reach the same admissions team.</p></details>
+              <details className="py-3"><summary className="list-none cursor-pointer font-medium">Do you reply on weekends?</summary><p className="mt-1 text-neutral-600">Replies target one school day, weekend messages are answered Monday.</p></details>
             </div>
           </div>
         </RevealStagger>

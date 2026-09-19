@@ -29,7 +29,7 @@ export const LandingHero: React.FC = () => {
           </h1>
 
           <p className="font-sans text-[12px] xs:text-[13px] sm:text-[14px] md:text-[15px] leading-relaxed text-neutral-700 max-w-xl">
-            4 days a week, 4 hours a day, 4 lessons a day — live teachers, 16 per class.
+            4 days a week, 4 hours a day, 4 lessons a day, live teachers, 16 per class.
           </p>
 
           <div className="flex flex-wrap gap-3">

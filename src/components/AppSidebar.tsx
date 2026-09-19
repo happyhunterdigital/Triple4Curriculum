@@ -158,7 +158,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
               )}
             </div>
 
-            {/* Site — PDF marketing (public) */}
+            {/* Site, PDF marketing (public) */}
             <nav className="px-2 space-y-0.5 mt-1 sm:mt-2">
               {(isExpanded || open) && (
                 <p className="px-2 font-mono text-[8px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">Discover T4C</p>

@@ -87,7 +87,7 @@ function Shell() {
         <AppSidebar onNavigate={handleNavigate} currentRoute={currentRoute} open={menuOpen} onClose={() => setMenuOpen(false)} />
         <div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden bg-[var(--color-canvas-soft)] p-3 xs:p-4 sm:p-5 md:p-6 lg:p-6 xl:p-8 gap-3 xs:gap-4 sm:gap-5 md:gap-6 min-w-0 max-w-full">
           <Routes>
-            {/* Public marketing — PDF-aligned */}
+            {/* Public marketing, PDF-aligned */}
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/how-it-works" element={<HowItWorksPage />} />

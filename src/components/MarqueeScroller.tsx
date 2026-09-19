@@ -1,7 +1,7 @@
 import React from 'react';
 
-// PDF credibility strip — no fake logos (replaces prior svgl.app placeholders)
-const STRIP = 'SACCAI-track  ·  CAPS + International  ·  Grade R–12  ·  Live classes  ·  16 per class  ·  ZA  ·  UK  ·  Global  ·  Preserving Fresh Minds Globally  ·';
+// PDF credibility strip, no fake logos (replaces prior svgl.app placeholders)
+const STRIP = 'SACCAI-track  ·  CAPS + International  ·  Grade R-12  ·  Live classes  ·  16 per class  ·  ZA  ·  UK  ·  Global  ·  Preserving Fresh Minds Globally  ·';
 
 export const MarqueeScroller: React.FC = () => {
   const doubled = `${STRIP} ${STRIP}`;

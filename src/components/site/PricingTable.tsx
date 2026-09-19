@@ -4,11 +4,11 @@ type Currency = 'ZAR' | 'USD' | 'GBP';
 type Tier = { key: string; label: string; grades: string; zar: number; usd: number; gbp: number; features: string[]; accent?: boolean };
 
 const TIERS: Tier[] = [
-  // PDF: Pricing table — exact amounts
-  { key: 'foundation', label: 'Foundation Phase', grades: 'Grade R–3', zar: 1500, usd: 125, gbp: 100, features: ['Daily synchronized classes capped at 16', 'All required subjects', 'International curriculum', 'Live + recorded sessions', 'Assessments & progress reports', 'Homework · PE · Games · Extra activities'] },
-  { key: 'intermediate', label: 'Intermediate Phase', grades: 'Grade 4–6', zar: 2500, usd: 155, gbp: 115, features: ['Daily synchronized classes capped at 16', 'All required subjects', 'International curriculum', 'Live + recorded sessions', 'Assessments & progress reports', 'Homework · PE · Games · Extra activities'] },
-  { key: 'senior', label: 'Senior Phase', grades: 'Grade 7–9', zar: 3500, usd: 190, gbp: 145, features: ['Daily synchronized classes capped at 16', 'All required subjects', 'International curriculum', 'Live + recorded sessions', 'Assessments & progress reports', 'Homework · PE · Games · Extra activities'] },
-  { key: 'fet', label: 'FET Phase', grades: 'Grade 10–12', zar: 4500, usd: 250, gbp: 190, features: ['Daily synchronized classes capped at 16', 'All required subjects · Exam preparation', 'International curriculum', 'Live + recorded sessions', 'Assessments & progress reports', 'Homework · PE · Games · Extra activities'], accent: true },
+  // PDF: Pricing table, exact amounts
+  { key: 'foundation', label: 'Foundation Phase', grades: 'Grade R-3', zar: 1500, usd: 125, gbp: 100, features: ['Daily synchronized classes capped at 16', 'All required subjects', 'International curriculum', 'Live + recorded sessions', 'Assessments & progress reports', 'Homework · PE · Games · Extra activities'] },
+  { key: 'intermediate', label: 'Intermediate Phase', grades: 'Grade 4-6', zar: 2500, usd: 155, gbp: 115, features: ['Daily synchronized classes capped at 16', 'All required subjects', 'International curriculum', 'Live + recorded sessions', 'Assessments & progress reports', 'Homework · PE · Games · Extra activities'] },
+  { key: 'senior', label: 'Senior Phase', grades: 'Grade 7-9', zar: 3500, usd: 190, gbp: 145, features: ['Daily synchronized classes capped at 16', 'All required subjects', 'International curriculum', 'Live + recorded sessions', 'Assessments & progress reports', 'Homework · PE · Games · Extra activities'] },
+  { key: 'fet', label: 'FET Phase', grades: 'Grade 10-12', zar: 4500, usd: 250, gbp: 190, features: ['Daily synchronized classes capped at 16', 'All required subjects · Exam preparation', 'International curriculum', 'Live + recorded sessions', 'Assessments & progress reports', 'Homework · PE · Games · Extra activities'], accent: true },
 ];
 
 function format(t: Tier, c: Currency) {

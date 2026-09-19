@@ -4,14 +4,14 @@ import { BookOpen, Award, Sparkles, ArrowRight } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
 
 export function CurriculumPage() {
-  useEffect(() => { document.title = 'Curriculum — Triple 4 Curriculum'; }, []);
+  useEffect(() => { document.title = 'Curriculum: Triple 4 Curriculum'; }, []);
   return (
     <div className="w-full bg-[var(--color-canvas-soft)]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <div className="rounded-[16px] bg-white border border-black/10 p-6 sm:p-8 lg:p-10">
           <SectionEyebrow>Academics</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95]">A blended path<br />to a valid NSC.</h1>
-          <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">CAPS plus international depth — from playful Foundation to SACCAI-aligned FET Matric.</p>
+          <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">CAPS plus international depth, from playful Foundation to SACCAI-aligned FET Matric.</p>
           <Link to="/admissions#docs" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest">Check eligibility</Link>
         </div>
       </div>
@@ -23,10 +23,10 @@ export function CurriculumPage() {
             <SectionHeading className="text-[22px]">Grade progression</SectionHeading>
             <div className="mt-5 grid grid-cols-2 lg:grid-cols-4 gap-3">
               {[
-                { k:'Foundation', g:'Grade R–3', d:'Playful, sensory, movement' },
-                { k:'Intermediate', g:'Grade 4–6', d:'Core mastery & inquiry' },
-                { k:'Senior', g:'Grade 7–9', d:'Depth & subject choice' },
-                { k:'FET', g:'Grade 10–12', d:'SACCAI NSC Matric' },
+                { k:'Foundation', g:'Grade R-3', d:'Playful, sensory, movement' },
+                { k:'Intermediate', g:'Grade 4-6', d:'Core mastery & inquiry' },
+                { k:'Senior', g:'Grade 7-9', d:'Depth & subject choice' },
+                { k:'FET', g:'Grade 10-12', d:'SACCAI NSC Matric' },
               ].map(s=>(
                 <div key={s.k} className="border border-black/10 rounded-[12px] p-4 text-center">
                   <p className="font-display font-bold text-[var(--color-t4c-green)]">{s.k}</p>
@@ -38,7 +38,7 @@ export function CurriculumPage() {
           </div>
         </RevealStagger>
 
-        {/* Blended explained — full-width editorial */}
+        {/* Blended explained, full-width editorial */}
         <RevealStagger>
           <div className="bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
             <SectionHeading className="text-[22px]">What is a blended curriculum model?</SectionHeading>
@@ -57,12 +57,12 @@ export function CurriculumPage() {
 
         {/* Grade R-3 bento */}
         <RevealStagger>
-          <SectionHeading className="text-[22px]">How we cater to Grade R–3 online</SectionHeading>
-          <Body className="mt-2">Our youngest learners cannot sit for hours — lessons are highly active, sensory, and playful while keeping screen fatigue minimal.</Body>
+          <SectionHeading className="text-[22px]">How we cater to Grade R-3 online</SectionHeading>
+          <Body className="mt-2">Our youngest learners cannot sit for hours, lessons are highly active, sensory, and playful while keeping screen fatigue minimal.</Body>
           <div className="mt-5 grid sm:grid-cols-3 gap-4">
             {[
               { t:'Play-based', d:'Songs, physical props, and interactive digital tools keep learners moving.' },
-              { t:'Movement', d:'Teachers design for standing, doing, and discovering — not passive watching.' },
+              { t:'Movement', d:'Teachers design for standing, doing, and discovering, not passive watching.' },
               { t:'Discovery', d:'Short, varied segments protect attention and build joy in learning.' },
             ].map(c=>(
               <div key={c.t} className="bg-white border border-black/10 rounded-[16px] p-6"><h3 className="font-semibold text-sm">{c.t}</h3><p className="mt-1 text-xs leading-relaxed text-neutral-600">{c.d}</p></div>
@@ -70,12 +70,12 @@ export function CurriculumPage() {
           </div>
         </RevealStagger>
 
-        {/* FET & SACCAI — single zig-zag isolated */}
+        {/* FET & SACCAI, single zig-zag isolated */}
         <RevealStagger>
           <div className="grid lg:grid-cols-2 gap-6 items-center">
             <div className="bg-[var(--color-t4c-green)] text-white rounded-[16px] p-6 sm:p-8 lg:p-10">
               <SectionHeading className="text-[22px] !text-white">FET &amp; valid Matric</SectionHeading>
-              <p className="mt-3 text-sm leading-relaxed text-white/90">Will my child receive a valid matric certificate at the end of Grade 12? <strong>Yes.</strong> Our FET phase (Grades 10–12) aligns with SACCAI requirements — SBAs, practical tasks, and required study hours — so matriculants sit for accredited final national examinations and graduate with a universally recognised <strong>NSC</strong> Matric certificate.</p>
+              <p className="mt-3 text-sm leading-relaxed text-white/90">Will my child receive a valid matric certificate at the end of Grade 12? <strong>Yes.</strong> Our FET phase (Grades 10-12) aligns with SACCAI requirements, SBAs, practical tasks, and required study hours, so matriculants sit for accredited final national examinations and graduate with a universally recognised <strong>NSC</strong> Matric certificate.</p>
               <Link to="/admissions#fees" className="inline-flex mt-4 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest">See FET fees</Link>
             </div>
             <div className="bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
@@ -96,8 +96,8 @@ export function CurriculumPage() {
             <div className="mt-3 divide-y divide-black/10">
               {[
                 ['Is the FET certificate recognised internationally?','SACCAI NSC is recognised for university entrance and international transitions.'],
-                ['Do you use CAPS?','We integrate CAPS benchmarks with international frameworks — the blended model.'],
-                ['What subjects are offered?','All required subjects per phase — see Admissions for fees & features.'],
+                ['Do you use CAPS?','We integrate CAPS benchmarks with international frameworks, the blended model.'],
+                ['What subjects are offered?','All required subjects per phase, see Admissions for fees & features.'],
               ].map(([q,a])=>(
                 <details key={q} className="py-3 group"><summary className="list-none flex justify-between gap-4 cursor-pointer text-sm font-medium">{q}<ArrowRight size={14} className="shrink-0 group-open:rotate-90 transition-transform text-[var(--color-t4c-green)]" /></summary><p className="mt-1 text-sm text-neutral-600">{a}</p></details>
               ))}
