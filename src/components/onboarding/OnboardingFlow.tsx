@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -38,6 +38,9 @@ const registrationSchema = z.object({
   lastGrade: z.string().optional(),
   agreeConduct: z.boolean().optional(),
   agreePrivacy: z.boolean().optional(),
+  agreeTerms: z.boolean().optional(),
+  // Spam honeypot — must stay empty (bots fill it).
+  companyWebsite: z.string().optional(),
   // Learner - Payment
   paymentMethod: z.string().optional(),
   payerName: z.string().optional(),
@@ -63,6 +66,7 @@ type FormValues = z.infer<typeof registrationSchema>;
 const mask = (v?: string, keep = 3) => (v && v.length > keep ? '****' + v.slice(-keep) : v || '');
 
 export const OnboardingFlow: React.FC = () => {
+  useEffect(() => { document.title = 'Apply / Sign in: Triple 4 Curriculum'; }, []);
   const [step, setStep] = useState(1);
   const [completed, setCompleted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -105,7 +109,8 @@ export const OnboardingFlow: React.FC = () => {
     defaultValues: {
       role: undefined, department: '', name: '', email: '', password: '',
       dob: '', homeAddress: '', isMinor: false, guardianName: '', guardianContact: '',
-      previousSchool: '', lastGrade: '', agreeConduct: false, agreePrivacy: false,
+      previousSchool: '', lastGrade: '', agreeConduct: false, agreePrivacy: false, agreeTerms: false,
+      companyWebsite: '',
       paymentMethod: 'tuition', payerName: '',
       idType: 'national_id', idNumber: '', addressVerified: false,
       highestDegree: '', degreeField: '', teachingCertificate: '', teachingPhase: '', backgroundCheckConsent: false,
@@ -151,6 +156,7 @@ export const OnboardingFlow: React.FC = () => {
       if (!v.lastGrade) { setErr('lastGrade', 'Last grade completed required'); valid = false; }
       if (!v.agreeConduct) { setErr('agreeConduct', 'Code of conduct must be accepted'); valid = false; }
       if (!v.agreePrivacy) { setErr('agreePrivacy', 'Privacy policy must be accepted'); valid = false; }
+      if (!v.agreeTerms) { setErr('agreeTerms', 'Terms of Service must be accepted'); valid = false; }
     }
     if (step === 5 && role === 'teacher') {
       if (!v.highestDegree || v.highestDegree.length < 2) { setErr('highestDegree', 'Highest degree required'); valid = false; }
@@ -197,6 +203,11 @@ export const OnboardingFlow: React.FC = () => {
 
   const onSubmit = async (data: FormValues) => {
     if (!data.role || !data.department) return;
+    // Honeypot: bots fill hidden fields — reject silently as spam.
+    if (data.companyWebsite && data.companyWebsite.trim() !== '') {
+      setError('Submission flagged as spam. Please contact support@triple4c.com if this is a mistake.');
+      return;
+    }
     setError(null);
     setSubmitting(true);
     try {
@@ -232,6 +243,7 @@ export const OnboardingFlow: React.FC = () => {
           legal: {
             codeOfConductAccepted: !!data.agreeConduct,
             privacyPolicyAccepted: !!data.agreePrivacy,
+            termsAccepted: !!data.agreeTerms,
             popiaCompliant: true,
           },
           payment: {
@@ -276,7 +288,7 @@ export const OnboardingFlow: React.FC = () => {
       await setDoc(doc(db, 'users', fbUser.uid), {
         uid: fbUser.uid, role: data.role, name: base.name, email: base.email,
         departmentId: data.department || '', provider,
-        privacyPolicyAccepted: true, codeOfConductAccepted: true,
+        privacyPolicyAccepted: true, codeOfConductAccepted: true, termsAccepted: true,
         createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
       }, { merge: true });
 
@@ -387,7 +399,7 @@ export const OnboardingFlow: React.FC = () => {
                   <p className="text-xs xs:text-sm text-neutral-600 mt-2">Use your institutional email - or continue with Google.</p>
                 </div>
                 <button type="button" onClick={handleGoogle} disabled={submitting} className="w-full flex items-center justify-center gap-2 h-10 rounded-[6px] border border-[#E2E8F0] bg-white hover:bg-neutral-50 text-sm font-medium transition-colors disabled:opacity-50">
-                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" className="w-4 h-4" /> Continue with Google
+                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" className="w-4 h-4" /> Continue with Google
                 </button>
                 <div className="flex items-center gap-3"><div className="h-px flex-1 bg-[#E2E8F0]" /><span className="text-[11px] text-neutral-400 uppercase tracking-widest">or</span><div className="h-px flex-1 bg-[#E2E8F0]" /></div>
                 {googleUser && (
@@ -581,6 +593,11 @@ export const OnboardingFlow: React.FC = () => {
                         <span>I accept the <a href="/privacy" target="_blank" rel="noreferrer" className="font-bold text-[var(--color-t4c-green)] underline">Privacy Policy</a> (POPIA Act 4 of 2013)</span>
                       </label>
                       {form.formState.errors.agreePrivacy && <p className={errText}>{form.formState.errors.agreePrivacy.message as string}</p>}
+                      <label className="flex items-start gap-2 text-xs font-medium cursor-pointer">
+                        <input type="checkbox" {...form.register('agreeTerms')} className="w-4 h-4 mt-0.5 accent-[var(--color-t4c-green)]" />
+                        <span>I accept the <a href="/terms" target="_blank" rel="noreferrer" className="font-bold text-[var(--color-t4c-green)] underline">Terms of Service</a> (admissions, fees, conduct)</span>
+                      </label>
+                      {form.formState.errors.agreeTerms && <p className={errText}>{(form.formState.errors.agreeTerms.message as string) || 'Terms must be accepted'}</p>}
                     </div>
                   </div>
                 ) : (
@@ -737,6 +754,12 @@ export const OnboardingFlow: React.FC = () => {
                 )}
 
                 {error && <p className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded px-3 py-2">{error}</p>}
+                {/* Honeypot anti-spam field — hidden from humans, bots fill it. */}
+                <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
+                  <label>Website (leave blank)
+                    <input type="text" tabIndex={-1} autoComplete="off" {...form.register('companyWebsite')} />
+                  </label>
+                </div>
                 <div className="flex gap-3 pt-2">
                   <Button variant="outline" onClick={back} className="gap-2" disabled={submitting}><ArrowLeft size={16} /> Back</Button>
                   <Button onClick={form.handleSubmit(onSubmit)} className="ml-auto gap-2" disabled={submitting}>{submitting ? 'Submitting…' : 'Complete registration'} <CheckCircle2 size={16} /></Button>

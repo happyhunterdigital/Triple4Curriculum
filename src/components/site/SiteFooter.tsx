@@ -8,8 +8,10 @@ export function SiteFooter() {
           <div>
             <div className="flex items-center gap-3">
               <img
-                src="https://res.cloudinary.com/dka0498ns/image/upload/v1787254845/Triple_4_Curriculum_latest_logo_variant4_hjviza.png"
-                alt="Triple 4C"
+                src="https://res.cloudinary.com/dka0498ns/image/upload/v1790380437/Triple4Curriculum_logo_update_qjbgl1.png"
+                alt="Triple 4C Curriculum logo"
+                loading="lazy"
+                decoding="async"
                 className="w-9 h-9 rounded-full border border-[var(--color-t4c-yellow)] bg-white object-cover"
               />
               <span className="text-sm font-extrabold tracking-tight uppercase leading-none">Triple 4C Curriculum</span>
@@ -28,6 +30,7 @@ export function SiteFooter() {
               <li><Link to="/faq" className="hover:text-[var(--color-t4c-yellow)] transition-colors">FAQ</Link></li>
               <li><Link to="/contact" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Contact</Link></li>
               <li><Link to="/privacy" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Privacy</Link></li>
+              <li><Link to="/terms" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Terms</Link></li>
               <li><Link to="/onboarding" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Sign in / Apply</Link></li>
             </ul>
           </div>

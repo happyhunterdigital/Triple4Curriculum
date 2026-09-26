@@ -35,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
           aria-label="Triple 4C home"
         >
           <img
-            src="https://res.cloudinary.com/dka0498ns/image/upload/v1787254845/Triple_4_Curriculum_latest_logo_variant4_hjviza.png"
+            src="https://res.cloudinary.com/dka0498ns/image/upload/v1790380437/Triple4Curriculum_logo_update_qjbgl1.png"
             alt="Triple 4C"
             className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-[var(--color-t4c-yellow)] shadow-sm shrink-0 bg-white"
             referrerPolicy="no-referrer"

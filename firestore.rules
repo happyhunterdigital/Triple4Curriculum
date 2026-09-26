@@ -148,6 +148,10 @@ service cloud.firestore {
     }
 
     // Audit trail: staff write, admins read.
+    // NOTE (spam/rate-limit): Firestore rules cannot do time-based throttling
+    // natively. Abuse control is layered: client honeypot (`companyWebsite`) +
+    // 60s contact-form resubmit gate, owner-scoped creates below, and (planned)
+    // App Check enforcement + Cloud Functions per-IP quotas before production.
     match /audit_logs/{id} {
       allow read: if isAdmin();
       allow create: if signedIn();

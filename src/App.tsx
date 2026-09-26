@@ -16,6 +16,8 @@ import { TeacherHomeDashboard } from './components/dashboard/TeacherHomeDashboar
 import { AdminHomeDashboard } from './components/dashboard/AdminHomeDashboard';
 import { RequireAuth } from './components/RequireAuth';
 import { Privacy } from './pages/Privacy';
+import { Terms } from './pages/Terms';
+import { NotFound } from './pages/NotFound';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { HowItWorksPage } from './pages/HowItWorksPage';
@@ -24,6 +26,7 @@ import { AdmissionsPage } from './pages/AdmissionsPage';
 import { FaqPage } from './pages/FaqPage';
 import { ContactPage } from './pages/ContactPage';
 import { SiteFooter } from './components/site/SiteFooter';
+import { CookieConsent } from './components/site/CookieConsent';
 import { auth, db } from './lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -97,6 +100,7 @@ function Shell() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/onboarding" element={<Card><OnboardingFlow /></Card>} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/lectures" element={<RequireAuth><Card><StudentLectures /></Card></RequireAuth>} />
             <Route path="/timetable" element={<RequireAuth><div className="bg-white border rounded-xl p-4 sm:p-6"><StudentTimetable /></div></RequireAuth>} />
             <Route path="/assignments" element={<RequireAuth><div className="bg-white border rounded-xl p-4 sm:p-6"><StudentAssignments /></div></RequireAuth>} />
@@ -106,22 +110,12 @@ function Shell() {
             <Route path="/admin" element={<RequireAuth roles={['admin']}><AdminHomeDashboard /></RequireAuth>} />
             <Route path="/admin-dashboard" element={<RequireAuth roles={['admin']}><AdminHomeDashboard /></RequireAuth>} />
             <Route path="/dashboard" element={<DashboardRouter />} />
-            <Route
-              path="*"
-              element={
-                <div className="bg-white border rounded-xl p-8 text-center" role="alert">
-                  <h1 className="text-lg font-bold">Page not found</h1>
-                  <p className="text-sm mt-1">The route “{location.pathname}” does not exist.</p>
-                  <button className="underline mt-3 text-sm" onClick={() => navigate('/dashboard')}>
-                    Back to dashboard
-                  </button>
-                </div>
-              }
-            />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>
       <SiteFooter />
+      <CookieConsent />
       <AIFloatingChatbot />
     </div>
   );

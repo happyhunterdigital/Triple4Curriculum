@@ -152,9 +152,9 @@ async function readWhere<T>(name: string, field: string, value: unknown): Promis
 }
 
 const PRIVACY_NOTICE = {
-  title: 'Privacy Notice (POPIA) - Demo Stub',
+  title: 'Privacy Policy (POPIA Act 4 of 2013)',
   summary:
-    'Demo build. We minimise personal data, hash network identifiers in logs, require consent at registration, and honour access/erasure requests. See PRIVACY.md in the repo. Production deployment must appoint an Information Officer and complete a full POPIA assessment before processing real learner data.',
+    'Full school-compliant policy at /privacy: POPIA, Children’s Act 38/2005, DBE/SACCAI record-keeping, GDPR, COPPA (under-13 guardian consent), FERPA-style education records. Consent captured at registration; access/erasure via privacy@triple4c.com. Network identifiers in logs are hashed; raw IPs never shown to clients.',
   contact: 'privacy@triple4c.com',
 };
 

@@ -5,6 +5,7 @@ import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '
 export function ContactPage() {
   useEffect(() => { document.title = 'Contact: Triple 4 Curriculum'; }, []);
   const [sent, setSent] = useState(false);
+  const [spamBlocked, setSpamBlocked] = useState(false);
   return (
     <div className="w-full bg-[var(--color-canvas-soft)]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
@@ -52,17 +53,37 @@ export function ContactPage() {
           <div className="grid lg:grid-cols-5 gap-6">
             <div className="lg:col-span-3 bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
               <h3 className="font-semibold">Send a message</h3>
-              <p className="text-xs text-neutral-500 mt-1">We use your message only to reply, see Privacy.</p>
+              <p className="text-xs text-neutral-500 mt-1">We use your message only to reply, see <a href="/privacy" className="underline">Privacy</a>.</p>
+              {spamBlocked && (
+                <div role="alert" className="mt-4 rounded-[12px] bg-rose-50 border border-rose-200 p-4 text-sm text-rose-900">Submission flagged as spam. Please email us directly instead.</div>
+              )}
               {sent ? (
                 <div className="mt-6 rounded-[12px] bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-900">Thanks, your message is queued. We'll reply within one school day.</div>
               ) : (
-                <form onSubmit={e=>{e.preventDefault(); setSent(true);}} className="mt-5 grid gap-4">
+                <form
+                  onSubmit={e => {
+                    e.preventDefault();
+                    const fd = new FormData(e.currentTarget);
+                    // Honeypot anti-spam: hidden field must stay empty.
+                    if (fd.get('companyWebsite')) { setSpamBlocked(true); return; }
+                    const last = Number(sessionStorage.getItem('t4c-contact-at') || 0);
+                    // Lightweight client rate-limit: one message per 60s per browser.
+                    if (Date.now() - last < 60_000) { setSpamBlocked(true); return; }
+                    sessionStorage.setItem('t4c-contact-at', String(Date.now()));
+                    setSent(true);
+                  }}
+                  className="mt-5 grid gap-4"
+                >
                   <div className="grid sm:grid-cols-2 gap-4">
                     <label className="flex flex-col gap-1.5 text-xs font-semibold">Name<input required name="name" placeholder="Your name" className="border border-black/15 rounded-[10px] px-3 py-2.5 text-sm outline-none focus:border-[var(--color-t4c-green)]" /></label>
                     <label className="flex flex-col gap-1.5 text-xs font-semibold">Email<input required type="email" name="email" placeholder="you@example.com" className="border border-black/15 rounded-[10px] px-3 py-2.5 text-sm outline-none focus:border-[var(--color-t4c-green)]" /></label>
                   </div>
                   <label className="flex flex-col gap-1.5 text-xs font-semibold">Phone<input name="phone" placeholder="+27 ..." className="border border-black/15 rounded-[10px] px-3 py-2.5 text-sm outline-none focus:border-[var(--color-t4c-green)]" /></label>
-                  <label className="flex flex-col gap-1.5 text-xs font-semibold">Message<textarea required name="message" rows={4} placeholder="How can we help?" className="border border-black/15 rounded-[10px] px-3 py-2.5 text-sm outline-none focus:border-[var(--color-t4c-green)] resize-none" /></label>
+                  <label className="flex flex-col gap-1.5 text-xs font-semibold">Message<textarea required minLength={10} maxLength={2000} name="message" rows={4} placeholder="How can we help?" className="border border-black/15 rounded-[10px] px-3 py-2.5 text-sm outline-none focus:border-[var(--color-t4c-green)] resize-none" /></label>
+                  {/* Honeypot anti-spam field — hidden from humans. */}
+                  <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
+                    <label>Website (leave blank)<input type="text" tabIndex={-1} autoComplete="off" name="companyWebsite" /></label>
+                  </div>
                   <button type="submit" className="justify-self-start bg-[var(--color-t4c-black)] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors">Send Message</button>
                 </form>
               )}
