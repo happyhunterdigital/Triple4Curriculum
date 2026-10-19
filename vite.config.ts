@@ -1,9 +1,23 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vite';
+import {loadEnv, defineConfig} from 'vite';
 
-export default defineConfig(() => {
+export default defineConfig(({command, mode}) => {
+  // Guard: never build a deployable bundle without Firebase config. An env-less
+  // build produces `apiKey: undefined` in the bundle -> auth/invalid-api-key at
+  // runtime -> blank site (this happened once via a manual deploy without .env).
+  // CI provides VITE_FIREBASE_* via GitHub Actions secrets; local builds need .env.
+  if (command === 'build') {
+    const env = loadEnv(mode, process.cwd(), 'VITE_');
+    if (!env.VITE_FIREBASE_API_KEY) {
+      throw new Error(
+        '[T4C] Refusing to build: VITE_FIREBASE_API_KEY is missing. ' +
+          'Deploy via GitHub Actions (which injects the secrets), or create a local .env with the VITE_FIREBASE_* values first.'
+      );
+    }
+  }
+
   return {
     plugins: [react(), tailwindcss()],
     resolve: {

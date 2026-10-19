@@ -128,6 +128,14 @@ The navbar logo and Home button both return to `/dashboard`.
 
 ## Deploy checklist (before real learner data)
 
+> **⚠️ Deploy via GitHub Actions only (push to `main`).** A production build
+> requires the `VITE_FIREBASE_*` env vars; CI injects them from repo secrets.
+> Building/deploying from a machine without a populated `.env` used to ship a
+> bundle with `apiKey: undefined`, which crashed the live site to a blank page
+> (`auth/invalid-api-key`). The build now **refuses to run** without
+> `VITE_FIREBASE_API_KEY` for exactly this reason. If you must deploy locally,
+> create `.env` first (see step 1) and use `firebase deploy --only hosting`.
+
 1. **App Check:** set `VITE_RECAPTCHA_SITE_KEY`, enable App Check enforcement
    in Firebase Console (Auth/Firestore/Storage/Functions), verify debug tokens
    only in dev.

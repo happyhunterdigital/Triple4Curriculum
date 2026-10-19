@@ -76,7 +76,7 @@ jobs:
           projectId: triple4curriculum
 
       - name: Deploy Firestore rules + indexes and Cloud Functions
-        uses: w9jds/firebase-action@v13
+        uses: w9jds/firebase-action@v15.34.0
         with:
           args: deploy --only firestore:rules,firestore:indexes,functions --project triple4curriculum
         env:
