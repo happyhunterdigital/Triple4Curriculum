@@ -20,12 +20,17 @@ export default defineConfig(() => {
       // stay light; images are remote (Cloudinary) — prefer modern formats
       // (auto f_auto,q_auto) and lazy-load below the fold in components.
       chunkSizeWarningLimit: 900,
+      sourcemap: false,
+      cssCodeSplit: true,
       assetsInlineLimit: 4096,
       rollupOptions: {
         output: {
           manualChunks: {
             vendor: ['react', 'react-dom', 'react-router-dom'],
-            firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
+            firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage', 'firebase/functions', 'firebase/app-check'],
+            charts: ['recharts'],
+            motion: ['framer-motion', 'motion'],
+            markdown: ['react-markdown'],
           },
         },
       },

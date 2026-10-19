@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  FileText, Upload, CheckCircle2, Clock, 
-  AlertTriangle, FileUp, Award, ChevronRight, MessageSquare 
+  Upload, CheckCircle2, Clock, 
+  Award, MessageSquare 
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { useAuth } from '../../lib/authContext';
 import { api } from '../../lib/api';
+import { SubmitAssignmentForm } from './SubmitAssignmentForm';
 import { Assignment, AssignmentSubmission } from '../../types';
 
 export const StudentAssignments: React.FC = () => {
-  const { currentUser, triggerToast } = useAuth();
+  const { currentUser } = useAuth();
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [submissions, setSubmissions] = useState<AssignmentSubmission[]>([]);
   const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
   const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
-  
-  // Submission Form State
-  const [uploadFileName, setUploadFileName] = useState('');
-  const [notes, setNotes] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -43,46 +38,10 @@ export const StudentAssignments: React.FC = () => {
     s => s.assignmentId === selectedAssignment?.id && s.studentId === (currentUser?.id || 'stu_01')
   );
 
-  const handleSubmitWork = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedAssignment) return;
-
-    setIsSubmitting(true);
-    try {
-      const fileName = uploadFileName.trim() || `${currentUser?.name.replace(/\s+/g, '_')}_Assignment.zip`;
-      const res = await api.submitAssignment(selectedAssignment.id, {
-        studentId: currentUser?.id || 'stu_01',
-        fileName,
-        contentNotes: notes || '444 Academic Milestone Submission.'
-      });
-
-      // Update state
-      setSubmissions(prev => [res.submission, ...prev.filter(s => s.assignmentId !== selectedAssignment.id)]);
-      setSubmissionModalOpen(false);
-      setUploadFileName('');
-      setNotes('');
-
-      confetti({
-        particleCount: 60,
-        spread: 60,
-        origin: { y: 0.6 },
-        colors: ['#15803d', '#eab308', '#22c55e']
-      });
-
-      triggerToast({
-        id: `toast_${Date.now()}`,
-        title: '✅ Milestone Submitted!',
-        message: `Your work for "${selectedAssignment.title}" has been transmitted to SpeedGrader.`,
-        category: 'academic',
-        timestamp: 'Just now',
-        read: false,
-        priority: 'high'
-      });
-    } catch (err) {
-      console.error('Submit error:', err);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleSubmitted = (submission: AssignmentSubmission) => {
+    // Real file now stored in Storage; state reflects the new submission.
+    setSubmissions(prev => [submission, ...prev.filter(s => s.assignmentId !== submission.assignmentId)]);
+    setSubmissionModalOpen(false);
   };
 
   return (
@@ -309,59 +268,14 @@ export const StudentAssignments: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleSubmitWork} className="space-y-4 mt-4">
-              <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1">
-                  Upload Assignment Artifact (PDF / ZIP / Code Archive)
-                </label>
-                <div className="border-2 border-dashed border-neutral-300 hover:border-emerald-600 rounded-2xl p-5 text-center cursor-pointer bg-[#fbfcf8]">
-                  <FileUp className="w-8 h-8 text-emerald-800 mx-auto mb-2" />
-                  <p className="text-xs font-bold text-neutral-800">
-                    Click to browse or drag and drop your file here
-                  </p>
-                  <p className="text-[10px] text-neutral-500 mt-1">
-                    Accepts .pdf, .zip, .tar.gz, .py, .ts (Max 50MB)
-                  </p>
-                  <input
-                    type="text"
-                    placeholder="e.g. Sarah_Khumalo_Distributed_Raft_Cluster.zip"
-                    value={uploadFileName}
-                    onChange={(e) => setUploadFileName(e.target.value)}
-                    className="mt-3 w-full px-3 py-2 text-xs rounded-xl border border-neutral-300 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1">
-                  Submission Notes / Architectural Explanation
-                </label>
-                <textarea
-                  rows={3}
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Explain your approach, assumptions, or specific test harness details..."
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-300 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
-                />
-              </div>
-
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-neutral-100">
-                <button
-                  type="button"
-                  onClick={() => setSubmissionModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-neutral-600 hover:bg-neutral-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-yellow-300 font-black text-xs shadow-md transition"
-                >
-                  {isSubmitting ? 'Encrypting & Transmitting...' : 'Confirm Submission'}
-                </button>
-              </div>
-            </form>
+            {selectedAssignment && (
+              <SubmitAssignmentForm
+                assignmentId={selectedAssignment.id}
+                assignmentTitle={selectedAssignment.title}
+                onSubmitted={handleSubmitted}
+                onCancel={() => setSubmissionModalOpen(false)}
+              />
+            )}
           </div>
         </div>
       )}

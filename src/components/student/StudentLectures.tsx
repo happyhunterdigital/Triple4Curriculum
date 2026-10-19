@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Play, Pause, RotateCcw, Volume2, Settings, Shield, 
-  CheckCircle2, HelpCircle, Award, BookOpen, 
-  Layers, Lock, Download, Video, Check
+import {
+  Shield,
+  CheckCircle2, HelpCircle, Award, BookOpen,
+  Layers, Lock, Download, Check
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from '../../lib/authContext';
 import { api } from '../../lib/api';
 import { Lecture, Course } from '../../types';
+import { LectureVideo } from '../media/LectureVideo';
 
 export const StudentLectures: React.FC = () => {
   const { currentUser, refreshCurrentUser, triggerToast } = useAuth();
@@ -15,10 +16,7 @@ export const StudentLectures: React.FC = () => {
   const [selectedCourseId, setSelectedCourseId] = useState<string>('crs_cs201');
   const [lectures, setLectures] = useState<Lecture[]>([]);
   const [activeLecture, setActiveLecture] = useState<Lecture | null>(null);
-  const [selectedBitrate, setSelectedBitrate] = useState<string>('Auto (Adaptive)');
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
-  
+
   // Interactive Quiz State
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
@@ -48,7 +46,6 @@ export const StudentLectures: React.FC = () => {
     setActiveLecture(lec);
     setSelectedOption(null);
     setQuizSubmitted(false);
-    setIsPlaying(false);
   };
 
   const handleQuizSubmit = async () => {
@@ -180,104 +177,23 @@ export const StudentLectures: React.FC = () => {
             </div>
           </div>
 
-          {/* TAB 1: VIDEO PLAYER WITH DRM & ABS */}
+          {/* TAB 1: LECTURE VIDEO */}
           {activeTab === 'video' && (
-            <div className="bg-neutral-950 rounded-2xl overflow-hidden shadow-xl border border-neutral-800 relative group">
-              
-              {/* Dynamic Watermark Overlay (DRM Anti-Piracy Protection) */}
-              <div className="absolute top-4 right-4 z-20 pointer-events-none opacity-40 select-none font-mono text-[11px] text-yellow-300 bg-neutral-900/80 px-2.5 py-1 rounded border border-yellow-400/30">
-                DRM: {currentUser?.email || 'sarah.k@triple4c.edu'} • ID: {currentUser?.studentId || '444-STU-8821'}
+            <div className="bg-neutral-950 rounded-2xl overflow-hidden shadow-xl border border-neutral-800">
+              <LectureVideo
+                src={activeLecture?.videoUrl}
+                title={activeLecture?.title}
+                watermark={`${currentUser?.studentId || currentUser?.id || 'LEARNER'} · CONFIDENTIAL`}
+              />
+
+              <div className="flex flex-wrap items-center justify-between gap-2 bg-neutral-900 px-4 py-3 text-xs text-neutral-300 border-t border-neutral-800">
+                <span className="font-mono">
+                  {activeLecture?.videoDurationMinutes ?? 0} min · {activeLecture?.courseCode}
+                </span>
+                <span className="text-[10px] uppercase tracking-wider text-neutral-500">
+                  Adaptive streaming · provider-managed
+                </span>
               </div>
-
-              {/* Video Simulated Stage */}
-              <div className="aspect-video w-full bg-gradient-to-br from-neutral-900 via-neutral-950 to-neutral-900 flex flex-col items-center justify-center p-8 text-center relative">
-                
-                {/* Floating animated watermark across center */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10 font-black text-2xl text-white select-none rotate-[-15deg]">
-                  TRIPLE 4C • {currentUser?.studentId} • CONFIDENTIAL
-                </div>
-
-                <div className="w-20 h-20 rounded-full bg-yellow-400 text-neutral-950 flex items-center justify-center shadow-2xl cursor-pointer hover:scale-110 transition transform group-hover:bg-yellow-300"
-                  onClick={() => setIsPlaying(!isPlaying)}
-                >
-                  {isPlaying ? <Pause className="w-8 h-8 fill-neutral-950" /> : <Play className="w-8 h-8 fill-neutral-950 ml-1" />}
-                </div>
-
-                <h3 className="text-white text-base font-bold mt-4 max-w-md">
-                  {activeLecture?.title}
-                </h3>
-                <p className="text-xs text-neutral-400 mt-1">
-                  Duration: {activeLecture?.videoDurationMinutes} mins • {selectedBitrate}
-                </p>
-
-                {isPlaying && (
-                  <div className="mt-3 px-3 py-1 rounded-full bg-emerald-900/80 text-emerald-300 text-xs font-mono border border-emerald-500 animate-pulse">
-                    Streaming HLS Segments • ABS Network Active
-                  </div>
-                )}
-              </div>
-
-              {/* Video Controls Bar */}
-              <div className="bg-neutral-900 p-3.5 flex flex-wrap items-center justify-between gap-3 text-white border-t border-neutral-800">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className="p-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-yellow-400 transition"
-                  >
-                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                  </button>
-
-                  <button
-                    onClick={() => setIsPlaying(false)}
-                    className="p-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition"
-                    title="Restart"
-                  >
-                    <RotateCcw className="w-4 h-4" />
-                  </button>
-
-                  <div className="flex items-center gap-1.5 text-xs text-neutral-400 font-mono">
-                    <span>14:20</span>
-                    <span>/</span>
-                    <span>{activeLecture?.videoDurationMinutes}:00</span>
-                  </div>
-                </div>
-
-                {/* Adaptive Bitrate & Speed Selectors */}
-                <div className="flex items-center gap-3">
-                  {/* Speed Selector */}
-                  <div className="flex items-center gap-1 text-xs">
-                    <span className="text-neutral-400">Speed:</span>
-                    <select
-                      value={playbackSpeed}
-                      onChange={(e) => setPlaybackSpeed(parseFloat(e.target.value))}
-                      className="bg-neutral-800 text-xs font-bold text-yellow-300 rounded px-1.5 py-1 border border-neutral-700 focus:outline-hidden"
-                    >
-                      <option value={1.0}>1.0x</option>
-                      <option value={1.25}>1.25x</option>
-                      <option value={1.5}>1.5x</option>
-                      <option value={2.0}>2.0x</option>
-                    </select>
-                  </div>
-
-                  {/* ABS Selector */}
-                  <div className="flex items-center gap-1.5">
-                    <Settings className="w-3.5 h-3.5 text-yellow-400" />
-                    <select
-                      id="select-bitrate-quality"
-                      value={selectedBitrate}
-                      onChange={(e) => setSelectedBitrate(e.target.value)}
-                      className="bg-neutral-800 text-xs font-bold text-emerald-300 rounded px-2 py-1 border border-neutral-700 focus:outline-hidden"
-                    >
-                      {activeLecture?.bitrates.map(b => (
-                        <option key={b.label} value={b.label}>
-                          {b.label} ({b.resolution})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-
             </div>
           )}
 

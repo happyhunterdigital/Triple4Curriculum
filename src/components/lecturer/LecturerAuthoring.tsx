@@ -58,7 +58,7 @@ export const LecturerAuthoring: React.FC = () => {
 
       triggerToast({
         id: `toast_${Date.now()}`,
-        title: 'ðŸ¤- AI Checkpoint Generated',
+        title: 'ï¿½- AI Checkpoint Generated',
         message: 'High-yield quiz question and options constructed via server-side Gemini intelligence.',
         category: 'academic',
         timestamp: 'Just now',
@@ -84,7 +84,7 @@ export const LecturerAuthoring: React.FC = () => {
         moduleName: moduleName.trim(),
         summary: summary || 'Comprehensive academic lecture module covering 444 Curriculum principles.',
         readingNotes: readingNotes || 'Key reading notes and reference theorems for this module.',
-        videoUrl: videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        videoUrl: videoUrl.trim(),
         quiz: {
           question: quizQuestion,
           options: quizOptions,
@@ -208,11 +208,13 @@ export const LecturerAuthoring: React.FC = () => {
             type="url"
             value={videoUrl}
             onChange={(e) => setVideoUrl(e.target.value)}
-            placeholder="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            placeholder="https://www.youtube.com/watch?v=â€¦ (unlisted) or an MP4/HLS URL"
             className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-700 bg-neutral-950 text-white focus:outline-hidden font-mono"
           />
           <p className="text-[11px] text-neutral-400">
-            System automatically encodes source into 1080p, 720p, and 480p ABS ladders with dynamic DRM watermarking on delivery.
+            Paste a YouTube unlisted link for adaptive streaming at no hosting cost, or a direct MP4/HLS URL.
+            Upload the video as <span className="text-neutral-200 font-semibold">Unlisted</span> on the school&apos;s YouTube channel,
+            never Public, so it is not discoverable.
           </p>
         </div>
 

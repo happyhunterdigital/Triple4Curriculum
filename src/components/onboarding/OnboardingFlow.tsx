@@ -255,8 +255,12 @@ export const OnboardingFlow: React.FC = () => {
           enrollmentStatus: 'active', level: 'NQF-8',
         });
       } else {
-        await setDoc(doc(db, 'teachers', fbUser.uid), {
+        // Educator sign-up is an APPLICATION, not immediate provisioning.
+        // Staff claims/profiles are created by an admin after verification.
+        await setDoc(doc(db, 'teacher_applications', fbUser.uid), {
           ...base,
+          status: 'pending',
+          submittedAt: serverTimestamp(),
           identity: {
             idType: data.idType || 'national_id',
             idNumberMasked: mask(data.idNumber),
@@ -286,7 +290,9 @@ export const OnboardingFlow: React.FC = () => {
       }
 
       await setDoc(doc(db, 'users', fbUser.uid), {
-        uid: fbUser.uid, role: data.role, name: base.name, email: base.email,
+        // Self-service sign-up is always a learner until an admin grants a
+        // staff claim; the role field must match the rules (role == 'learner').
+        uid: fbUser.uid, role: 'learner', name: base.name, email: base.email,
         departmentId: data.department || '', provider,
         privacyPolicyAccepted: true, codeOfConductAccepted: true, termsAccepted: true,
         createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
@@ -333,11 +339,11 @@ export const OnboardingFlow: React.FC = () => {
               <h1 className="text-[26px] sm:text-[28px] font-medium tracking-tight text-[var(--color-t4c-black)]" style={{ fontFamily: 'Playfair Display, serif' }}>Registration Received</h1>
               <p className="font-sans text-sm text-neutral-600 mt-2 max-w-md mx-auto">
                 {role === 'teacher'
-                  ? 'Your credentials, qualifications and background consent are logged. Verification status: pending clearance. You will be routed to your teaching workspace.'
+                  ? 'Your application, qualifications and background consent are logged. An administrator must verify them and grant staff access before you can enter the teaching workspace.'
                   : 'Your personal details, academic records, agreements and payment setup are logged. You will be routed to your learning dashboard.'}
               </p>
             </div>
-            <Button onClick={() => { window.location.href = '/dashboard'; }}>Go to {role === 'teacher' ? 'Workspace' : 'Dashboard'} <ArrowRight size={16} className="ml-2" /></Button>
+            <Button onClick={() => { window.location.href = '/dashboard'; }}>Go to {role === 'teacher' ? 'Dashboard' : 'Dashboard'} <ArrowRight size={16} className="ml-2" /></Button>
           </motion.div>
         ) : (
           <motion.div key={step} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.22 }}>
@@ -764,7 +770,7 @@ export const OnboardingFlow: React.FC = () => {
                   <Button variant="outline" onClick={back} className="gap-2" disabled={submitting}><ArrowLeft size={16} /> Back</Button>
                   <Button onClick={form.handleSubmit(onSubmit)} className="ml-auto gap-2" disabled={submitting}>{submitting ? 'Submitting…' : 'Complete registration'} <CheckCircle2 size={16} /></Button>
                 </div>
-                <p className="text-[11px] text-neutral-500 text-center">POPIA Act 4 of 2013 compliant. Sensitive fields are masked; documents upload to private Firebase Storage. Data lands in the <span className="font-mono font-bold">{role === 'teacher' ? 'teachers' : 'students'}</span> ledger.</p>
+                <p className="text-[11px] text-neutral-500 text-center">POPIA Act 4 of 2013 compliant. Sensitive fields are masked; documents upload to private Firebase Storage. Data lands in the <span className="font-mono font-bold">{role === 'teacher' ? 'teacher_applications' : 'students'}</span> ledger.</p>
               </div>
             )}
           </motion.div>

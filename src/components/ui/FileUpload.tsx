@@ -6,6 +6,8 @@ export interface UploadedFileMeta {
   name: string;
   size: number;
   type: string;
+  /** Public/signed download URL, when the storage adapter provides one. */
+  downloadURL?: string;
 }
 
 interface FileUploadProps {

@@ -12,3 +12,6 @@ debug.log
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+
+# Internal audit/compliance documents (not for the public repo)
+docs/

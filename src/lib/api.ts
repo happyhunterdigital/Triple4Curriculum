@@ -2,20 +2,25 @@ import {
   User, UserRole, Department, Course, Lecture, TimetableSlot,
   Assignment, AssignmentSubmission, AttendanceRecord,
   Badge, AuditLog, PushNotification, ChatMessage, SystemAnnouncement,
-  LearnerCourseProgress, TeacherSummary
+  LearnerCourseProgress, TeacherSummary, GeneratedQuiz
 } from '../types';
 import { auth as fbAuth, db } from './firebase';
+import { resolveClaimRole } from './claims';
 import {
   addDoc,
   collection,
   deleteDoc,
   doc,
+  DocumentSnapshot,
   getCountFromServer,
   getDoc,
   getDocs,
+  limit,
   query,
+  QueryConstraint,
   serverTimestamp,
   setDoc,
+  startAfter,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -73,13 +78,13 @@ async function myProfile(): Promise<{ uid: string; role: UserRole; name: string;
   const u = fbAuth.currentUser;
   if (!u) throw new Error('Session expired or missing. Please sign in again.');
   if (profileCache && profileCache.uid === u.uid) return profileCache;
-  let role: UserRole = 'student';
+  // Claims are authoritative; the profile doc only supplies display fields.
+  const role: UserRole = await resolveClaimRole(u);
   let name = u.displayName || u.email?.split('@')[0] || 'Member';
   try {
     const snap = await getDoc(doc(db, C.users, u.uid));
     if (snap.exists()) {
       const d = snap.data() as Record<string, unknown>;
-      role = toAppRole(d.role);
       if (d.name) name = d.name as string;
     }
   } catch {
@@ -149,6 +154,112 @@ async function readWhere<T>(name: string, field: string, value: unknown): Promis
   } catch (e) {
     return friendly(e);
   }
+}
+
+// ── Phase 3: pagination / cost control ──────────────────────────────────────
+// COST NOTE: full-collection getDocs() scans charge 1 read per document and
+// grow unboundedly (users, submissions, attendance, notifications). Always
+// prefer pagedQuery() with limit()+startAfter() cursors, plus where() filters
+// so list views cost O(page) reads instead of O(collection). High-cardinality
+// dashboards should use getCountFromServer() for totals, not readAll().
+export interface PagedResult<T> {
+  items: T[];
+  nextCursor: DocumentSnapshot | null;
+  hasMore: boolean;
+}
+
+export async function pagedQuery<T>(
+  collectionName: string,
+  constraints: QueryConstraint[] = [],
+  limitN = 25,
+  cursor?: DocumentSnapshot | null,
+): Promise<PagedResult<T>> {
+  try {
+    const parts: QueryConstraint[] = [...constraints, limit(limitN)];
+    if (cursor) parts.push(startAfter(cursor));
+    const snap = await getDocs(query(collection(db, collectionName), ...parts));
+    const items = snap.docs.map((d) => withId<T>(d.id, d.data() as Record<string, unknown>));
+    const nextCursor = snap.docs.length === limitN ? snap.docs[snap.docs.length - 1] : null;
+    return { items, nextCursor, hasMore: nextCursor !== null };
+  } catch (e) {
+    return friendly(e);
+  }
+}
+
+/** Paged users directory — caps reads at 100/page instead of full scans. */
+export async function getUsersPaged(limitN = 100, cursor?: DocumentSnapshot | null): Promise<PagedResult<User>> {
+  const page = await pagedQuery<Record<string, unknown>>(C.users, [], limitN, cursor);
+  const me = await myProfile().catch(() => null);
+  let users = page.items.map((data) =>
+    withId<User>(data.id as string, {
+      name: (data.name as string) || 'Member',
+      email: (data.email as string) || '',
+      role: toAppRole(data.role),
+      departmentId: (data.departmentId as string | undefined) ?? (data.department as string | undefined),
+      departmentName: data.departmentName as string | undefined,
+      studentId: data.studentId as string | undefined,
+      employeeId: data.employeeId as string | undefined,
+      level: data.level as number | undefined,
+      xp: data.xp as number | undefined,
+      streakDays: data.streakDays as number | undefined,
+      badges: data.badges as string[] | undefined,
+      registeredDate: (data.registeredDate as string) || '',
+    }),
+  );
+  if (me && me.role === 'student') users = users.filter((u) => u.id === me.uid);
+  return { items: users, nextCursor: page.nextCursor, hasMore: page.hasMore };
+}
+
+/** Paged submissions, newest-first path: optional assignment filter. */
+export async function getSubmissionsPaged(
+  assignmentId?: string,
+  limitN = 25,
+  cursor?: DocumentSnapshot | null,
+): Promise<PagedResult<AssignmentSubmission>> {
+  const me = await myProfile().catch(() => null);
+  const constraints: QueryConstraint[] = [];
+  if (me && me.role === 'student') {
+    constraints.push(where('studentId', '==', me.uid));
+  } else if (assignmentId) {
+    constraints.push(where('assignmentId', '==', assignmentId));
+  }
+  // When a student scopes to one assignment, apply both filters client-side
+  // (avoids composite-index requirement); page is still bounded by limit().
+  const page = await pagedQuery<AssignmentSubmission>(C.submissions, constraints, limitN, cursor);
+  let items = page.items;
+  if (me && me.role === 'student' && assignmentId) items = items.filter((s) => s.assignmentId === assignmentId);
+  return { items, nextCursor: page.nextCursor, hasMore: page.hasMore };
+}
+
+/** Paged notifications for the current viewer. */
+export async function getNotificationsPaged(
+  limitN = 25,
+  cursor?: DocumentSnapshot | null,
+): Promise<PagedResult<PushNotification>> {
+  const me = await myProfile().catch(() => null);
+  const constraints: QueryConstraint[] =
+    me && me.role === 'student' ? [where('recipientId', '==', me.uid)] : [];
+  const page = await pagedQuery<PushNotification>(C.notifications, constraints, limitN, cursor);
+  let items = page.items;
+  // Students also see broadcast (empty recipientId) notices; staff see all.
+  if (me && me.role === 'student') {
+    const broadcast = await pagedQuery<PushNotification>(C.notifications, [], 10).catch(() => null);
+    const extra = (broadcast?.items || []).filter((n) => !n.recipientId);
+    const seen = new Set(items.map((n) => n.id));
+    for (const n of extra) if (!seen.has(n.id)) items = [...items, n];
+  }
+  return { items, nextCursor: page.nextCursor, hasMore: page.hasMore };
+}
+
+/** Paged attendance, scoped to self for students. */
+export async function getAttendancePaged(
+  limitN = 25,
+  cursor?: DocumentSnapshot | null,
+): Promise<PagedResult<AttendanceRecord>> {
+  const me = await myProfile().catch(() => null);
+  const constraints: QueryConstraint[] =
+    me && me.role === 'student' ? [where('studentId', '==', me.uid)] : [];
+  return pagedQuery<AttendanceRecord>(C.attendance, constraints, limitN, cursor);
 }
 
 const PRIVACY_NOTICE = {
@@ -221,7 +332,7 @@ export const api = {
         moduleName: (lecture as Record<string, unknown>).moduleName || 'Module: Advanced Foundations',
         order: existing.length + 1,
         videoDurationMinutes: 30,
-        videoUrl: lecture.videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        videoUrl: lecture.videoUrl || '',
         bitrates: [
           { label: 'Auto (Adaptive)', resolution: 'Dynamic', bitrateKbps: 0 },
           { label: '1080p Full HD', resolution: '1920x1080', bitrateKbps: 4500 },
@@ -328,15 +439,20 @@ export const api = {
 
   // ── Assignments & grading ──
   getAssignments: () => readAll<Assignment>(C.assignments),
+  /** @deprecated Prefer getSubmissionsPaged() — bounded reads. Kept for compat (first 50). */
   getSubmissions: async (assignmentId?: string) => {
-    const me = await myProfile().catch(() => null);
-    let records = assignmentId
-      ? await readWhere<AssignmentSubmission>(C.submissions, 'assignmentId', assignmentId)
-      : await readAll<AssignmentSubmission>(C.submissions);
-    if (me && me.role === 'student') records = records.filter((s) => s.studentId === me.uid);
-    return records;
+    const page = await getSubmissionsPaged(assignmentId, 50);
+    return page.items;
   },
-  submitAssignment: async (assignmentId: string, payload: { studentId: string; fileName: string; contentNotes: string }) => {
+  submitAssignment: async (
+    assignmentId: string,
+    payload: {
+      studentId: string;
+      fileName: string;
+      contentNotes: string;
+      fileMeta?: { path: string; name?: string; sizeKb?: number; size?: number; downloadURL?: string; fileURL?: string };
+    }
+  ) => {
     try {
       const me = await myProfile();
       const target = me.role === 'student' ? me.uid : payload.studentId || me.uid;
@@ -351,8 +467,11 @@ export const api = {
         studentName: me.name,
         studentEmail: me.email,
         submittedAt: stamp(),
-        fileName: payload.fileName || 'Submission_File.pdf',
-        fileSizeKb: 1500,
+        fileName: payload.fileMeta?.name || payload.fileName || 'Submission_File.pdf',
+        fileSizeKb: payload.fileMeta?.sizeKb
+          ?? (typeof payload.fileMeta?.size === 'number' ? Math.round(payload.fileMeta.size / 1024) : 1500),
+        filePath: payload.fileMeta?.path || '',
+        fileURL: payload.fileMeta?.downloadURL || payload.fileMeta?.fileURL || '',
         contentNotes: payload.contentNotes || 'Standard 444 assignment submission.',
         status: 'submitted',
         maxGrade: assignment.maxPoints,
@@ -391,7 +510,7 @@ export const api = {
         category: 'grading',
         timestamp: stamp(),
         read: false,
-        actionUrl: '/student/assignments',
+        actionUrl: '/assignments',
         priority: 'high',
         createdAt: serverTimestamp(),
       });
@@ -405,11 +524,10 @@ export const api = {
   },
 
   // ── Attendance ──
+  /** @deprecated Prefer getAttendancePaged() — bounded reads. Kept for compat (first 50). */
   getAttendance: async () => {
-    const me = await myProfile().catch(() => null);
-    const records = await readAll<AttendanceRecord>(C.attendance);
-    if (me && me.role === 'student') return records.filter((r) => r.studentId === me.uid);
-    return records;
+    const page = await getAttendancePaged(50);
+    return page.items;
   },
   checkInAttendance: async (studentId: string, courseId: string, method?: string) => {
     try {
@@ -461,6 +579,9 @@ export const api = {
   },
 
   // ── Reports ──
+  // Phase 4: SA-SAMS is a validated client-side CSV builder (src/lib/sams.ts).
+  // It is NOT a certified SA-SAMS integration — verify every import in a
+  // SA-SAMS test environment before relying on it for statutory submissions.
   getReportsSummary: async () => {
     const [deptCount, userCount] = await Promise.all([
       getCountFromServer(collection(db, C.departments)).then((s) => s.data().count).catch(() => 0),
@@ -475,8 +596,8 @@ export const api = {
       averageAttendanceRate: 0,
       averageGradePercent: 0,
       dropoutRiskAlertsCount: 0,
-      saSamsIntegrationStatus: 'Roadmap - demo data, not a certified export',
-      lastSaSamsExport: 'Not yet implemented (demo)',
+      saSamsIntegrationStatus: 'Phase 4 — validated client-side SA-SAMS CSV builders (uncertified import; verify in SA-SAMS test env)',
+      lastSaSamsExport: 'On-demand via api.exportSamsAttendance / api.exportSamsResults',
       bbbeeScorecardPoints: 0,
       setaAccreditedModules: 0,
       departmentBreakdown: departments.map((d) => ({
@@ -490,12 +611,30 @@ export const api = {
     };
   },
 
+  /** Build a SA-SAMS attendance CSV (uncertified import — verify in SA-SAMS test env). */
+  exportSamsAttendance: async (records?: AttendanceRecord[]) => {
+    const { buildSamsAttendanceCSV, downloadCsv } = await import('./sams');
+    const rows = records ?? (await getAttendancePaged(500)).items;
+    const csv = buildSamsAttendanceCSV(rows);
+    downloadCsv(`sams-attendance-${new Date().toISOString().slice(0, 10)}.csv`, csv);
+    return csv;
+  },
+
+  /** Build a SA-SAMS results CSV from graded submissions (uncertified import). */
+  exportSamsResults: async (submissions?: AssignmentSubmission[], opts?: { term?: string; grade?: string }) => {
+    const { buildSamsResultsCSV, downloadCsv } = await import('./sams');
+    const rows = submissions ?? (await getSubmissionsPaged(undefined, 500)).items;
+    const graded = rows.filter((s) => typeof s.grade === 'number');
+    const csv = buildSamsResultsCSV(graded, opts);
+    downloadCsv(`sams-results-${new Date().toISOString().slice(0, 10)}.csv`, csv);
+    return csv;
+  },
+
   // ── Notifications & announcements ──
+  /** @deprecated Prefer getNotificationsPaged() — bounded reads. Kept for compat (first 50). */
   getNotifications: async () => {
-    const me = await myProfile().catch(() => null);
-    const all = await readAll<PushNotification>(C.notifications);
-    if (me && me.role === 'student') return all.filter((n) => !n.recipientId || n.recipientId === me.uid);
-    return all;
+    const page = await getNotificationsPaged(50);
+    return page.items;
   },
   markNotificationRead: async (id: string) => {
     try {
@@ -581,28 +720,10 @@ export const api = {
   },
 
   // ── Users & badges ──
+  /** Paginated directory read (first 100). Use getUsersPaged() for cursors. */
   getUsers: async () => {
-    const me = await myProfile().catch(() => null);
-    const snap = await getDocs(collection(db, C.users)).catch((e) => friendly(e));
-    const users = snap.docs.map((d) => {
-      const data = d.data() as Record<string, unknown>;
-      return withId<User>(d.id, {
-        name: (data.name as string) || 'Member',
-        email: (data.email as string) || '',
-        role: toAppRole(data.role),
-        departmentId: data.departmentId as string | undefined ?? (data.department as string | undefined),
-        departmentName: data.departmentName as string | undefined,
-        studentId: data.studentId as string | undefined,
-        employeeId: data.employeeId as string | undefined,
-        level: data.level as number | undefined,
-        xp: data.xp as number | undefined,
-        streakDays: data.streakDays as number | undefined,
-        badges: data.badges as string[] | undefined,
-        registeredDate: (data.registeredDate as string) || '',
-      });
-    });
-    if (me && me.role === 'student') return users.filter((u) => u.id === me.uid);
-    return users;
+    const page = await getUsersPaged(100);
+    return page.items;
   },
   /** Provision a directory profile; activates when the person registers with the same email. */
   createUser: async (payload: Partial<User>) => {
@@ -636,9 +757,9 @@ export const api = {
   },
   getBadges: () => readAll<Badge>(C.badges),
 
-  // ── AI quiz: direct Gemini call when a client key is configured, else canned fallback ──
-  generateAiQuiz: async (topic: string, difficulty?: string) => {
-    const fallback = {
+  // ── AI quiz: server-side generateQuiz callable, else canned fallback ──
+  generateAiQuiz: async (topic: string, difficulty?: string): Promise<GeneratedQuiz> => {
+    const fallback: GeneratedQuiz = {
       question: `Under the 444 Curriculum framework for ${topic || 'Distributed Consensus'}, what is the primary guarantee provided by state machine replication?`,
       options: [
         'Deterministic state convergence across all un-crashed nodes executing log operations in the identical sequence',
@@ -650,30 +771,64 @@ export const api = {
       explanation: 'State machine replication guarantees that identical inputs executed in the exact order on deterministic state machines produce identical state transitions.',
       xpReward: 150,
     };
-    const key = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
-    if (!key) return fallback;
     try {
-      const { GoogleGenAI } = await import('@google/genai');
-      const ai = new GoogleGenAI({ apiKey: key });
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: `Generate a high-yield academic multiple-choice quiz question with 4 options, the 0-based index of the correct answer, and an insightful explanation for the topic: "${topic}". Target difficulty: ${difficulty || 'Undergraduate Level 3'}. Return strictly valid JSON: {"question": "string", "options": ["string x4"], "correctIndex": 0, "explanation": "string", "xpReward": 150}`,
-        config: { responseMimeType: 'application/json' },
-      });
-      return JSON.parse(response.text || '{}');
+      const functionsMod = await import('firebase/functions');
+      const appMod = await import('./firebase');
+      const functions = functionsMod.getFunctions(appMod.default);
+      const callQuiz = functionsMod.httpsCallable(functions, 'generateQuiz');
+      const result = await callQuiz({ topic, difficulty: difficulty || 'Undergraduate Level 3' });
+      const data = result.data as Record<string, unknown>;
+      const raw = (data && typeof data === 'object' && 'quiz' in data
+        ? (data as Record<string, unknown>).quiz
+        : data) as Record<string, unknown> | null;
+      if (
+        raw &&
+        typeof raw.question === 'string' &&
+        Array.isArray(raw.options) &&
+        raw.options.length > 0 &&
+        typeof raw.correctIndex === 'number'
+      ) {
+        return {
+          question: raw.question,
+          options: raw.options.map(String),
+          correctIndex: Math.min(Math.max(0, Math.floor(raw.correctIndex)), raw.options.length - 1),
+          explanation: typeof raw.explanation === 'string' ? raw.explanation : '',
+          xpReward: typeof raw.xpReward === 'number' ? raw.xpReward : 150,
+        };
+      }
+      return fallback;
     } catch {
       return fallback;
     }
   },
 
   // ── Teachers & learner progress ──
+  // COST NOTE: staff directory uses where('role')-limited queries (limit 100)
+  // + bounded course/progress reads instead of 4× full-collection scans.
   getTeachers: async () => {
-    const [users, courses, progress, submissions] = await Promise.all([
-      readAll<Record<string, unknown> & { role?: unknown }>(C.users).catch(() => []),
+    const [teacherDocs, lecturerDocs, courses, progressPage, submissionsPage] = await Promise.all([
+      getDocs(query(collection(db, C.users), where('role', '==', 'teacher'), limit(100))).catch(() => null),
+      getDocs(query(collection(db, C.users), where('role', '==', 'lecturer'), limit(100))).catch(() => null),
       readAll<Course>(C.courses).catch(() => []),
-      readAll<LearnerCourseProgress>(C.learnerProgress).catch(() => []),
-      readAll<AssignmentSubmission>(C.submissions).catch(() => []),
+      pagedQuery<LearnerCourseProgress>(C.learnerProgress, [], 100).catch(() => null),
+      pagedQuery<AssignmentSubmission>(C.submissions, [where('status', '==', 'submitted')], 100).catch(() => null),
     ]);
+    const rawUsers: Array<Record<string, unknown> & { role?: unknown }> =
+      teacherDocs || lecturerDocs
+        ? [
+            ...(teacherDocs?.docs.map((d) => ({ id: d.id, ...(d.data() as Record<string, unknown>) })) || []),
+            ...(lecturerDocs?.docs.map((d) => ({ id: d.id, ...(d.data() as Record<string, unknown>) })) || []),
+          ]
+        : await readAll<Record<string, unknown> & { role?: unknown }>(C.users).catch(() => []);
+    // Include admins via one bounded extra query only when role queries returned data.
+    let adminDocs: Array<Record<string, unknown> & { role?: unknown }> = [];
+    if (teacherDocs || lecturerDocs) {
+      const snap = await getDocs(query(collection(db, C.users), where('role', '==', 'admin'), limit(50))).catch(() => null);
+      adminDocs = snap?.docs.map((d) => ({ id: d.id, ...(d.data() as Record<string, unknown>) })) || [];
+    }
+    const users = [...rawUsers, ...adminDocs];
+    const progress = progressPage?.items || [];
+    const submissions = submissionsPage?.items || [];
     const staff = users.filter((u) => {
       const r = toAppRole(u.role);
       return r === 'lecturer' || r === 'admin';
@@ -789,7 +944,7 @@ export const api = {
         timestamp: stamp(),
         read: false,
         priority: payload.priority || 'high',
-        actionUrl: `/course/${record.courseId}`,
+        actionUrl: `/lectures`,
         createdAt: serverTimestamp(),
       });
       await addDoc(collection(db, C.messages), {
@@ -827,7 +982,7 @@ export const api = {
             timestamp: stamp(),
             read: false,
             priority: 'high',
-            actionUrl: `/course/${s.courseId}`,
+            actionUrl: `/lectures`,
             createdAt: serverTimestamp(),
           })
         )

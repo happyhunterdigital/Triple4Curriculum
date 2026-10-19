@@ -6,34 +6,28 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function userRole() {
-      return signedIn() && request.auth.token.keys().hasAny(['role', 'admin'])
-        ? (request.auth.token.keys().hasAll(['role']) ? request.auth.token.role : (request.auth.token.admin == true ? 'admin' : ''))
-        : '';
-    }
-
+    // Claims-only role checks. No get() / profile-doc lookups.
     function isAdmin() {
-      return signedIn() && (userRole() == 'admin' || request.auth.token.admin == true);
-    }
-
-    function profileRole() {
-      return signedIn()
-        ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role
-        : '';
+      return signedIn() && (
+        request.auth.token.role == 'admin' ||
+        request.auth.token.admin == true
+      );
     }
 
     function isStaff() {
-      return isAdmin() || userRole() in ['teacher', 'lecturer'] || profileRole() in ['teacher', 'admin'];
+      return isAdmin() || (
+        signedIn() && request.auth.token.role in ['teacher', 'lecturer']
+      );
     }
 
     // Role is NEVER client-writable. Clients create their own user doc with
     // role fixed to 'learner'; upgrades happen via custom claims / console.
-    // Signed-in directory reads support collaboration features.
     match /users/{userId} {
       allow create: if signedIn()
                     && request.auth.uid == userId
                     && request.resource.data.role == 'learner';
-      allow read: if signedIn();
+      allow read: if signedIn()
+                    && (request.auth.uid == userId || isStaff());
       allow update: if signedIn()
                     && (request.auth.uid == userId || isAdmin())
                     && request.resource.data.role == resource.data.role;
@@ -53,17 +47,32 @@ service cloud.firestore {
     }
 
     match /teachers/{teacherId} {
-      allow create: if signedIn()
-                    && request.auth.uid == teacherId
-                    && request.resource.data.role == 'teacher';
-      allow read: if signedIn();
+      // Staff profiles are provisioned by an admin only after the corresponding
+      // custom claim is granted. A learner must never be able to self-create a
+      // teacher record (that would spoof staff UI even though rules stay safe).
+      allow create: if isAdmin();
+      allow read: if signedIn()
+                    && (request.auth.uid == teacherId || isStaff());
       allow update: if signedIn()
                     && (request.auth.uid == teacherId || isStaff())
                     && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role);
       allow delete: if isAdmin();
     }
 
-    // Public catalog reads; staff writes.
+    // Educator applications: self-created, admin-reviewed. This is NOT a staff
+    // profile; the applicant becomes staff only after an admin verifies the
+    // application and grants a custom claim.
+    match /teacher_applications/{applicantId} {
+      allow create: if signedIn()
+                    && request.auth.uid == applicantId
+                    && request.resource.data.role == 'teacher'
+                    && request.resource.data.status == 'pending';
+      allow read: if signedIn()
+                    && (request.auth.uid == applicantId || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+
+    // Catalog: signed-in reads; staff writes; admin deletes.
     match /departments/{id} {
       allow read: if signedIn();
       allow create, update: if isStaff();
@@ -83,7 +92,7 @@ service cloud.firestore {
     }
 
     match /curriculum/{courseId} {
-      allow read: if true;
+      allow read: if signedIn();
       allow write: if false;
     }
 
@@ -122,7 +131,7 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Notifications: staff create; recipients read/update own.
+    // Notifications: staff create; recipient or staff read/update.
     match /notifications/{id} {
       allow read, update: if signedIn()
                     && (request.auth.uid == resource.data.recipientId || isStaff());
@@ -136,26 +145,42 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // Messages: participants (sender/recipient) or staff read; sender creates.
     match /messages/{id} {
-      allow read: if signedIn();
+      allow read: if signedIn()
+                    && (request.auth.uid == resource.data.senderId
+                        || request.auth.uid == resource.data.recipientId
+                        || isStaff());
       allow create: if signedIn() && request.auth.uid == request.resource.data.senderId;
       allow update, delete: if isStaff();
     }
 
     match /badges/{id} {
       allow read: if signedIn();
-      allow write: if isStaff();
+      allow create, update: if isStaff();
+      allow delete: if isAdmin();
     }
 
-    // Audit trail: staff write, admins read.
+    // Audit trail: admins read; signed-in clients may append small entries.
+    // NOTE (Phase 1): move audit writes to Cloud Functions (server timestamps,
+    // IP hashing, per-IP quotas) and tighten this to functions-only.
     // NOTE (spam/rate-limit): Firestore rules cannot do time-based throttling
     // natively. Abuse control is layered: client honeypot (`companyWebsite`) +
     // 60s contact-form resubmit gate, owner-scoped creates below, and (planned)
     // App Check enforcement + Cloud Functions per-IP quotas before production.
     match /audit_logs/{id} {
       allow read: if isAdmin();
-      allow create: if signedIn();
+      allow create: if signedIn()
+                    && request.resource.data.details is string
+                    && request.resource.data.details.size() < 2000;
       allow update, delete: if false;
+    }
+
+    // Synced class recordings: written only by the youtubeSync Function
+    // (Admin SDK bypasses rules); clients read for replay lists.
+    match /recordings/{id} {
+      allow read: if signedIn();
+      allow write: if false;
     }
 
     // Default deny.

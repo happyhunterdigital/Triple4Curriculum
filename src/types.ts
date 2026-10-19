@@ -1,5 +1,14 @@
 export type UserRole = 'student' | 'lecturer' | 'admin';
 
+/** Shape returned by the server-side generateQuiz callable (or its fallback). */
+export interface GeneratedQuiz {
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+  xpReward: number;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -118,6 +127,8 @@ export interface AssignmentSubmission {
   submittedAt: string;
   fileName: string;
   fileSizeKb: number;
+  filePath?: string;
+  fileURL?: string;
   contentNotes: string;
   status: 'submitted' | 'graded';
   grade?: number;

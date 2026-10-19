@@ -37,13 +37,46 @@ equivalent processor protections. We never sell personal information.
 
 ## 4. Retention
 
-Active accounts: enrolment + 5 years, then minimised/deleted. Statutory assessment archives per
-DBE/SACCAI. Contact messages: 12 months. Audit logs: admin-only, hashed identifiers.
+| Data | Retention | Disposal |
+|---|---|---|
+| Enrolment & statutory assessment archives (registers, scripts, SBAs, promotion schedules) | Statutory DBE/SACCAI archive period | Minimised/deleted only after clearance — DBE hold overrides deletion requests (records are anonymised instead) |
+| Active accounts | Enrolment + 5 years, then minimised/deleted | `eraseMyData` callable / admin purge |
+| Contact / marketing messages | 12 months after last contact (unless consent renewed) | Auto-deleted daily by `purgeExpired` |
+| Audit logs (admin-only, hashed identifiers) | 2 years identifiable, then anonymised (`userId`→SHA-256, name→`redacted`) | Auto-anonymised daily by `purgeExpired` |
+| Notifications / nudges | Enrolment + 1 year | Deleted on erasure (`eraseMyData`) |
+| Unverified accounts | 30-day grace, then manual review (report-only; no auto-delete) | Manual review |
 
-## 5. Rights & complaints
+Enforcement: `functions/src/retention.ts` (`purgeExpired`, scheduled every 24 h). Full
+assessment: `docs/DPIA.md` §5.
 
-Access/export, correction, deletion: privacy@triple4c.com. Unresolved complaints: the
-**Information Regulator (SA)** — inforegulator.org.za.
+### Data residency
+
+Primary data plane is Firebase (Auth/Firestore/Storage/Hosting) with Google infrastructure
+that may store or replicate data **outside South Africa**. Enrolment constitutes POPIA s72
+consent to such transfers, subject to equivalent processor protections in our contracts.
+Statutory SACCAI/DBE submissions are filed from the retained archive regardless of region.
+
+## 5. Rights & complaints (DSR — how to exercise them)
+
+Email **privacy@triple4c.com** (or support@triple4c.com, forwarded within 2 school days):
+
+1. **Access/export** — we run `exportMyDataStrict` (self-service `api.exportMyData`, or the
+   callable for a verified subject) and deliver JSON (+ SA-SAMS CSVs on request) within 30 days.
+2. **Correction** — reply with the corrected details; we update the profile/education record
+   and notify staff holders of the correction.
+3. **Deletion/erasure** — we run `eraseMyData` (`{ confirm: true }`): messages/notifications
+   hard-deleted; profile, submissions, attendance and progress anonymised (`name→Erased`,
+   `email→''`, `guardian→null`). Statutory DBE/SACCAI archives are anonymised, not deleted,
+   until the archive hold clears.
+4. **Guardian requests for minors** — supply learner name + DOB + guardian contact matching
+   the consent record (under-13: original verification method). Guardians may review, correct,
+   or request deletion at any time.
+5. Every DSR writes an `audit_logs` entry (`DSR_EXPORT` / `DSR_ERASURE`) and you are told the
+   outcome.
+
+Unresolved complaints: the **Information Regulator (SA)** — inforegulator.org.za. EU/UK
+learners additionally hold GDPR rights (access, rectification, erasure, restriction,
+portability, objection); US under-13 guardians hold COPPA consent rights.
 
 ## 6. Implementation pointers (repo)
 
@@ -54,4 +87,6 @@ Access/export, correction, deletion: privacy@triple4c.com. Unresolved complaints
 - Headers: `firebase.json` (HSTS preload, nosniff, SAMEORIGIN, Referrer-Policy,
   Permissions-Policy).
 - Cookies: `src/components/site/CookieConsent.tsx` (`t4c-cookie-consent` flag only).
-- Export/erasure: `api.exportMyData` (live Firestore assembly); deletion via admin-gated paths.
+- Export/erasure: `api.exportMyData` (live Firestore assembly); strict DSR via
+  `exportMyDataStrict` / `eraseMyData` callables + `purgeExpired` retention sweep
+  (`functions/src/retention.ts`); SA-SAMS CSVs via `src/lib/sams.ts`; DPIA in `docs/DPIA.md`.

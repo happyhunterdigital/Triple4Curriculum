@@ -61,7 +61,7 @@ const SECTIONS: Array<{ id: string; h: string; body: React.ReactNode }> = [
     h: '5. Sharing & cross-border transfers (POPIA s72)',
     body: (
       <ul className="list-disc pl-5 space-y-1">
-        <li><strong>Processors:</strong> Firebase (Auth/Firestore/Storage/Hosting), Google Gemini (optional AI quiz, client-side restricted key), Cloudinary (media), Stripe (payments). Each processes only what it needs.</li>
+        <li><strong>Processors:</strong> Firebase (Auth/Firestore/Storage/Hosting/Functions), Google Gemini (optional AI quiz, called server-side through a Cloud Function, key never exposed to the browser), YouTube (lecture video hosting), Google Meet (live classes), Cloudinary (images), Stripe and PayFast (payments). Each processes only what it needs.</li>
         <li><strong>SACCAI/DBE:</strong> registration and Grade 12 exam data shared as legally required.</li>
         <li><strong>Cross-border:</strong> Firebase/Google infrastructure may store data outside South Africa. By enrolling you consent to s72 transfers subject to equivalent protections in our processor contracts.</li>
         <li>We never sell personal information.</li>
@@ -88,7 +88,7 @@ const SECTIONS: Array<{ id: string; h: string; body: React.ReactNode }> = [
         <li>Firebase-native enforcement: owner-scoped writes, staff-gated management, admin-only audit reads; <span className="font-mono text-xs">role</span> is never client-writable (see <span className="font-mono text-xs">firestore.rules</span>).</li>
         <li>Sensitive numbers (ID, tax, bank) stored masked; documents in private Firebase Storage (≤10 MB, image/PDF only).</li>
         <li>HTTPS everywhere with HSTS preload; security headers via <span className="font-mono text-xs">firebase.json</span> (nosniff, SAMEORIGIN, Referrer-Policy, Permissions-Policy).</li>
-        <li>The Gemini key (<span className="font-mono text-xs">VITE_GEMINI_API_KEY</span>) is a public client key restricted to triple4c.com HTTP referrers — never a server secret. See SECURITY.md.</li>
+        <li>AI quiz generation runs server-side via the <span className="font-mono text-xs">generateQuiz</span> Cloud Function — no AI secret ships in the browser bundle. See SECURITY.md.</li>
       </ul>
     ),
   },

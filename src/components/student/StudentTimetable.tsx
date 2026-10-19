@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, MapPin, Video, Users, CheckCircle2, Filter, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Calendar, Clock, MapPin, Video, Users, CheckCircle2, Filter, AlertCircle, Link2, Check } from 'lucide-react';
 import { api } from '../../lib/api';
+import { getLiveLink } from '../../lib/liveClass';
 import { TimetableSlot } from '../../types';
 
 export const StudentTimetable: React.FC = () => {
+  const navigate = useNavigate();
   const [slots, setSlots] = useState<TimetableSlot[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>('All');
   const [loading, setLoading] = useState(true);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const days = ['All', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
@@ -22,9 +26,19 @@ export const StudentTimetable: React.FC = () => {
     load();
   }, []);
 
-  const filteredSlots = selectedDay === 'All' 
-    ? slots 
+  const filteredSlots = selectedDay === 'All'
+    ? slots
     : slots.filter(s => s.dayOfWeek === selectedDay);
+
+  const copyLink = async (slotId: string, url: string) => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedId(slotId);
+      setTimeout(() => setCopiedId((c) => (c === slotId ? null : c)), 2000);
+    } catch {
+      // Clipboard unavailable — no-op.
+    }
+  };
 
   return (
     <div className="space-y-6 pb-12">
@@ -66,8 +80,28 @@ export const StudentTimetable: React.FC = () => {
 
       {/* Timetable Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filteredSlots.map(slot => (
-          <div 
+        {filteredSlots.map(slot => {
+          const live = getLiveLink(slot);
+          const copied = copiedId === slot.id;
+          // Jitsi embeds and Google Meet both route through /live so attendance
+          // is recorded. Other providers open directly.
+          const isInApp = live.canEmbed || live.provider === 'google-meet';
+          const joinLive = () => {
+            if (isInApp) {
+              const q = new URLSearchParams({
+                room: live.url,
+                courseId: slot.courseId,
+                title: slot.courseTitle,
+                code: slot.courseCode,
+              });
+              navigate(`/live?${q.toString()}`);
+            } else {
+              // Staff-provided external provider (Meet, etc.) opens in a new tab.
+              window.open(live.url, '_blank', 'noopener');
+            }
+          };
+          return (
+          <div
             key={slot.id}
             className="bg-white rounded-2xl p-5 border border-emerald-950/10 hover:border-emerald-500 shadow-xs transition flex flex-col justify-between group"
           >
@@ -88,7 +122,7 @@ export const StudentTimetable: React.FC = () => {
               <h3 className="text-sm font-black text-neutral-900 group-hover:text-emerald-900 transition line-clamp-2">
                 {slot.courseTitle}
               </h3>
-              
+
               <div className="mt-4 space-y-2 text-xs text-neutral-600">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-emerald-800 flex-shrink-0" />
@@ -109,24 +143,45 @@ export const StudentTimetable: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-5 pt-3 border-t border-neutral-100 flex items-center justify-between">
-              <span className="text-[11px] font-semibold text-emerald-800">
-                Mandatory Attendance
-              </span>
-              {slot.onlineLink && (
-                <a
-                  href={slot.onlineLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-yellow-300 font-bold text-xs shadow-xs transition"
-                >
-                  <Video className="w-3.5 h-3.5" />
-                  <span>Join Live Stream</span>
-                </a>
+            <div className="mt-5 pt-3 border-t border-neutral-100 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-semibold text-emerald-800">
+                  Mandatory Attendance
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => copyLink(slot.id, live.url)}
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-neutral-200 hover:border-emerald-500 text-neutral-600 hover:text-emerald-900 font-bold text-xs transition"
+                    title="Copy live class link"
+                  >
+                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-700" /> : <Link2 className="w-3.5 h-3.5" />}
+                    <span>{copied ? 'Copied' : 'Copy link'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={joinLive}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-yellow-300 font-bold text-xs shadow-xs transition"
+                    title={
+                      live.provider === 'google-meet'
+                        ? 'Join in Google Meet (attendance recorded)'
+                        : isInApp
+                          ? 'Enter the embedded classroom (attendance auto-recorded)'
+                          : 'Open the staff-provided live link'
+                    }
+                  >
+                    <Video className="w-3.5 h-3.5" />
+                    <span>{live.provider === 'google-meet' ? 'Join Live' : isInApp ? 'Enter Classroom' : 'Join Live Stream'}</span>
+                  </button>
+                </div>
+              </div>
+              {live.isFallback && (
+                <p className="text-[10px] text-neutral-500 leading-relaxed">{live.embedNote}</p>
               )}
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
     </div>

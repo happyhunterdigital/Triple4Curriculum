@@ -9,8 +9,10 @@ import {
   sendEmailVerification,
   signOut,
   updateProfile,
+  type User as FirebaseUser,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { resolveClaimRole } from './claims';
 
 interface AuthContextType {
   currentUser: User | null;
@@ -33,22 +35,19 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-type StoredRole = 'learner' | 'teacher' | 'admin' | 'student' | 'lecturer';
+/**
+ * Resolve the app-level User.
+ *
+ * Authorisation role comes exclusively from Firebase Auth custom claims, the
+ * same source firestore.rules trusts. Firestore profile docs only supply
+ * display fields (name, department, student id) and can never elevate a role.
+ */
+async function resolveUser(fbUser: FirebaseUser, forceRefresh = false): Promise<User | null> {
+  const role = await resolveClaimRole(fbUser, forceRefresh);
+  const uid = fbUser.uid;
+  const email = fbUser.email;
+  const displayName = fbUser.displayName;
 
-function toAppRole(raw: unknown): UserRole {
-  if (raw === 'teacher' || raw === 'lecturer') return 'lecturer';
-  if (raw === 'admin') return 'admin';
-  return 'student';
-}
-
-function toStoredRole(raw: string): StoredRole {
-  if (raw === 'teacher' || raw === 'lecturer') return 'teacher';
-  if (raw === 'admin') return 'admin';
-  return 'learner';
-}
-
-/** Resolve the app-level User from Firebase Auth + Firestore profile docs. */
-async function resolveUser(uid: string, email: string | null, displayName: string | null): Promise<User | null> {
   const candidates = [doc(db, 'users', uid), doc(db, 'students', uid), doc(db, 'teachers', uid)];
   for (const ref of candidates) {
     try {
@@ -59,7 +58,7 @@ async function resolveUser(uid: string, email: string | null, displayName: strin
           id: uid,
           name: (d.name as string) || displayName || email?.split('@')[0] || 'Learner',
           email: (d.email as string) || email || '',
-          role: toAppRole(d.role),
+          role,
           departmentId: d.department as string | undefined ?? (d.departmentId as string | undefined),
           departmentName: d.departmentName as string | undefined,
           studentId: d.studentId as string | undefined,
@@ -100,7 +99,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
         const [idToken, user] = await Promise.all([
           fbUser.getIdToken().catch(() => ''),
-          resolveUser(fbUser.uid, fbUser.email, fbUser.displayName),
+          resolveUser(fbUser),
         ]);
         if (!cancelled) {
           setCurrentUser(user);
@@ -141,12 +140,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (payload.name) {
         await updateProfile(cred.user, { displayName: payload.name }).catch(() => {});
       }
-      const storedRole = toStoredRole(payload.role);
+      // Self-registration is always a learner. Elevated roles are granted only
+      // by an admin through the setCustomRole function (custom claims).
       await setDoc(doc(db, 'users', cred.user.uid), {
         uid: cred.user.uid,
         name: payload.name,
         email: payload.email,
-        role: storedRole,
+        role: 'learner',
         departmentId: payload.departmentId || '',
         privacyPolicyAccepted: true,
         codeOfConductAccepted: true,
@@ -176,7 +176,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const fbUser = fbAuth.currentUser;
     if (!fbUser) return;
     try {
-      const user = await resolveUser(fbUser.uid, fbUser.email, fbUser.displayName);
+      // Force-refresh the ID token so a role change made by an admin appears
+      // immediately instead of waiting for the token's one-hour cycle.
+      const user = await resolveUser(fbUser, true);
       if (user) setCurrentUser(user);
     } catch (e) {
       console.warn('Failed to refresh user', e);

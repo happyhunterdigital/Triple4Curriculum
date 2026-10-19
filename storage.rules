@@ -26,6 +26,18 @@ service firebase.storage {
       allow write: if isOwner(uid) && validMeta();
     }
 
+    // Assignment submissions: owner write with valid metadata, owner or admin read
+    match /submissions/{uid}/{file} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow write: if isOwner(uid) && validMeta();
+    }
+
+    // Certificates: admin-issued, owner or admin read
+    match /certificates/{uid}/{file} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow write: if isAdmin();
+    }
+
     // Legacy/other paths: deny all
     match /{allPaths=**} {
       allow read, write: if false;

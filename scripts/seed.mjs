@@ -35,7 +35,7 @@ const LECTURES = [
   {
     courseId: 'csc441', courseCode: 'CSC-441', courseTitle: 'Distributed Consensus & Cloud Systems',
     title: 'Lecture 1: State Machine Replication', moduleName: 'Module 1: Replication Foundations', order: 1,
-    videoDurationMinutes: 32, videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    videoDurationMinutes: 32, videoUrl: '', // YouTube unlisted link added via authoring or youtubeSync auto-sync
     summary: 'Deterministic replicas, identical inputs, identical state transitions.',
     readingNotes: 'Raft paper sections 1-4; state machine safety invariant.',
     completed: false,
@@ -44,7 +44,7 @@ const LECTURES = [
   {
     courseId: 'ai442', courseCode: 'AI-442', courseTitle: 'POPIA & AI Ethics Frameworks',
     title: 'Lecture 1: Dignity, Consent & Fairness', moduleName: 'Module 1: Ethical AI Frameworks', order: 1,
-    videoDurationMinutes: 28, videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    videoDurationMinutes: 28, videoUrl: '', // YouTube unlisted link added via authoring or youtubeSync auto-sync
     summary: 'The 8 conditions for lawful processing under POPIA.',
     readingNotes: 'POPIA Act 4 of 2013, conditions 1-4; consent records.',
     completed: false,

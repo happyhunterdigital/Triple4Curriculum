@@ -22,15 +22,20 @@ site with real learner data or disruptive payloads.
   `storage.rules`: owner-scoped writes, staff-gated management, admin-only
   audit reads, `role` never client-writable.
 - Auth is Firebase email/Google; sessions persist via the Auth SDK.
-- `VITE_GEMINI_API_KEY` (if set) is a **public client key, never a server secret**.
-  It ships in the browser bundle (`src/lib/api.ts` → `generateAiQuiz`) and must be locked
-  down in Google Cloud Console, otherwise anyone can reuse it:
-  - APIs & Services → Credentials → select the key → **API restrictions: Generative Language API only**.
-  - **Application restrictions → HTTP referrers**: `https://triple4c.com/*` and
-    `https://www.triple4c.com/*` (plus `http://localhost:*/*` for local dev only).
-  - Set a daily quota / budget alert; rotate immediately if ever committed.
-  - No server keys (`FIREBASE_SERVICE_ACCOUNT_JSON`, Stripe secrets) may ever carry a
-    `VITE_` prefix or enter the client bundle — they live in CI/hosting env only.
+- Phase 1 trust layer (`functions/src/index.ts`): privileged writes run in
+  callable Cloud Functions, never in the client bundle —
+  `setCustomRole` (admin-only custom claims), `generateQuiz` (auth + 20/day
+  quota + cache, Gemini via the `GEMINI_API_KEY` functions secret, canned
+  fallback otherwise), `completeLectureAndAwardXP` (transactional server-side
+  XP — the client never writes `xp`), `gradeSubmission` (staff-only),
+  `writeAudit` (30/min quota), `sendEmailNudge` (staff-only, Resend stub),
+  `createCertificate`, plus `stripeWebhook` / `payfastWebhook` signature-
+  verified payment receivers. Secrets live in Cloud Functions config
+  (`firebase functions:secrets:set`), never in `VITE_*` client env.
+- There is NO `VITE_GEMINI_API_KEY` client key. AI quiz calls go through the
+  `generateQuiz` callable; the browser bundle contains no AI secret.
+  No server keys (`GEMINI_API_KEY`, `RESEND_API_KEY`, `STRIPE_SECRET`, service
+  accounts) may ever carry a `VITE_` prefix or enter the client bundle.
 - Security headers ship via `firebase.json` (HSTS preload, nosniff, SAMEORIGIN,
   Referrer-Policy, Permissions-Policy). Verify after each deploy with
   `curl -sI https://triple4c.com | grep -i -E "strict|x-content|x-frame|referrer|permissions"`.
@@ -38,6 +43,8 @@ site with real learner data or disruptive payloads.
 ## Hardening checklist for production
 
 1. Set `FIREBASE_SERVICE_ACCOUNT_JSON`, `ALLOWED_ORIGINS`, `ALLOW_DEV_AUTH=false`.
-2. Enforce Firestore rules deploy (`firebase deploy --only firestore:rules`).
+2. Enforce Firestore rules + indexes deploy (`firebase deploy --only firestore:rules,firestore:indexes`).
 3. Rotate any credential ever committed; verify Cloudinary upload presets.
 4. Enable Sentry + uptime monitoring; confirm logs contain only hashed IPs.
+5. Set functions secrets (`firebase functions:secrets:set GEMINI_API_KEY RESEND_API_KEY STRIPE_SECRET ...`)
+   and deploy functions (`firebase deploy --only functions`) — never expose them as `VITE_*`.
