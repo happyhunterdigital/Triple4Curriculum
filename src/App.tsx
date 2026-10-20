@@ -138,9 +138,44 @@ function Shell() {
   );
 }
 
+/** Scrolls to `#hash` targets and resets scroll on navigation (React Router does neither). */
+function ScrollManager() {
+  const { pathname, hash } = useLocation();
+
+  React.useEffect(() => {
+    if (!hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      return;
+    }
+
+    const id = decodeURIComponent(hash.replace(/^#/, ''));
+    let frame = 0;
+    let cancelled = false;
+
+    const scroll = () => {
+      if (cancelled) return;
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (frame++ < 40) {
+        // Lazy routes mount after the URL changes; retry for ~0.7s.
+        requestAnimationFrame(scroll);
+      }
+    };
+
+    scroll();
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname, hash]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollManager />
       <AuthProvider>
         <Shell />
       </AuthProvider>

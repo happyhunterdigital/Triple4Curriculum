@@ -7,7 +7,7 @@ export function SiteFooter() {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           <div>
-            <div className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3 rounded hover:opacity-90 transition-opacity" aria-label="Triple 4C Curriculum home">
               <img
                 src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1790380437/Triple4Curriculum_logo_update_qjbgl1.png', 72)}
                 alt="Triple 4C Curriculum logo"
@@ -16,7 +16,7 @@ export function SiteFooter() {
                 className="w-9 h-9 rounded-full border border-[var(--color-t4c-yellow)] bg-white object-cover"
               />
               <span className="text-sm font-extrabold tracking-tight uppercase leading-none">Triple 4C Curriculum</span>
-            </div>
+            </Link>
             <p className="mt-3 text-sm leading-relaxed text-white/80">4 days a week, 4 hours a day, 4 lessons a day, live teachers, 16 students per class.</p>
             <p className="mt-2 text-[11px] font-mono tracking-widest uppercase text-[var(--color-t4c-yellow)]">Preserving Fresh Minds Globally.</p>
           </div>
