@@ -79,20 +79,35 @@ jobs:
           channelId: live
           projectId: triple4curriculum
 
-      - name: Deploy Cloud Functions
-        uses: w9jds/firebase-action@v15.34.0
+      # The w9jds docker action has no npm, so the firebase.json predeploy build
+      # ("npm --prefix $RESOURCE_DIR run build") exits 127. Run the Firebase CLI
+      # directly on the runner instead, where Node/npm are available.
+      - name: Setup Node (functions runtime)
+        uses: actions/setup-node@v4
         with:
-          args: deploy --only functions --project triple4curriculum
+          node-version: 22
+          cache: npm
+          cache-dependency-path: functions/package-lock.json
+
+      - name: Install Cloud Functions dependencies
+        run: npm --prefix functions ci
+
+      - name: Deploy Cloud Functions
         env:
           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/gcp-key.json"
+          npx --yes firebase-tools@latest deploy --only functions --project triple4curriculum --non-interactive
 
       # Claims-only rules: deploying these before custom claims exist locks every
       # signed-in user out. They therefore only deploy on a manual workflow run,
       # after scripts/set-claims.mjs has been executed against the project.
       - name: Deploy Firestore rules + indexes (manual run only)
         if: github.event_name == 'workflow_dispatch'
-        uses: w9jds/firebase-action@v15.34.0
-        with:
-          args: deploy --only firestore:rules,firestore:indexes --project triple4curriculum
         env:
           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/gcp-key.json"
+          npx --yes firebase-tools@latest deploy --only firestore:rules,firestore:indexes --project triple4curriculum --non-interactive
