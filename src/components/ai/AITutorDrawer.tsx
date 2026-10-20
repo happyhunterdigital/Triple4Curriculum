@@ -131,7 +131,7 @@ Would you like me to generate a 3-question adaptive quiz to test your mastery ri
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white border border-neutral-300 flex items-center justify-center overflow-hidden shadow-xs">
               <img 
-                src="https://res.cloudinary.com/dka0498ns/image/upload/v1787326034/Triple_4_Curriculum_chabot_Icon_n2qrgg.png"
+                src="https://res.cloudinary.com/dkyg07qvv/image/upload/v1792489785/T4C_chatbot_icon_ub695z.png"
                 alt="444 Chatbot Icon"
                 className="w-full h-full object-cover scale-105"
                 referrerPolicy="no-referrer"
@@ -171,7 +171,7 @@ Would you like me to generate a 3-question adaptive quiz to test your mastery ri
               {msg.sender === 'ai' && (
                 <div className="w-7 h-7 bg-white border border-neutral-300 flex items-center justify-center flex-shrink-0 mt-0.5 overflow-hidden shadow-xs">
                   <img 
-                    src="https://res.cloudinary.com/dka0498ns/image/upload/v1787326034/Triple_4_Curriculum_chabot_Icon_n2qrgg.png"
+                    src="https://res.cloudinary.com/dkyg07qvv/image/upload/v1792489785/T4C_chatbot_icon_ub695z.png"
                     alt="AI Avatar"
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
@@ -217,7 +217,7 @@ Would you like me to generate a 3-question adaptive quiz to test your mastery ri
             <div className="flex gap-3 items-center text-neutral-400 text-xs italic">
               <div className="w-7 h-7 bg-white border border-neutral-300 flex items-center justify-center flex-shrink-0 p-0.5">
                 <img 
-                  src="https://res.cloudinary.com/dka0498ns/image/upload/v1787326034/Triple_4_Curriculum_chabot_Icon_n2qrgg.png"
+                  src="https://res.cloudinary.com/dkyg07qvv/image/upload/v1792489785/T4C_chatbot_icon_ub695z.png"
                   alt="AI Loading"
                   className="w-full h-full object-contain animate-pulse"
                   referrerPolicy="no-referrer"
