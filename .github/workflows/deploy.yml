@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+  # Manual runs deploy Firestore rules + indexes too (see the gated step below).
+  # Use this AFTER scripts/set-claims.mjs has been run for every staff account:
+  # the rules are claims-only and will otherwise lock signed-in users out.
+  workflow_dispatch:
 
 jobs:
   verify:
@@ -56,7 +60,7 @@ jobs:
 
   build_and_deploy:
     needs: verify
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -75,9 +79,20 @@ jobs:
           channelId: live
           projectId: triple4curriculum
 
-      - name: Deploy Firestore rules + indexes and Cloud Functions
+      - name: Deploy Cloud Functions
         uses: w9jds/firebase-action@v15.34.0
         with:
-          args: deploy --only firestore:rules,firestore:indexes,functions --project triple4curriculum
+          args: deploy --only functions --project triple4curriculum
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+
+      # Claims-only rules: deploying these before custom claims exist locks every
+      # signed-in user out. They therefore only deploy on a manual workflow run,
+      # after scripts/set-claims.mjs has been executed against the project.
+      - name: Deploy Firestore rules + indexes (manual run only)
+        if: github.event_name == 'workflow_dispatch'
+        uses: w9jds/firebase-action@v15.34.0
+        with:
+          args: deploy --only firestore:rules,firestore:indexes --project triple4curriculum
         env:
           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
