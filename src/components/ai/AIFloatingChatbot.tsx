@@ -215,7 +215,7 @@ Would you like to initiate a diagnostic quiz or review the SpeedGrader™ rubric
             <X className="w-7 h-7 text-[var(--color-t4c-gold)]" />
           ) : (
             <img 
-              src="https://res.cloudinary.com/dkyg07qvv/image/upload/v1792489785/T4C_chatbot_icon_ub695z.png"
+              src="https://res.cloudinary.com/dkyg07qvv/image/upload/f_auto,q_auto,w_128/T4C_chatbot_icon_ub695z.png"
               alt="444 AI Chatbot"
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
@@ -239,7 +239,7 @@ Would you like to initiate a diagnostic quiz or review the SpeedGrader™ rubric
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 bg-white border border-neutral-300 flex items-center justify-center flex-shrink-0 p-1">
                 <img 
-                  src="https://res.cloudinary.com/dkyg07qvv/image/upload/v1792489785/T4C_chatbot_icon_ub695z.png"
+                  src="https://res.cloudinary.com/dkyg07qvv/image/upload/f_auto,q_auto,w_128/T4C_chatbot_icon_ub695z.png"
                   alt="444 AI Copilot"
                   className="w-full h-full object-contain"
                   referrerPolicy="no-referrer"
@@ -299,7 +299,7 @@ Would you like to initiate a diagnostic quiz or review the SpeedGrader™ rubric
                 {msg.sender === 'ai' && (
                   <div className="w-7 h-7 bg-white border border-neutral-300 flex items-center justify-center flex-shrink-0 mt-0.5 overflow-hidden rounded-none shadow-2xs">
                     <img 
-                      src="https://res.cloudinary.com/dkyg07qvv/image/upload/v1792489785/T4C_chatbot_icon_ub695z.png"
+                      src="https://res.cloudinary.com/dkyg07qvv/image/upload/f_auto,q_auto,w_128/T4C_chatbot_icon_ub695z.png"
                       alt="AI"
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
