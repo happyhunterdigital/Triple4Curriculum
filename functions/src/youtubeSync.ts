@@ -150,7 +150,7 @@ export const syncMeetRecordings = onSchedule(
           recordedAt: file.createdTime,
           syncedAt: FieldValue.serverTimestamp(),
         });
-        await db.collection('drive_sync').doc(file.id).set({ processedAt: FieldValue.serverTimestamp(), youtubeId });
+        await db.collection('drive_sync').doc(file.id).set({ processedAt: FieldValue.serverTimestamp(), youtubeId: videoId });
         console.log(`- uploaded ${file.name} -> ${videoUrl}${lectureId ? ` (attached to ${lectureId})` : ''}`);
       } catch (e) {
         console.error(`- failed ${file.name}:`, e);
