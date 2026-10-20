@@ -442,8 +442,10 @@ export const LectureReel: React.FC = () => {
 
               <div className="flex items-start gap-4">
                 <img 
-                  src={activeReel.lecturer.avatarUrl} 
-                  alt={activeReel.lecturer.name}
+                  src={activeReel.lecturer.avatarUrl} 
+                  alt={activeReel.lecturer.name}
+                  loading="lazy"
+                  decoding="async"
                   className="w-14 h-14 object-cover grayscale border border-neutral-300"
                   referrerPolicy="no-referrer"
                 />

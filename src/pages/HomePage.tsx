@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Users, Clock, Video, GraduationCap, Heart, Shield, Lightbulb, ArrowRight, Award, BookOpen } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
 import { PricingTable } from '../components/site/PricingTable';
+import { cloudinaryImage } from '../lib/image';
 
 function FaqTeaser() {
   const items = [
@@ -33,7 +34,7 @@ export function HomePage() {
       <section className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         <div className="relative rounded-[24px] sm:rounded-[40px] overflow-hidden bg-white border border-black/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] min-h-[520px] sm:min-h-[560px] flex">
           <div className="absolute inset-0">
-            <img src="https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg" alt="Learners in a Triple 4C live online class" fetchPriority="high" loading="eager" decoding="async" className="w-full h-full object-cover" />
+            <img src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg', 1400)} alt="Learners in a Triple 4C live online class" fetchPriority="high" loading="eager" decoding="async" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent" />
           </div>
           <div className="relative z-10 flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-10 sm:py-14 max-w-[640px]">
@@ -109,7 +110,7 @@ export function HomePage() {
         <RevealStagger>
           <div className="rounded-[16px] overflow-hidden border border-black/10 bg-white grid lg:grid-cols-2">
             <div className="h-[240px] sm:h-[320px] bg-neutral-100 overflow-hidden">
-              <img src="https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg" alt="Live classroom capped at 16 learners" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+              <img src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg', 800)} alt="Live classroom capped at 16 learners" loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </div>
             <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
               <SectionHeading className="text-[22px] sm:text-[26px]">100% live. Capped at 16. Parent hands-off.</SectionHeading>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { cloudinaryImage } from '../lib/image';
 
 export const LandingHero: React.FC = () => {
   return (
@@ -8,7 +9,7 @@ export const LandingHero: React.FC = () => {
       {/* Background Image Layer */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden select-none">
         <img
-          src="https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg"
+          src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg', 1400)}
           alt="Triple 4C learners in a small live online class"
           fetchPriority="high"
           loading="eager"

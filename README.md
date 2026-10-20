@@ -126,6 +126,22 @@ The navbar logo and Home button both return to `/dashboard`.
   the `generateQuiz` callable; without it the tutor serves bundled fallback
   questions.
 
+## Images & media (performance policy)
+
+Every image must be served optimised — this keeps hosting egress and mobile data low:
+
+1. **Cloudinary:** wrap the URL in `cloudinaryImage(url, width)` from `src/lib/image.ts`.
+   It injects `f_auto,q_auto,w_<width>,c_limit` (AVIF/WebP, right size, never upscaled).
+   Pick the width to match the rendered slot (~2x for small logos/avatars, 1x for
+   full-bleed backgrounds). Don't hard-code untransformed Cloudinary URLs in JSX.
+2. **Favicons/social cards:** request fixed transforms directly in `index.html`
+   (`f_png,w_64`, `f_png,w_180`, `f_auto,q_auto,w_1200`).
+3. **Other CDNs:** Unsplash (`auto=format&fit=crop&w=…&q=…`) and YouTube thumbnails
+   (`i.ytimg.com`) are already optimised — leave as-is.
+4. **Attributes:** every `<img>` needs `loading="lazy" decoding="async"`, except the
+   above-the-fold hero which uses `loading="eager" fetchPriority="high"`.
+5. **Never commit image binaries** to the repo — host them on Cloudinary and reference them.
+
 ## Deploy checklist (before real learner data)
 
 > **⚠️ Deploy via GitHub Actions only (push to `main`).** A production build

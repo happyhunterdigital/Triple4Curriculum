@@ -120,6 +120,8 @@ export const VirtualCampusModal: React.FC<VirtualCampusModalProps> = ({ isOpen, 
             <img 
               src={activeLocation.imageUrl} 
               alt={activeLocation.name}
+              loading="lazy"
+              decoding="async"
               className={`w-full h-full object-cover transition-all duration-700 ${
                 viewMode === 'wireframe' ? 'filter invert hue-rotate-180 opacity-60 contrast-125' : 
                 viewMode === 'telemetry' ? 'filter saturate-150 contrast-125' : ''

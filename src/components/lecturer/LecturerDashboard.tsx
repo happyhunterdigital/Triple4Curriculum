@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
 import { api } from '../../lib/api';
+import { cloudinaryImage } from '../../lib/image';
 import { Course, AssignmentSubmission, TimetableSlot, LearnerCourseProgress } from '../../types';
 
 interface LecturerDashboardProps {
@@ -50,8 +51,10 @@ export const LecturerDashboard: React.FC<LecturerDashboardProps> = ({ onNavigate
         {/* Banner with Photographic Image & Bright Gradient */}
         <div className="relative w-full h-48 sm:h-56 overflow-hidden">
           <img 
-            src="https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg"
+            src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg', 1200)}
             alt="Faculty Command Center"
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover object-center"
             referrerPolicy="no-referrer"
           />

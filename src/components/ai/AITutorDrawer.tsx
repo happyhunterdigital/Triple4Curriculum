@@ -133,6 +133,8 @@ Would you like me to generate a 3-question adaptive quiz to test your mastery ri
               <img 
                 src="https://res.cloudinary.com/dkyg07qvv/image/upload/f_auto,q_auto,w_128/T4C_chatbot_icon_ub695z.png"
                 alt="444 Chatbot Icon"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover scale-105"
                 referrerPolicy="no-referrer"
               />
@@ -173,6 +175,8 @@ Would you like me to generate a 3-question adaptive quiz to test your mastery ri
                   <img 
                     src="https://res.cloudinary.com/dkyg07qvv/image/upload/f_auto,q_auto,w_128/T4C_chatbot_icon_ub695z.png"
                     alt="AI Avatar"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                   />
@@ -219,6 +223,8 @@ Would you like me to generate a 3-question adaptive quiz to test your mastery ri
                 <img 
                   src="https://res.cloudinary.com/dkyg07qvv/image/upload/f_auto,q_auto,w_128/T4C_chatbot_icon_ub695z.png"
                   alt="AI Loading"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain animate-pulse"
                   referrerPolicy="no-referrer"
                 />

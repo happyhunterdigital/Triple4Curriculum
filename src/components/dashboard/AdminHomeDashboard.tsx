@@ -128,7 +128,7 @@ export const AdminHomeDashboard: React.FC = () => {
                   <tr key={user.id} onClick={() => setSelectedProfileId(user.id)} className="hover:bg-[#F8FAFC] cursor-pointer transition-colors group">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
-                        <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover border border-[#E2E8F0]" />
+                        <img src={user.avatar} alt={user.name} loading="lazy" decoding="async" className="w-8 h-8 rounded-full object-cover border border-[#E2E8F0]" />
                         <div><p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#2563EB]">{user.name}</p><p className="text-xs text-[#64748B]">{user.email}</p></div>
                       </div>
                     </td>
@@ -162,7 +162,7 @@ export const AdminHomeDashboard: React.FC = () => {
             </div>
 
             <div className="flex gap-4 border border-[#E2E8F0] rounded-lg p-4 bg-[#F8FAFC]">
-              <img src={currentSelectedProfile.avatar} alt={currentSelectedProfile.name} className="w-16 h-16 rounded-lg object-cover border border-[#E2E8F0]" />
+              <img src={currentSelectedProfile.avatar} alt={currentSelectedProfile.name} loading="lazy" decoding="async" className="w-16 h-16 rounded-lg object-cover border border-[#E2E8F0]" />
               <div className="flex-1 min-w-0">
                 <h2 className="text-lg font-bold text-[#0F172A]">{currentSelectedProfile.name}</h2>
                 <p className="text-xs text-[#64748B]">{currentSelectedProfile.role === 'teacher' ? (currentSelectedProfile as TeacherProfile).department : (currentSelectedProfile as LearnerProfile).major}</p>

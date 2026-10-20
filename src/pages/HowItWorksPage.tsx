@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Clock, BookOpen, Zap, ArrowRight } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
+import { cloudinaryImage } from '../lib/image';
 
 export function HowItWorksPage() {
   useEffect(() => { document.title = 'How It Works: Triple 4 Curriculum'; }, []);
@@ -63,7 +64,7 @@ export function HowItWorksPage() {
         <RevealStagger>
           <div className="grid lg:grid-cols-2 gap-6 items-center">
             <div className="order-2 lg:order-1 rounded-[16px] overflow-hidden border border-black/10 h-[280px] bg-neutral-100">
-              <img src="https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg" alt="Blended CAPS and international learning at Triple 4C" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+              <img src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg', 800)} alt="Blended CAPS and international learning at Triple 4C" loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </div>
             <div className="order-1 lg:order-2 bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
               <SectionHeading className="text-[22px]">How our blended model works</SectionHeading>

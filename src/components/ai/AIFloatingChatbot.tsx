@@ -217,6 +217,8 @@ Would you like to initiate a diagnostic quiz or review the SpeedGrader™ rubric
             <img 
               src="https://res.cloudinary.com/dkyg07qvv/image/upload/f_auto,q_auto,w_128/T4C_chatbot_icon_ub695z.png"
               alt="444 AI Chatbot"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
@@ -241,6 +243,8 @@ Would you like to initiate a diagnostic quiz or review the SpeedGrader™ rubric
                 <img 
                   src="https://res.cloudinary.com/dkyg07qvv/image/upload/f_auto,q_auto,w_128/T4C_chatbot_icon_ub695z.png"
                   alt="444 AI Copilot"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain"
                   referrerPolicy="no-referrer"
                 />
@@ -301,6 +305,8 @@ Would you like to initiate a diagnostic quiz or review the SpeedGrader™ rubric
                     <img 
                       src="https://res.cloudinary.com/dkyg07qvv/image/upload/f_auto,q_auto,w_128/T4C_chatbot_icon_ub695z.png"
                       alt="AI"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />

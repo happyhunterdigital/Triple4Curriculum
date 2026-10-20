@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Bell, ChevronDown, HelpCircle, House, Menu, X, LogOut, User } from 'lucide-react';
 import { useAuth } from '../lib/authContext';
+import { cloudinaryImage } from '../lib/image';
 
 interface NavbarProps {
   onToggleMenu?: () => void;
@@ -35,8 +36,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
           aria-label="Triple 4C home"
         >
           <img
-            src="https://res.cloudinary.com/dka0498ns/image/upload/v1790380437/Triple4Curriculum_logo_update_qjbgl1.png"
+            src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1790380437/Triple4Curriculum_logo_update_qjbgl1.png', 72)}
             alt="Triple 4C"
+            loading="eager"
+            decoding="async"
             className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-[var(--color-t4c-yellow)] shadow-sm shrink-0 bg-white"
             referrerPolicy="no-referrer"
           />
