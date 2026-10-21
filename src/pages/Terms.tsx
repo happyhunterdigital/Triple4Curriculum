@@ -32,7 +32,7 @@ const SECTIONS: Array<{ h: string; body: React.ReactNode }> = [
         <li>Fees are published on /admissions; monthly or annual billing in ZAR, USD or GBP at the payment-date exchange rate.</li>
         <li>Fees exclude SACCAI Grade 12 final exam fees and yearly SACCAI registration (variable, invoiced separately). An annual registration & application fee applies.</li>
         <li>Non-payment may suspend live-class access after reasonable notice; assessment records are retained per DBE/SACCAI rules.</li>
-        <li>Card payments are processed by Stripe — we never store card numbers.</li>
+        <li>Card and Instant EFT payments are processed by PayFast — we never store card numbers.</li>
       </ul>
     ),
   },

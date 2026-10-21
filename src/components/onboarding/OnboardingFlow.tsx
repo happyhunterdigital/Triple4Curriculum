@@ -17,6 +17,7 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { createPayfastCheckout, submitPayfastCheckout } from '../../lib/payfast';
 
 const PHASES = [
   { id: 'Foundation', label: 'Foundation', grades: 'Grade R-3', desc: 'Playful, sensory, movement', icon: '🧸' },
@@ -67,6 +68,7 @@ const registrationSchema = z.object({
   companyWebsite: z.string().optional(),
   // Learner - Payment
   paymentMethod: z.string().optional(),
+  paymentPlan: z.string().optional(),
   payerName: z.string().optional(),
   // Teacher - Identity
   idType: z.string().optional(),
@@ -135,7 +137,7 @@ export const OnboardingFlow: React.FC = () => {
       dob: '', homeAddress: '', isMinor: false, guardianName: '', guardianContact: '',
       previousSchool: '', lastGrade: '', agreeConduct: false, agreePrivacy: false, agreeTerms: false,
       companyWebsite: '',
-      paymentMethod: 'tuition', payerName: '',
+      paymentMethod: 'tuition', payerName: '', paymentPlan: 'monthly',
       idType: 'national_id', idNumber: '', addressVerified: false,
       highestDegree: '', degreeField: '', teachingCertificate: '', teachingPhase: '', backgroundCheckConsent: false,
       yearsExperience: '', referenceContact: '', taxId: '', bankDetails: '',
@@ -330,6 +332,20 @@ export const OnboardingFlow: React.FC = () => {
         privacyPolicyAccepted: true, codeOfConductAccepted: true, termsAccepted: true,
         createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
       }, { merge: true });
+
+      // Tuition: hand off to PayFast (amount + signature computed server-side).
+      // If the payment function is not configured yet, fall through to the
+      // invoice-pending screen instead of blocking sign-up.
+      if (data.role === 'learner' && (data.paymentMethod ?? 'tuition') === 'tuition') {
+        const checkout = await createPayfastCheckout({
+          plan: data.paymentPlan === 'annual' ? 'annual' : 'monthly',
+          phase: data.department,
+        });
+        if (checkout) {
+          submitPayfastCheckout(checkout);
+          return;
+        }
+      }
 
       setCompleted(true);
     } catch (e: unknown) {
@@ -687,7 +703,7 @@ export const OnboardingFlow: React.FC = () => {
                     {role === 'teacher' ? 'Professional history & financial setup' : 'Payment details'}
                   </h1>
                   <p className="text-xs xs:text-sm text-neutral-600 mt-2">
-                    {role === 'teacher' ? 'Resume, verified references, tax number and banking for payroll.' : 'Tuition records or scholarship documentation - handled by Stripe.'}
+                    {role === 'teacher' ? 'Resume, verified references, tax number and banking for payroll.' : 'Tuition records or scholarship documentation - secure checkout via PayFast.'}
                   </p>
                 </div>
 
@@ -713,9 +729,26 @@ export const OnboardingFlow: React.FC = () => {
                     </div>
                     {form.watch('paymentMethod') === 'tuition' ? (
                       <Card className="bg-[var(--color-canvas-soft)] border-dashed">
-                        <p className="text-sm font-medium">Stripe Payment Gateway</p>
-                        <p className="text-xs text-neutral-600 mt-1">Run Payments with Stripe extension syncs to customers/{'{uid}'}/subscriptions.</p>
-                        <div className="mt-3 h-10 rounded-[6px] border bg-white flex items-center px-3 text-xs text-neutral-400">Card number • MM/YY • CVC (Stripe Elements placeholder)</div>
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="text-sm font-medium">PayFast secure checkout</p>
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-500">ZAR</span>
+                        </div>
+                        <p className="text-xs text-neutral-600 mt-1">
+                          Card, Instant EFT, SnapScan or Mobicred. You'll be redirected to PayFast to pay -
+                          T4C never sees your card details. The amount is calculated from your selected phase.
+                        </p>
+                        <div className="mt-3 grid grid-cols-2 gap-2">
+                          {(['monthly', 'annual'] as const).map(p => (
+                            <button
+                              key={p}
+                              type="button"
+                              onClick={() => form.setValue('paymentPlan', p)}
+                              className={`px-3 py-2 rounded-[8px] border text-xs font-semibold transition-colors ${form.watch('paymentPlan') === p ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)]' : 'bg-white border-[#E2E8F0] hover:border-[var(--color-t4c-green)]'}`}
+                            >
+                              {p === 'monthly' ? 'Monthly tuition' : 'Annual (12 months)'}
+                            </button>
+                          ))}
+                        </div>
                       </Card>
                     ) : (
                       <>

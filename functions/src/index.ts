@@ -2,7 +2,7 @@
  * Triple4Curriculum Phase 1 backend trust layer.
  * All privileged writes (XP, grades, roles, secrets) happen here — never in the client.
  */
-import { createHash, createHmac, timingSafeEqual } from "node:crypto";
+import { createHash } from "node:crypto";
 import * as admin from "firebase-admin";
 import { HttpsError, onCall, onRequest } from "firebase-functions/v2/https";
 import { z } from "zod";
@@ -452,86 +452,220 @@ export const createCertificate = onCall(async (request) => {
 export * from "./retention";
 export * from "./youtubeSync";
 
-// ── Payment webhooks (signature-verification stubs, idempotent writes) ──────
+// ── Payment webhooks (signature-verified, PayFast-validated, idempotent) ───
 
-function safeEqualHex(a: string, b: string): boolean {
-  try {
-    const ba = Buffer.from(a, "hex");
-    const bb = Buffer.from(b, "hex");
-    return ba.length === bb.length && timingSafeEqual(ba, bb);
-  } catch {
-    return false;
-  }
+/** Monthly ZAR tuition per phase, matching the published pricing table. */
+const PAYFAST_MONTHLY_ZAR: Record<string, number> = {
+  Foundation: 1500,
+  Intermediate: 2500,
+  Senior: 3500,
+  FET: 4500,
+};
+const PAYFAST_ANNUAL_MONTHS = 12;
+
+/**
+ * PayFast signature: sort fields, URL-encode values (%20 -> +), join with &,
+ * then append "&passphrase=<encoded>" when a passphrase is configured.
+ */
+function payfastSignature(fields: Record<string, string>, passphrase: string): string {
+  const pairs = Object.keys(fields)
+    .filter((key) => key !== "signature" && fields[key] !== undefined && fields[key] !== null && fields[key] !== "")
+    .sort()
+    .map((key) => `${key}=${encodeURIComponent(fields[key]).replace(/%20/g, "+")}`)
+    .join("&");
+  const withPassphrase = passphrase
+    ? `${pairs}&passphrase=${encodeURIComponent(passphrase).replace(/%20/g, "+")}`
+    : pairs;
+  return createHash("md5").update(withPassphrase).digest("hex");
 }
 
-export const stripeWebhook = onRequest(
-  { secrets: ["STRIPE_SECRET", "STRIPE_WEBHOOK_SECRET"] },
-  async (req, res): Promise<void> => {
-    if (req.method !== "POST") {
-      res.status(405).send("Method not allowed");
-      return;
+const CheckoutSchema = z.object({
+  plan: z.enum(["monthly", "annual"]).default("monthly"),
+  phase: z.string().max(40).optional(),
+});
+
+/**
+ * Creates a pending payment + returns the PayFast process URL and signed fields.
+ * The client POSTs those fields (full-page redirect), so card details never
+ * touch T4C / Firebase. Amount is computed server-side from the phase.
+ */
+export const createPayfastCheckout = onCall(
+  { secrets: ["PAYFAST_MERCHANT_ID", "PAYFAST_MERCHANT_KEY", "PAYFAST_PASSPHRASE"] },
+  async (request) => {
+    const uid = requireAuthUid(request);
+    const parsed = CheckoutSchema.safeParse(request.data ?? {});
+    if (!parsed.success) throw new HttpsError("invalid-argument", "Invalid checkout request.");
+    const { plan } = parsed.data;
+
+    const userSnap = await db.doc(`users/${uid}`).get();
+    const user = (userSnap.data() ?? {}) as Record<string, unknown>;
+    const phase = parsed.data.phase || String(user.departmentId ?? user.department ?? "");
+    const monthly = PAYFAST_MONTHLY_ZAR[phase];
+    if (!monthly) {
+      throw new HttpsError(
+        "failed-precondition",
+        "Select a phase (Foundation, Intermediate, Senior or FET) before paying.",
+      );
     }
-    const secret = process.env.STRIPE_WEBHOOK_SECRET;
-    const signature = String(req.headers["stripe-signature"] ?? "");
-    const raw = (req as { rawBody?: Buffer }).rawBody ?? Buffer.from(JSON.stringify(req.body ?? {}));
-    // Verification stub: when a secret is configured, require a parseable
-    // t=...,v1=... header and constant-time compare the v1 digest.
-    if (secret) {
-      const match = signature.match(/v1=([a-f0-9]+)/i);
-      const expected = createHmac("sha256", secret).update(raw).digest("hex");
-      if (!match || !safeEqualHex(match[1].toLowerCase(), expected)) {
-        res.status(400).send("Bad signature");
-        return;
-      }
+
+    const merchantId = process.env.PAYFAST_MERCHANT_ID ?? "";
+    const merchantKey = process.env.PAYFAST_MERCHANT_KEY ?? "";
+    const passphrase = process.env.PAYFAST_PASSPHRASE ?? "";
+    if (!merchantId || !merchantKey) {
+      throw new HttpsError("failed-precondition", "PayFast is not configured yet.");
     }
-    const event = (req.body ?? {}) as { id?: string; type?: string; data?: unknown };
-    const id = String(event.id ?? `evt_${sha256(String(raw)).slice(0, 16)}`);
-    await db.doc(`payments/${id}`).set(
-      {
-        provider: "stripe",
-        eventType: String(event.type ?? "unknown"),
-        payload: event,
-        receivedAt: admin.firestore.FieldValue.serverTimestamp(),
-      },
-      { merge: true },
-    );
-    res.status(200).json({ received: true, id });
+
+    const amount = (plan === "annual" ? monthly * PAYFAST_ANNUAL_MONTHS : monthly).toFixed(2);
+    const base = (process.env.APP_BASE_URL || "https://triple4c.com").replace(/\/$/, "");
+    const sandbox = (process.env.PAYFAST_SANDBOX ?? "").toLowerCase() === "true";
+    const project = process.env.GCLOUD_PROJECT || "triple4curriculum";
+
+    const token = (request.auth?.token ?? {}) as Record<string, unknown>;
+    const email = String(user.email ?? token.email ?? "");
+    const fullName = String(user.name ?? token.name ?? "Triple 4C Parent").trim();
+    const [firstName, ...rest] = fullName.split(/\s+/);
+    const mPaymentId = `t4c_${uid.slice(0, 8)}_${Date.now()}`;
+
+    const fields: Record<string, string> = {
+      merchant_id: merchantId,
+      merchant_key: merchantKey,
+      return_url: `${base}/dashboard?payment=success`,
+      cancel_url: `${base}/onboarding?payment=cancelled`,
+      notify_url: `https://us-central1-${project}.cloudfunctions.net/payfastWebhook`,
+      name_first: firstName || "Triple 4C",
+      name_last: rest.join(" ") || "Parent",
+      email_address: email,
+      m_payment_id: mPaymentId,
+      amount,
+      item_name: `Triple 4C ${phase} tuition (${plan})`.slice(0, 100),
+      email_confirmation: "1",
+      confirmation_address: email,
+    };
+    const signature = payfastSignature(fields, passphrase);
+
+    await db.doc(`payments/${mPaymentId}`).set({
+      provider: "payfast",
+      uid,
+      phase,
+      plan,
+      amount: Number(amount),
+      status: "pending",
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    return {
+      url: sandbox
+        ? "https://sandbox.payfast.co.za/eng/process"
+        : "https://www.payfast.co.za/eng/process",
+      fields: { ...fields, signature },
+      sandbox,
+      mPaymentId,
+    };
   },
 );
 
 export const payfastWebhook = onRequest(
-  { secrets: ["PAYFAST_MERCHANT_KEY", "PAYFAST_PASSPHRASE"] },
+  { secrets: ["PAYFAST_MERCHANT_ID", "PAYFAST_MERCHANT_KEY", "PAYFAST_PASSPHRASE"] },
   async (req, res): Promise<void> => {
     if (req.method !== "POST") {
       res.status(405).send("Method not allowed");
       return;
     }
+
     const body = (req.body ?? {}) as Record<string, string>;
     const passphrase = process.env.PAYFAST_PASSPHRASE ?? "";
-    // Verification stub: recompute the PayFast MD5 signature over sorted
-    // params (+ passphrase) and compare when a passphrase is configured.
-    if (passphrase) {
-      const { signature, ...rest } = body;
-      const pairs = Object.keys(rest)
-        .sort()
-        .map((k) => `${k}=${encodeURIComponent(String(rest[k])).replace(/%20/g, "+")}`)
-        .join("&");
-      const expected = createHash("md5").update(`${pairs}&passphrase=${encodeURIComponent(passphrase)}`).digest("hex");
-      if (!signature || String(signature).toLowerCase() !== expected) {
-        res.status(400).send("Bad signature");
+    const { signature, ...params } = body;
+
+    // 1. Signature: recompute over sorted fields (+ passphrase).
+    const expected = payfastSignature(params, passphrase);
+    if (!signature || String(signature).toLowerCase() !== expected) {
+      console.warn("payfast webhook: bad signature", body.m_payment_id);
+      res.status(400).send("Bad signature");
+      return;
+    }
+
+    const paymentId = String(body.m_payment_id ?? "");
+    const paymentRef = paymentId ? db.doc(`payments/${paymentId}`) : null;
+    const paymentSnap = paymentRef ? await paymentRef.get() : null;
+    const payment = (paymentSnap?.data() ?? null) as
+      | { uid?: string; amount?: number; plan?: string; phase?: string }
+      | null;
+
+    // 2. Amount must match the pending payment we created (prevents tampering).
+    const gross = Number(body.amount_gross ?? body.amount ?? 0);
+    if (payment && Number.isFinite(gross) && Math.abs(Number(payment.amount ?? 0) - gross) > 0.01) {
+      console.warn("payfast webhook: amount mismatch", { paymentId, expected: payment.amount, gross });
+      res.status(400).send("Amount mismatch");
+      return;
+    }
+
+    // 3. Server-to-server validation with PayFast (the authoritative check).
+    const sandbox = (process.env.PAYFAST_SANDBOX ?? "").toLowerCase() === "true";
+    const validateUrl = sandbox
+      ? "https://sandbox.payfast.co.za/eng/query/validate"
+      : "https://www.payfast.co.za/eng/query/validate";
+    try {
+      const validation = await fetch(validateUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(body).toString(),
+      });
+      const verdict = (await validation.text()).trim().toUpperCase();
+      if (verdict !== "VALID") {
+        console.warn("payfast webhook: validation failed", { paymentId, verdict });
+        res.status(400).send("Invalid");
         return;
       }
+    } catch (e) {
+      console.error("payfast webhook: validation request failed", e);
+      res.status(500).send("Validation unavailable");
+      return;
     }
-    const id = String(body.pf_payment_id ?? body.m_payment_id ?? `pf_${Date.now()}`);
-    await db.doc(`payments/${id}`).set(
-      {
-        provider: "payfast",
-        eventType: String(body.payment_status ?? "notify"),
-        payload: body,
-        receivedAt: admin.firestore.FieldValue.serverTimestamp(),
-      },
-      { merge: true },
-    );
+
+    const status = String(body.payment_status ?? "UNKNOWN").toUpperCase();
+    const record = {
+      provider: "payfast",
+      eventType: status,
+      pfPaymentId: String(body.pf_payment_id ?? ""),
+      amountGross: gross,
+      payload: body,
+      receivedAt: admin.firestore.FieldValue.serverTimestamp(),
+    };
+
+    if (paymentRef) {
+      await paymentRef.set({ ...record, status }, { merge: true });
+    } else {
+      // Unknown reference: keep an audit record but do not grant access.
+      await db.collection("payments").add({ ...record, status, unlinked: true });
+    }
+
+    // 4. On success, unlock the learner's payment status (idempotent).
+    if (status === "COMPLETE" && payment?.uid) {
+      await db.doc(`students/${payment.uid}`).set(
+        {
+          payment: {
+            status: "paid",
+            provider: "payfast",
+            plan: payment.plan ?? "monthly",
+            phase: payment.phase ?? "",
+            lastPaymentId: paymentId,
+            paidAt: stamp(),
+          },
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        },
+        { merge: true },
+      );
+      await db.collection("audit_logs").add({
+        userId: payment.uid,
+        action: "PAYFAST_PAYMENT_COMPLETE",
+        resource: `/payments/${paymentId}`,
+        details: `${payment.phase ?? ""} ${payment.plan ?? ""} tuition paid: R${gross.toFixed(2)}.`,
+        status: "SUCCESS",
+        timestamp: stamp(),
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+
     res.status(200).send("OK");
   },
 );

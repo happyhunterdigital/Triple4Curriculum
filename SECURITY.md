@@ -29,12 +29,12 @@ site with real learner data or disruptive payloads.
   fallback otherwise), `completeLectureAndAwardXP` (transactional server-side
   XP — the client never writes `xp`), `gradeSubmission` (staff-only),
   `writeAudit` (30/min quota), `sendEmailNudge` (staff-only, Resend stub),
-  `createCertificate`, plus `stripeWebhook` / `payfastWebhook` signature-
-  verified payment receivers. Secrets live in Cloud Functions config
+  `createCertificate`, plus `payfastWebhook` (signature + server-side
+  validation). Secrets live in Cloud Functions config
   (`firebase functions:secrets:set`), never in `VITE_*` client env.
 - There is NO `VITE_GEMINI_API_KEY` client key. AI quiz calls go through the
   `generateQuiz` callable; the browser bundle contains no AI secret.
-  No server keys (`GEMINI_API_KEY`, `RESEND_API_KEY`, `STRIPE_SECRET`, service
+  No server keys (`GEMINI_API_KEY`, `RESEND_API_KEY`, `PAYFAST_PASSPHRASE`, service
   accounts) may ever carry a `VITE_` prefix or enter the client bundle.
 - Security headers ship via `firebase.json` (HSTS preload, nosniff, SAMEORIGIN,
   Referrer-Policy, Permissions-Policy). Verify after each deploy with
@@ -46,5 +46,5 @@ site with real learner data or disruptive payloads.
 2. Enforce Firestore rules + indexes deploy (`firebase deploy --only firestore:rules,firestore:indexes`).
 3. Rotate any credential ever committed; verify Cloudinary upload presets.
 4. Enable Sentry + uptime monitoring; confirm logs contain only hashed IPs.
-5. Set functions secrets (`firebase functions:secrets:set GEMINI_API_KEY RESEND_API_KEY STRIPE_SECRET ...`)
+5. Set functions secrets (`firebase functions:secrets:set GEMINI_API_KEY RESEND_API_KEY PAYFAST_MERCHANT_ID PAYFAST_MERCHANT_KEY PAYFAST_PASSPHRASE ...`)
    and deploy functions (`firebase deploy --only functions`) — never expose them as `VITE_*`.

@@ -28,7 +28,7 @@ const DEPARTMENTS = [
 const COURSES = [
   { id: 'csc441', code: 'CSC-441', title: 'Distributed Consensus & Cloud Systems', departmentId: 'dept_cs', lecturerId: '', lecturerName: 'Dr. Arthur Vance', credits: 30, description: 'Raft, state machine replication and quorum protocols.', semester: 'Semester 2', modulesCount: 6, totalHours: 120 },
   { id: 'ai442', code: 'AI-442', title: 'POPIA & AI Ethics Frameworks', departmentId: 'dept_cs', lecturerId: '', lecturerName: 'Dr. Arthur Vance', credits: 24, description: 'Lawful telemetry, consent and ethical auditing under POPIA.', semester: 'Semester 2', modulesCount: 5, totalHours: 96 },
-  { id: 'biz441', code: 'BIZ-441', title: 'FinTech Systems & Data Ethics', departmentId: 'dept_biz', lecturerId: '', lecturerName: 'Dr. L. Petersen', credits: 24, description: 'Payments rails, PayFast/Stripe integration and POPIA governance.', semester: 'Semester 2', modulesCount: 5, totalHours: 96 },
+  { id: 'biz441', code: 'BIZ-441', title: 'FinTech Systems & Data Ethics', departmentId: 'dept_biz', lecturerId: '', lecturerName: 'Dr. L. Petersen', credits: 24, description: 'Payments rails, PayFast integration and POPIA governance.', semester: 'Semester 2', modulesCount: 5, totalHours: 96 },
 ];
 
 const LECTURES = [

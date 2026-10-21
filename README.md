@@ -112,8 +112,9 @@ The navbar logo and Home button both return to `/dashboard`.
 - [x] Phase 2 cost/correctness: paged reads (`getUsersPaged`,
   `getSubmissionsPaged`, `getNotificationsPaged`, `getAttendancePaged`),
   `getCountFromServer` totals, bounded staff queries.
-- [x] Phase 3 payments/comms: Stripe/PayFast signature-verified webhooks,
-  Resend `sendEmailNudge` stub, `createCertificate` callable.
+- [x] Phase 3 payments/comms: PayFast checkout (`createPayfastCheckout`) with
+  signature + PayFast validation in `payfastWebhook`, Resend `sendEmailNudge`
+  stub, `createCertificate` callable.
 - [x] Phase 4 compliance hardening: `docs/DPIA.md`, `functions/src/retention.ts`
   (`purgeExpired` daily sweep, `exportMyDataStrict`, `eraseMyData`),
   `src/lib/sams.ts` SA-SAMS CSV builders + `api.exportSamsAttendance` /
@@ -142,6 +143,22 @@ Every image must be served optimised — this keeps hosting egress and mobile da
    above-the-fold hero which uses `loading="eager" fetchPriority="high"`.
 5. **Never commit image binaries** to the repo — host them on Cloudinary and reference them.
 
+## Payments (PayFast)
+
+- **Checkout:** onboarding (learner, tuition) calls `createPayfastCheckout`, which
+  computes the amount server-side from the selected phase (Foundation R1 500,
+  Intermediate R2 500, Senior R3 500, FET R4 500 monthly; annual = 12 months)
+  and returns a signed PayFast form that the browser POSTs to PayFast. Card,
+  Instant EFT, SnapScan and Mobicred are supported; T4C never sees card data.
+- **Webhook:** `payfastWebhook` verifies the MD5 signature (with passphrase),
+  matches the amount to the pending `payments/{m_payment_id}` doc, calls
+  PayFast's server-to-server validation endpoint, then marks
+  `students/{uid}.payment.status = "paid"` and writes an audit log.
+- **Setup:** `firebase functions:secrets:set PAYFAST_MERCHANT_ID` /
+  `PAYFAST_MERCHANT_KEY` / `PAYFAST_PASSPHRASE`, set the notify URL in the
+  PayFast dashboard, and add `PAYFAST_SANDBOX=true` to `functions/.env` while
+  testing against sandbox credentials.
+
 ## Deploy checklist (before real learner data)
 
 > **⚠️ Deploy via GitHub Actions only (push to `main`).** A production build
@@ -158,13 +175,14 @@ Every image must be served optimised — this keeps hosting egress and mobile da
 2. **Custom claims migration:** run `setCustomRole` for every staff account;
    confirm rules use claims only (no profile-doc role reads) via
    `bun run test:rules`.
-3. **Secrets:** `GEMINI_API_KEY`, `RESEND_API_KEY`, `STRIPE_SECRET` +
-   `STRIPE_WEBHOOK_SECRET`, `PAYFAST_MERCHANT_KEY` + `PAYFAST_PASSPHRASE` in
-   Secret Manager — never in `.env` / the bundle.
+3. **Secrets:** `GEMINI_API_KEY`, `RESEND_API_KEY`, `YT_OAUTH_*`,
+   `PAYFAST_MERCHANT_ID`, `PAYFAST_MERCHANT_KEY` + `PAYFAST_PASSPHRASE` in
+   Secret Manager — never in `.env` / the bundle. PayFast checkout requires all
+   three; set the PayFast dashboard **notify URL** to
+   `https://us-central1-triple4curriculum.cloudfunctions.net/payfastWebhook`.
 4. **Indexes:** `firebase deploy --only firestore:indexes` (paged + DSR/retention
    queries), then `firebase deploy --only firestore:rules,storage,functions,hosting`.
 5. **Verify:** seed in staging, run `bun run test`, `bun run lint`,
    `firebase emulators` retention sweep dry-run, one SA-SAMS test-env import,
    and a DSR export/erase round-trip with `privacy@triple4c.com` SLA on the rota.
-6. Still roadmap: real video pipeline, PayFast/Stripe UI, Sentry + uptime
-   monitoring, Playwright e2e.
+6. Still roadmap: Sentry + uptime monitoring, Playwright e2e.

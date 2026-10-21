@@ -28,7 +28,7 @@ const SECTIONS: Array<{ id: string; h: string; body: React.ReactNode }> = [
         <li><strong>Guardian data:</strong> parent/legal-guardian name and contact, plus verifiable consent record for minors.</li>
         <li><strong>Staff data:</strong> qualifications, SACE/teaching certificates, background-check consent status, masked ID/tax numbers (full numbers never stored in Firestore).</li>
         <li><strong>Technical:</strong> Firebase Auth identifiers, hashed/truncated network identifiers in audit logs. Raw IP addresses are never shown to clients.</li>
-        <li><strong>We do not collect</strong> biometrics, health records beyond disclosed learning needs, or payment card numbers (payments are handled by Stripe).</li>
+        <li><strong>We do not collect</strong> biometrics, health records beyond disclosed learning needs, or payment card numbers (payments are handled by PayFast).</li>
       </ul>
     ),
   },
@@ -61,7 +61,7 @@ const SECTIONS: Array<{ id: string; h: string; body: React.ReactNode }> = [
     h: '5. Sharing & cross-border transfers (POPIA s72)',
     body: (
       <ul className="list-disc pl-5 space-y-1">
-        <li><strong>Processors:</strong> Firebase (Auth/Firestore/Storage/Hosting/Functions), Google Gemini (optional AI quiz, called server-side through a Cloud Function, key never exposed to the browser), YouTube (lecture video hosting), Google Meet (live classes), Cloudinary (images), Stripe and PayFast (payments). Each processes only what it needs.</li>
+        <li><strong>Processors:</strong> Firebase (Auth/Firestore/Storage/Hosting/Functions), Google Gemini (optional AI quiz, called server-side through a Cloud Function, key never exposed to the browser), YouTube (lecture video hosting), Google Meet (live classes), Cloudinary (images), and PayFast (payments). Each processes only what it needs.</li>
         <li><strong>SACCAI/DBE:</strong> registration and Grade 12 exam data shared as legally required.</li>
         <li><strong>Cross-border:</strong> Firebase/Google infrastructure may store data outside South Africa. By enrolling you consent to s72 transfers subject to equivalent protections in our processor contracts.</li>
         <li>We never sell personal information.</li>

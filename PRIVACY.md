@@ -26,12 +26,12 @@ demo stub and applies to all real learner processing.
 
 Identity/contact, education records, guardian consent records, staff qualifications (masked
 ID/tax numbers only), Firebase Auth identifiers, hashed/truncated network identifiers in audit
-logs. No biometrics. No card numbers (Stripe handles payments).
+logs. No biometrics. No card numbers (PayFast handles payments).
 
 ## 3. Sharing & cross-border (POPIA s72)
 
 Processors: Firebase (Auth/Firestore/Storage/Hosting), Google Gemini (optional client-side AI
-quiz), Cloudinary (media), Stripe (payments). SACCAI/DBE exam data shared as legally required.
+quiz), Cloudinary (media), PayFast (payments). SACCAI/DBE exam data shared as legally required.
 Firebase/Google infra may store data outside SA — enrolment constitutes s72 consent subject to
 equivalent processor protections. We never sell personal information.
 
