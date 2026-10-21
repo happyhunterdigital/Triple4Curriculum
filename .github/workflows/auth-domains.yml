@@ -1,0 +1,36 @@
+name: Authorize Firebase Auth domains
+
+# Adds domains to Firebase Authentication -> Settings -> Authorized domains.
+# Needed for Google sign-in (signInWithPopup) on custom domains. Run manually:
+#   gh workflow run auth-domains.yml
+
+on:
+  workflow_dispatch:
+    inputs:
+      domains:
+        description: Comma-separated domains to authorize
+        required: false
+        default: triple4c.com,www.triple4c.com
+
+jobs:
+  authorize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install google-auth-library
+        run: npm install --no-save google-auth-library
+
+      - name: Update authorized domains
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          AUTH_DOMAINS: ${{ inputs.domains }}
+          GCP_PROJECT: triple4curriculum
+        run: |
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/gcp-key.json"
+          node scripts/authorize-domains.mjs

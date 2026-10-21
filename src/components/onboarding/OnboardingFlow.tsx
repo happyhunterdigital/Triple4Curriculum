@@ -218,8 +218,17 @@ export const OnboardingFlow: React.FC = () => {
       if (!form.getValues('email')) form.setValue('email', cred.user.email || '');
       setStep(4);
     } catch (e: unknown) {
+      const code = (e as { code?: string })?.code || '';
       const msg = e instanceof Error ? e.message : 'Google sign-in failed';
-      setError(msg.includes('popup') ? 'Popup blocked - allow popups and retry' : msg);
+      if (code === 'auth/unauthorized-domain') {
+        setError('Google sign-in is not authorised for this domain yet. Please use email registration or contact support@triple4c.com.');
+      } else if (code === 'auth/popup-blocked') {
+        setError('Popup blocked - allow popups for triple4c.com and retry.');
+      } else if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+        setError('Sign-in cancelled. Try again when ready.');
+      } else {
+        setError(msg.includes('popup') ? 'Popup blocked - allow popups and retry' : msg);
+      }
     } finally {
       setSubmitting(false);
     }
