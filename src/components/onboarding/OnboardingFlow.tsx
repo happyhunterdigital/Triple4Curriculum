@@ -18,8 +18,32 @@ import {
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const DEPARTMENTS = ["Faculty of Applied Sciences", "Faculty of Commerce", "Faculty of Education", "Faculty of Engineering"];
+const PHASES = [
+  { id: 'Foundation', label: 'Foundation', grades: 'Grade R-3', desc: 'Playful, sensory, movement', icon: '🧸' },
+  { id: 'Intermediate', label: 'Intermediate', grades: 'Grade 4-6', desc: 'Core mastery & inquiry', icon: '📚' },
+  { id: 'Senior', label: 'Senior', grades: 'Grade 7-9', desc: 'Depth & subject choice', icon: '📖' },
+  { id: 'FET', label: 'FET', grades: 'Grade 10-12', desc: 'SACCAI NSC Matric', icon: '🎓' },
+];
 const TOTAL_STEPS = 6;
+
+/** Compact read-only phase card used on later steps (phase is chosen in step 2). */
+function PhaseSummary({ phaseId, onChange }: { phaseId?: string; onChange: () => void }) {
+  const phase = PHASES.find((p) => p.id === phaseId);
+  return (
+    <div className="rounded-[12px] border border-[#E2E8F0] bg-[var(--color-canvas-soft)] px-4 py-3 flex items-center gap-3">
+      <span className="text-xl">{phase?.icon ?? '🎓'}</span>
+      <span className="min-w-0">
+        <span className="block text-sm font-semibold">
+          {phase ? `${phase.label} · ${phase.grades}` : 'No phase selected'}
+        </span>
+        <span className="block text-xs text-neutral-600">{phase?.desc ?? 'Choose a phase in step 2.'}</span>
+      </span>
+      <button type="button" onClick={onChange} className="ml-auto shrink-0 text-xs font-bold text-[var(--color-t4c-green)] underline underline-offset-2">
+        Change
+      </button>
+    </div>
+  );
+}
 
 const registrationSchema = z.object({
   role: z.enum(['learner', 'teacher']).optional(),
@@ -373,19 +397,37 @@ export const OnboardingFlow: React.FC = () => {
               </div>
             )}
 
-            {/* STEP 2 - Department */}
+            {/* STEP 2 - School phase (Foundation / Intermediate / Senior / FET) */}
             {step === 2 && (
               <div className="space-y-4 xs:space-y-6">
                 <div>
-                  <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>Which department are you interested in?</h1>
-                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Select one - you can change later in settings.</p>
+                  <h1 className="text-[22px] xs:text-[26px] sm:text-[32px] font-medium tracking-tight leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    {role === 'teacher' ? 'Which phase will you teach?' : 'Which phase are you applying for?'}
+                  </h1>
+                  <p className="text-xs xs:text-sm text-neutral-600 mt-2">Choose the grade band - you can change it later.</p>
                 </div>
                 <div className="space-y-2">
-                  {DEPARTMENTS.map(d => (
-                    <button key={d} onClick={() => form.setValue('department', d, { shouldValidate: true })}
-                      className={`w-full text-left px-4 py-4 rounded-[12px] border text-sm font-medium flex items-center justify-between ${dept === d ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)]' : 'bg-white border-[#E2E8F0] hover:border-[var(--color-t4c-green)]'}`}>
-                      <span>{d}</span>
-                      {dept === d && <CheckCircle2 size={16} className="text-[var(--color-t4c-yellow)]" />}
+                  {PHASES.map(p => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      aria-pressed={dept === p.id}
+                      onClick={() => {
+                        form.setValue('department', p.id, { shouldValidate: true });
+                        form.setValue('lastGrade', p.id);
+                        form.setValue('teachingPhase', p.id);
+                      }}
+                      className={`w-full text-left px-4 py-3.5 rounded-[12px] border flex items-center gap-3 transition-colors ${dept === p.id ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)]' : 'bg-white border-[#E2E8F0] hover:border-[var(--color-t4c-green)]'}`}
+                    >
+                      <span className="text-xl shrink-0">{p.icon}</span>
+                      <span className="min-w-0">
+                        <span className="flex flex-wrap items-baseline gap-x-2">
+                          <span className="text-sm font-semibold">{p.label}</span>
+                          <span className={`text-[11px] font-mono uppercase tracking-wider ${dept === p.id ? 'text-white/60' : 'text-neutral-500'}`}>{p.grades}</span>
+                        </span>
+                        <span className={`block text-xs mt-0.5 ${dept === p.id ? 'text-white/70' : 'text-neutral-600'}`}>{p.desc}</span>
+                      </span>
+                      {dept === p.id && <CheckCircle2 size={16} className="text-[var(--color-t4c-yellow)] shrink-0 ml-auto" />}
                     </button>
                   ))}
                 </div>
@@ -556,30 +598,8 @@ export const OnboardingFlow: React.FC = () => {
                       {form.formState.errors.previousSchool && <p className={errText}>{form.formState.errors.previousSchool.message as string}</p>}
                     </div>
                     <div className="space-y-2">
-                      <label className={label}>Learner Phase <span className="text-[11px] text-neutral-500 font-normal">- select your current phase</span></label>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {[
-                          { id: 'Foundation', label: 'Foundation Phase - Grade R-3', icon: '🧸' },
-                          { id: 'Intermediate', label: 'Intermediate Phase - Grade 4-6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase - Grade 7-9', icon: '📖' },
-                          { id: 'FET', label: 'FET Phase - Grade 10-12', icon: '🎓' },
-                        ].map(phase => {
-                          const active = form.watch('lastGrade') === phase.id;
-                          return (
-                            <button
-                              key={phase.id}
-                              type="button"
-                              onClick={() => form.setValue('lastGrade', phase.id, { shouldValidate: true })}
-                              className={`text-left px-3 py-3 rounded-[12px] border text-sm font-medium flex items-center gap-3 transition-colors ${active ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)]' : 'bg-white border-[#E2E8F0] hover:border-[var(--color-t4c-green)]'}`}
-                            >
-                              <span className="text-lg">{phase.icon}</span>
-                              <span>{phase.label}</span>
-                              {active && <span className="ml-auto text-[var(--color-t4c-yellow)]">✓</span>}
-                            </button>
-                          );
-                        })}
-                      </div>
-                      {form.formState.errors.lastGrade && <p className={errText}>{form.formState.errors.lastGrade.message as string}</p>}
+                      <label className={label}>Learner phase</label>
+                      <PhaseSummary phaseId={dept} onChange={() => setStep(2)} />
                     </div>
                     <FileUpload
                       label="Report cards / transcripts / placement results"
@@ -626,30 +646,8 @@ export const OnboardingFlow: React.FC = () => {
                       {form.formState.errors.teachingCertificate && <p className={errText}>{form.formState.errors.teachingCertificate.message as string}</p>}
                     </div>
                     <div className="space-y-2">
-                      <label className={label}>Teaching phase <span className="text-[11px] text-neutral-500 font-normal">- which phase do you teach?</span></label>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {[
-                          { id: 'Foundation', label: 'Foundation Phase - Grade R-3', icon: '🧸' },
-                          { id: 'Intermediate', label: 'Intermediate Phase - Grade 4-6', icon: '📚' },
-                          { id: 'Senior', label: 'Senior Phase - Grade 7-9', icon: '📖' },
-                          { id: 'FET', label: 'FET Phase - Grade 10-12', icon: '🎓' },
-                        ].map(phase => {
-                          const active = form.watch('teachingPhase') === phase.id;
-                          return (
-                            <button
-                              key={phase.id}
-                              type="button"
-                              onClick={() => form.setValue('teachingPhase', phase.id, { shouldValidate: true })}
-                              className={`text-left px-3 py-3 rounded-[12px] border text-sm font-medium flex items-center gap-3 transition-colors ${active ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)]' : 'bg-white border-[#E2E8F0] hover:border-[var(--color-t4c-green)]'}`}
-                            >
-                              <span className="text-lg">{phase.icon}</span>
-                              <span>{phase.label}</span>
-                              {active && <span className="ml-auto text-[var(--color-t4c-yellow)]">✓</span>}
-                            </button>
-                          );
-                        })}
-                      </div>
-                      {form.formState.errors.teachingPhase && <p className={errText}>{form.formState.errors.teachingPhase.message as string}</p>}
+                      <label className={label}>Teaching phase</label>
+                      <PhaseSummary phaseId={dept} onChange={() => setStep(2)} />
                     </div>
                     <FileUpload
                       label="Degree / certificate scans"
