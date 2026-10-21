@@ -36,11 +36,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
           aria-label="Triple 4C home"
         >
           <img
-            src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1790380437/Triple4Curriculum_logo_update_qjbgl1.png', 72)}
+            src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1790380437/Triple4Curriculum_logo_update_qjbgl1.png', 128)}
             alt="Triple 4C"
             loading="eager"
             decoding="async"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-[var(--color-t4c-yellow)] shadow-sm shrink-0 bg-white"
+            className="w-11 h-11 sm:w-[52px] sm:h-[52px] md:w-[58px] md:h-[58px] lg:w-[62px] lg:h-[62px] rounded-full object-cover border border-[var(--color-t4c-yellow)] shadow-sm shrink-0 bg-white"
             referrerPolicy="no-referrer"
           />
           <span className="hidden xs:block text-left">

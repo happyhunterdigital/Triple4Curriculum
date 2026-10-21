@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { cloudinaryImage } from '../../lib/image';
+import { SocialLinks } from './SocialLinks';
 
 export function SiteFooter() {
   return (
@@ -45,7 +46,7 @@ export function SiteFooter() {
               <li><a href="mailto:info@t4c.com" className="hover:text-[var(--color-t4c-yellow)] transition-colors">info@t4c.com</a> <span className="text-white/50">·</span> <a href="mailto:admissions@t4c.com" className="hover:text-[var(--color-t4c-yellow)] transition-colors">admissions@t4c.com</a></li>
               <li><a href="mailto:support@triple4c.com" className="hover:text-[var(--color-t4c-yellow)] transition-colors">support@triple4c.com</a></li>
               <li><a href="https://www.triple4c.com" target="_blank" rel="noreferrer" className="hover:text-[var(--color-t4c-yellow)] transition-colors">www.triple4c.com</a></li>
-              <li className="text-white/60 text-xs">Facebook · Instagram · TikTok</li>
+              <li className="text-white/60 text-xs pt-1"><SocialLinks /></li>
             </ul>
           </div>
 
