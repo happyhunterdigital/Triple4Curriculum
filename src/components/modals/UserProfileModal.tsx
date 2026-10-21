@@ -81,10 +81,10 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
           <div className="p-4 rounded-xl bg-academic-green/5 border border-academic-green/20 flex items-center justify-between">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-academic-green">
-                Department Affiliation
+                Phase / Department
               </span>
               <p className="text-sm font-bold text-neutral-900 mt-0.5">
-                {currentUser.departmentName || 'Department of Computing & Applied AI'}
+                {currentUser.departmentName || currentUser.departmentId || 'Not assigned'}
               </p>
               <p className="text-[11px] text-neutral-500">
                 Academic Senate Registered • Level {currentUser.level || 6} ({currentUser.xp || 2450} XP)
