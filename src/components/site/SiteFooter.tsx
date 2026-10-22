@@ -10,7 +10,7 @@ export function SiteFooter() {
           <div>
             <Link to="/" className="flex items-center gap-3 rounded hover:opacity-90 transition-opacity" aria-label="Triple 4C Curriculum home">
               <img
-                src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1790380437/Triple4Curriculum_logo_update_qjbgl1.png', 72)}
+                src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787254845/Triple_4_Curriculum_latest_logo_variant4_hjviza.png', 72)}
                 alt="Triple 4C Curriculum logo"
                 loading="lazy"
                 decoding="async"
