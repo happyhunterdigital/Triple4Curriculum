@@ -21,6 +21,7 @@ import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { HowItWorksPage } from './pages/HowItWorksPage';
 import { CurriculumPage } from './pages/CurriculumPage';
+import { LearnersPage } from './pages/LearnersPage';
 import { AdmissionsPage } from './pages/AdmissionsPage';
 import { FaqPage } from './pages/FaqPage';
 import { ContactPage } from './pages/ContactPage';
@@ -96,6 +97,7 @@ function Shell() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/how-it-works" element={<HowItWorksPage />} />
             <Route path="/curriculum" element={<CurriculumPage />} />
+          <Route path="/learners" element={<LearnersPage />} />
             <Route path="/admissions" element={<AdmissionsPage />} />
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/contact" element={<ContactPage />} />

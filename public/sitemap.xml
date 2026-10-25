@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://triple4c.com/</loc>
     <changefreq>weekly</changefreq>
@@ -19,5 +19,70 @@
     <loc>https://triple4c.com/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://triple4c.com/learners</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-piano-practice.jpg</image:loc>
+      <image:title>Learner practising piano at Triple 4 Curriculum</image:title>
+      <image:caption>Practice on the keys, from real sheet music.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-online-coursework.jpg</image:loc>
+      <image:title>Learner completing coursework on a laptop</image:title>
+      <image:caption>Coursework at the learner's own pace.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-chromebook-reading.jpg</image:loc>
+      <image:title>Learner reading the Iliad and Odyssey at a library table</image:title>
+      <image:caption>Screens and books share the table.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-iliad-odyssey.jpg</image:loc>
+      <image:title>Learner with a Chromebook and classic books</image:title>
+      <image:caption>The classics, a Chromebook and colouring pencils.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-typing-coursework.jpg</image:loc>
+      <image:title>Learner typing coursework on a laptop</image:title>
+      <image:caption>Independent study, with a mentor close by.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-study-by-window.jpg</image:loc>
+      <image:title>Learner studying by the window</image:title>
+      <image:caption>A quiet corner, and work that gets finished.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-reading-break.jpg</image:loc>
+      <image:title>Learner reading a paperback between lessons</image:title>
+      <image:caption>Reading for pleasure counts.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-library-research.jpg</image:loc>
+      <image:title>Learner researching in the library</image:title>
+      <image:caption>Research happens where the books are.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learners-reading-together.jpg</image:loc>
+      <image:title>Two learners reading together</image:title>
+      <image:caption>Different books, same room.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-piano-lesson.jpg</image:loc>
+      <image:title>Learner at piano practice</image:title>
+      <image:caption>Confidence on the keys.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-music-practice.jpg</image:loc>
+      <image:title>Learner practising in the music room</image:title>
+      <image:caption>The music room, mid-practice.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://triple4c.com/images/learners/triple-4-curriculum-learner-piano-confidence.jpg</image:loc>
+      <image:title>Learner smiling at the piano</image:title>
+      <image:caption>Practice, then a look at the camera.</image:caption>
+    </image:image>
   </url>
 </urlset>

@@ -28,6 +28,7 @@ export function SiteFooter() {
               <li><Link to="/about" className="hover:text-[var(--color-t4c-yellow)] transition-colors">About</Link></li>
               <li><Link to="/how-it-works" className="hover:text-[var(--color-t4c-yellow)] transition-colors">How it Works</Link></li>
               <li><Link to="/curriculum" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Curriculum</Link></li>
+            <li><Link to="/learners" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Learners</Link></li>
               <li><Link to="/admissions" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Admissions & Fees</Link></li>
               <li><Link to="/faq" className="hover:text-[var(--color-t4c-yellow)] transition-colors">FAQ</Link></li>
               <li><Link to="/contact" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Contact</Link></li>

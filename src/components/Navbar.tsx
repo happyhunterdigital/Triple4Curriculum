@@ -74,6 +74,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
         <a href="/about" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">About</a>
         <a href="/how-it-works" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">How it Works</a>
         <a href="/curriculum" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Curriculum</a>
+        <a href="/learners" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Learners</a>
         <a href="/admissions" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Admissions</a>
         <a href="/faq" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">FAQ</a>
         <a href="/contact" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Contact</a>
