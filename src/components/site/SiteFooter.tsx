@@ -61,6 +61,13 @@ export function SiteFooter() {
 
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-2 justify-between text-xs text-white/60">
           <span>© {new Date().getFullYear()} Triple 4 Curriculum (T4C). All rights reserved.</span>
+          <button
+            type="button"
+            onClick={() => document.dispatchEvent(new Event('hh:open-consent'))}
+            className="underline underline-offset-2 hover:text-[var(--color-t4c-yellow)] transition-colors"
+          >
+            Cookie settings
+          </button>
           <span>Built for Grade R-12 · SACCAI-track NSC</span>
         </div>
       </div>

@@ -1,10 +1,13 @@
-// Phase 3: crash/error monitoring. Reads VITE_SENTRY_DSN; dynamically imports
-// @sentry/react when installed, otherwise falls back to a console stub so the
-// app never breaks when the DSN or package is missing.
-export async function initMonitoring(): Promise<void> {
-  const dsn = import.meta.env?.VITE_SENTRY_DSN as string | undefined;
-  if (!dsn) {
-    console.info('[monitoring] VITE_SENTRY_DSN not set — console stub active.');
+// Crash/error monitoring. Sentry is optional third-party monitoring, so it
+// must not initialise before the visitor accepts the cookie banner.
+import { hasConsent, onConsentChange } from './consent';
+
+const dsn = import.meta.env?.VITE_SENTRY_DSN as string | undefined;
+let initialised = false;
+
+async function initMonitoring(): Promise<void> {
+  if (initialised || !dsn || !hasConsent()) {
+    if (!dsn) console.info('[monitoring] VITE_SENTRY_DSN not set - console stub active.');
     return;
   }
   try {
@@ -14,8 +17,18 @@ export async function initMonitoring(): Promise<void> {
       dsn,
       tracesSampleRate: 0.1,
     });
-    console.info('[monitoring] Sentry initialised.');
+    initialised = true;
+    console.info('[monitoring] Sentry initialised after consent.');
   } catch {
-    console.warn('[monitoring] @sentry/react not installed — console stub active. DSN present but reporter missing.');
+    console.warn('[monitoring] @sentry/react not installed - console stub active.');
   }
 }
+
+if (typeof window !== 'undefined') {
+  void initMonitoring();
+  onConsentChange((choice) => {
+    if (choice === 'accepted') void initMonitoring();
+  });
+}
+
+export { initMonitoring };

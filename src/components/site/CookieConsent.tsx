@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-const KEY = 't4c-cookie-consent';
+import { CONSENT_OPEN_EVENT, getConsent, setConsent } from '../../lib/consent';
 
 export const CookieConsent: React.FC = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    try {
-      if (!localStorage.getItem(KEY)) setVisible(true);
-    } catch {
-      setVisible(true);
-    }
+    setVisible(getConsent() === null);
+    const open = () => setVisible(true);
+    document.addEventListener(CONSENT_OPEN_EVENT, open);
+    return () => document.removeEventListener(CONSENT_OPEN_EVENT, open);
   }, []);
 
-  const choose = (v: 'accepted' | 'declined') => {
-    try {
-      localStorage.setItem(KEY, JSON.stringify({ value: v, at: new Date().toISOString() }));
-    } catch {
-      /* storage unavailable — banner simply hides for the session */
-    }
+  const choose = (value: 'accepted' | 'declined') => {
+    setConsent(value);
     setVisible(false);
   };
 
@@ -34,8 +28,8 @@ export const CookieConsent: React.FC = () => {
     >
       <p className="text-sm font-semibold">We use minimal cookies</p>
       <p className="mt-1 text-xs leading-relaxed text-neutral-600">
-        Strictly-necessary storage (sign-in, preferences) plus a remembered banner choice. No ad
-        trackers. See our{' '}
+        Strictly-necessary storage (sign-in, preferences) plus a remembered banner choice. Analytics
+        and any optional third-party script stay off until you accept. See our{' '}
         <Link to="/privacy" className="underline font-medium">
           Privacy Policy
         </Link>
