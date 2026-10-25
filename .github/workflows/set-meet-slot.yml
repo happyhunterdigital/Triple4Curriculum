@@ -1,0 +1,57 @@
+name: Set Google Meet link on timetable
+
+# Creates or updates a timetable slot with a real Google Meet link.
+# Run manually:
+#   gh workflow run set-meet-slot.yml -f meet_url=https://meet.google.com/xxx-xxxx-xxx
+
+on:
+  workflow_dispatch:
+    inputs:
+      day:
+        description: Day of week (Monday..Friday)
+        required: false
+        default: Monday
+      start:
+        description: Start time HH:MM
+        required: false
+        default: "12:00"
+      end:
+        description: End time HH:MM
+        required: false
+        default: "13:00"
+      course_code:
+        description: Course code shown on the card (used only if a new slot is created)
+        required: false
+        default: LIVE
+      title:
+        description: Slot title (used only if a new slot is created)
+        required: false
+        default: T4C Live Classroom
+
+jobs:
+  set-slot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install google-auth-library
+        run: npm install --no-save google-auth-library
+
+      - name: Write Meet link into timetable
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GCP_PROJECT: triple4curriculum
+          MEET_URL: ${{ secrets.CLASSROOM_MEET_URL }}
+          DAY: ${{ inputs.day }}
+          START: ${{ inputs.start }}
+          END: ${{ inputs.end }}
+          COURSE_CODE: ${{ inputs.course_code }}
+          TITLE: ${{ inputs.title }}
+        run: |
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/gcp-key.json"
+          node scripts/set-meet-slot.mjs
