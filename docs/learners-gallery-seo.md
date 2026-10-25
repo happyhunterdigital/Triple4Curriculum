@@ -25,6 +25,10 @@ Last updated: October 2026. Applies to `/learners` and `public/images/learners/`
    triple-4-curriculum-learner-<activity>.jpg
 5. Every new photo must have explicit width and height set to avoid layout
    shift, plus loading="lazy" and decoding="async".
+6. Never crop gallery photos. No fixed heights and no object-cover on the
+   gallery: the page renders each image at its natural aspect ratio inside a
+   masonry column flow, so faces and heads are always complete. The founder
+   asked for this explicitly after the first release cropped heads.
 
 ## Alt text and captions in use
 
