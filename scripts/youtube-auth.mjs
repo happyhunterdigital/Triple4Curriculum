@@ -14,6 +14,7 @@
  *   (opens your browser; paste the printed token into functions/.env + secrets)
  */
 import http from 'node:http';
+import { writeFileSync } from 'node:fs';
 
 const CLIENT_ID = process.env.YT_OAUTH_CLIENT_ID;
 const CLIENT_SECRET = process.env.YT_OAUTH_CLIENT_SECRET;
@@ -84,10 +85,25 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log('Open this URL in your browser (also auto-attempted):\n\n' + authUrl + '\n');
+  // Save the exact URL: copying a wrapped terminal URL loses query parameters
+  // (that is what causes "Required parameter is missing: response_type").
+  try {
+    writeFileSync('.yt-auth-url.txt', authUrl, 'utf8');
+  } catch {
+    // ignore — the URL is still printed below
+  }
+  console.log(
+    'Open this URL in your browser (also auto-attempted):\n\n' +
+      authUrl +
+      '\n\nSaved to .yt-auth-url.txt. If the browser did not open, run:\n' +
+      '  Start-Process (Get-Content .\\.yt-auth-url.txt -Raw)\n',
+  );
   try {
     import('node:child_process').then(({ exec }) => {
-      const cmd = process.platform === 'win32' ? `start "" "${authUrl}"` : `xdg-open "${authUrl}"`;
+      const cmd =
+        process.platform === 'win32'
+          ? `powershell -NoProfile -Command "Start-Process '${authUrl}'"`
+          : `xdg-open "${authUrl}"`;
       exec(cmd);
     });
   } catch {

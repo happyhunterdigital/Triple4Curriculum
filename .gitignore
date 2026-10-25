@@ -15,3 +15,6 @@ ui-debug.log
 
 # Internal audit/compliance documents (not for the public repo)
 docs/
+
+# One-time YouTube OAuth URL (contains client id; do not commit)
+.yt-auth-url.txt
