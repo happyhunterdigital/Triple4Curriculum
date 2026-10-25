@@ -11,7 +11,9 @@ const runtimeSa = `${project}@appspot.gserviceaccount.com`;
 const secrets = {
   PAYFAST_MERCHANT_ID: process.env.PAYFAST_MERCHANT_ID ?? '',
   PAYFAST_MERCHANT_KEY: process.env.PAYFAST_MERCHANT_KEY ?? '',
-  PAYFAST_PASSPHRASE: process.env.PAYFAST_PASSPHRASE ?? '',
+  // Secret Manager rejects empty payloads. "none" means "no PayFast passphrase"
+  // (the functions treat "none" as an empty passphrase when signing).
+  PAYFAST_PASSPHRASE: process.env.PAYFAST_PASSPHRASE || 'none',
 };
 
 const auth = new GoogleAuth({ scopes: ['https://www.googleapis.com/auth/cloud-platform'] });

@@ -510,7 +510,8 @@ export const createPayfastCheckout = onCall(
 
     const merchantId = process.env.PAYFAST_MERCHANT_ID ?? "";
     const merchantKey = process.env.PAYFAST_MERCHANT_KEY ?? "";
-    const passphrase = process.env.PAYFAST_PASSPHRASE ?? "";
+    // Secret Manager cannot store an empty value; "none" = no passphrase.
+    const passphrase = process.env.PAYFAST_PASSPHRASE === "none" ? "" : (process.env.PAYFAST_PASSPHRASE ?? "");
     if (!merchantId || !merchantKey) {
       throw new HttpsError("failed-precondition", "PayFast is not configured yet.");
     }
@@ -573,7 +574,7 @@ export const payfastWebhook = onRequest(
     }
 
     const body = (req.body ?? {}) as Record<string, string>;
-    const passphrase = process.env.PAYFAST_PASSPHRASE ?? "";
+    const passphrase = process.env.PAYFAST_PASSPHRASE === "none" ? "" : (process.env.PAYFAST_PASSPHRASE ?? "");
     const { signature, ...params } = body;
 
     // 1. Signature: recompute over sorted fields (+ passphrase).
