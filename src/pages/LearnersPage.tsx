@@ -88,11 +88,11 @@ export function LearnersPage() {
             learners. These photos show the time outside live lessons: independent study,
             reading and enrichment. Updated October 2026.
           </Body>
-          <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="mt-6 columns-1 sm:columns-2 lg:columns-3 gap-4">
             {learnersGallery.map((image) => (
               <figure
                 key={image.src}
-                className="bg-white border border-black/10 rounded-[16px] overflow-hidden"
+                className="mb-4 break-inside-avoid bg-white border border-black/10 rounded-[16px] overflow-hidden"
               >
                 <img
                   src={image.src}
@@ -101,7 +101,7 @@ export function LearnersPage() {
                   height={image.height}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-64 sm:h-72 object-cover"
+                  className="block w-full h-auto"
                 />
                 <figcaption className="p-4 text-xs leading-relaxed text-neutral-600">
                   {image.caption}

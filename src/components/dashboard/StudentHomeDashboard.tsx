@@ -276,7 +276,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
               alt="Two learners reading side by side in front of library shelves."
               loading="lazy"
               decoding="async"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
             />
             <span className="absolute inset-0 bg-gradient-to-t from-[#111214]/90 via-[#111214]/30 to-transparent" />
             <span className="absolute bottom-0 left-0 right-0 p-4">
