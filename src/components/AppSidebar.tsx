@@ -169,7 +169,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
                 { id:'how-it-works', label:'How it Works' },
                 { id:'curriculum', label:'Curriculum' },
                 { id:'admissions', label:'Admissions & Fees' },
-                { id:'google-meet', label:'Live on Google Meet' },
+                { id:'classroom', label:'T4C Classroom' },
                 { id:'faq', label:'FAQ' },
                 { id:'contact', label:'Contact' },
               ].map(s=>(

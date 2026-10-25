@@ -25,7 +25,7 @@ import { LearnersPage } from './pages/LearnersPage';
 import { AdmissionsPage } from './pages/AdmissionsPage';
 import { FaqPage } from './pages/FaqPage';
 import { ContactPage } from './pages/ContactPage';
-import { GoogleMeetPage } from './pages/GoogleMeetPage';
+import { ClassroomPage } from './pages/ClassroomPage';
 import { SiteFooter } from './components/site/SiteFooter';
 import { CookieConsent } from './components/site/CookieConsent';
 import { DashboardSkeleton } from './components/common/DashboardSkeleton';
@@ -104,8 +104,9 @@ function Shell() {
             <Route path="/admissions" element={<AdmissionsPage />} />
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/google-meet" element={<GoogleMeetPage />} />
-            <Route path="/live-classes" element={<Navigate to="/google-meet" replace />} />
+            <Route path="/classroom" element={<ClassroomPage />} />
+            <Route path="/google-meet" element={<Navigate to="/classroom" replace />} />
+            <Route path="/live-classes" element={<Navigate to="/classroom" replace />} />
             <Route path="/onboarding" element={<Card><OnboardingFlow /></Card>} />
             <Route path="/privacy" element={<LegalDoc />} />
             <Route path="/terms" element={<LegalDoc />} />
@@ -130,7 +131,7 @@ function Shell() {
             <Route path="/teach/attendance" element={<RequireAuth roles={['lecturer', 'admin']}><TeachAttendance /></RequireAuth>} />
             <Route path="/learn/progress" element={<RequireAuth><LearnProgress /></RequireAuth>} />
             <Route path="/certificates" element={<RequireAuth><div className="bg-white border rounded-xl p-4 sm:p-6"><CertificatesRoute /></div></RequireAuth>} />
-            <Route path="/classroom" element={<RequireAuth><ClassroomRoute /></RequireAuth>} />
+            <Route path="/workspace" element={<RequireAuth><ClassroomRoute /></RequireAuth>} />
             <Route path="/live" element={<RequireAuth><LiveRoute /></RequireAuth>} />
             <Route path="/dashboard" element={<DashboardRouter />} />
             <Route path="*" element={<NotFound />} />

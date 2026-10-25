@@ -48,9 +48,9 @@ const FAQS = [
   },
 ];
 
-export function GoogleMeetPage() {
+export function ClassroomPage() {
   useEffect(() => {
-    document.title = 'Live Classes on Google Meet: Triple 4 Curriculum';
+    document.title = 'T4C Classroom: Live Lessons on Google Meet';
   }, []);
 
   const { currentUser } = useAuth();
@@ -106,9 +106,9 @@ export function GoogleMeetPage() {
       {/* Hero */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <div className="rounded-[16px] bg-white border border-black/10 p-6 sm:p-8 lg:p-10">
-          <SectionEyebrow>Live Classes</SectionEyebrow>
+          <SectionEyebrow>T4C Classroom</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95]">
-            Every lesson, live on Google&nbsp;Meet.
+            Every lesson, live on T4C Classroom.
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[62ch]">
             Sixteen learners, one certified teacher, four focused lessons a day. Join from your timetable,
@@ -300,7 +300,7 @@ export function GoogleMeetPage() {
 
         {/* FAQ */}
         <RevealStagger>
-          <SectionHeading className="text-[22px] sm:text-[28px]">Google Meet questions</SectionHeading>
+          <SectionHeading className="text-[22px] sm:text-[28px]">Classroom questions</SectionHeading>
           <div className="mt-4 divide-y divide-black/10 rounded-[16px] border border-black/10 bg-white overflow-hidden">
             {FAQS.map((faq) => (
               <details key={faq.q} className="group p-5">
