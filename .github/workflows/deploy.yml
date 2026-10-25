@@ -98,6 +98,7 @@ jobs:
         run: |
           printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/gcp-key.json"
+          npx --yes firebase-tools@latest functions:list --project triple4curriculum --non-interactive --debug
           npx --yes firebase-tools@latest deploy --only functions --project triple4curriculum --non-interactive
 
       # Claims-only rules: deploying these before custom claims exist locks every
