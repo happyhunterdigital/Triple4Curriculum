@@ -15,6 +15,7 @@
  */
 import http from 'node:http';
 import { writeFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 
 const CLIENT_ID = process.env.YT_OAUTH_CLIENT_ID;
 const CLIENT_SECRET = process.env.YT_OAUTH_CLIENT_SECRET;
@@ -37,7 +38,7 @@ const authUrl =
     redirect_uri: REDIRECT,
     response_type: 'code',
     access_type: 'offline',
-    prompt: 'consent',
+    prompt: 'consent select_account',
     scope: SCOPES,
   }).toString();
 
@@ -85,28 +86,26 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  // Save the exact URL: copying a wrapped terminal URL loses query parameters
-  // (that is what causes "Required parameter is missing: response_type").
+  // Save the exact URL. Do NOT open it through cmd/PowerShell: '&' in the query
+  // string can be split, which drops parameters (invalid_request response_type).
   try {
     writeFileSync('.yt-auth-url.txt', authUrl, 'utf8');
   } catch {
     // ignore — the URL is still printed below
   }
-  console.log(
-    'Open this URL in your browser (also auto-attempted):\n\n' +
-      authUrl +
-      '\n\nSaved to .yt-auth-url.txt. If the browser did not open, run:\n' +
-      '  Start-Process (Get-Content .\\.yt-auth-url.txt -Raw)\n',
-  );
+  // Put the exact URL on the clipboard — no shell parsing, no truncation.
   try {
-    import('node:child_process').then(({ exec }) => {
-      const cmd =
-        process.platform === 'win32'
-          ? `powershell -NoProfile -Command "Start-Process '${authUrl}'"`
-          : `xdg-open "${authUrl}"`;
-      exec(cmd);
-    });
+    if (process.platform === 'win32') execSync('clip', { input: authUrl });
   } catch {
-    // print-only fallback
+    // clipboard unavailable — the URL is printed below
   }
+  console.log(
+    '\nThe authorization URL is on your clipboard and saved to .yt-auth-url.txt\n\n' +
+      '1. Click the browser address bar (Ctrl+L)\n' +
+      '2. Paste (Ctrl+V) and press Enter\n' +
+      '3. Choose the T4C account: triple4curriculum@gmail.com\n\n' +
+      'URL:\n' +
+      authUrl +
+      '\n',
+  );
 });
