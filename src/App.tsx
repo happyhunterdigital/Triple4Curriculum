@@ -63,10 +63,12 @@ function DashboardRouter() {
   // Role comes from Firebase Auth custom claims (via AuthProvider), matching
   // firestore.rules. No Firestore profile lookups decide what a user can see.
   const { currentUser, currentRole } = useAuth();
+  const navigate = useNavigate();
+  const go = (route: string) => navigate(`/${route.replace(/^\//, '')}`);
 
   if (currentRole === 'admin') return <AdminHomeDashboard />;
-  if (currentRole === 'lecturer') return <TeacherHomeDashboard onNavigate={() => {}} />;
-  if (currentUser) return <StudentHomeDashboard onNavigate={() => {}} />;
+  if (currentRole === 'lecturer') return <TeacherHomeDashboard onNavigate={go} />;
+  if (currentUser) return <StudentHomeDashboard onNavigate={go} />;
   // Guest fallback points to marketing home for consistency.
   return <HomePage />;
 }
