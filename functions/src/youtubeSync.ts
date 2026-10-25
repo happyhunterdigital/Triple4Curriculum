@@ -45,10 +45,12 @@ async function getAccessToken(): Promise<string> {
 interface DriveFile { id: string; name: string; createdTime: string; videoMediaMetadata?: { durationMillis?: string }; }
 
 async function listNewMeetRecordings(token: string, processedIds: Set<string>): Promise<DriveFile[]> {
+  // Only the dedicated recordings folder is scanned. Do NOT filter on the file
+  // name: Meet names recordings after the meeting title (e.g. "CSC-441 — Lesson 3"),
+  // not "Meet recording", so a name filter would silently find nothing.
   const q = [
     `trashed = false`,
     `mimeType = 'video/mp4'`,
-    `name contains 'Meet recording'`,
     ` '${DRIVE_FOLDER.value()}' in parents`,
   ].join(' and ');
   const url = new URL('https://www.googleapis.com/drive/v3/files');
