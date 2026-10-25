@@ -16,6 +16,14 @@ const secrets = {
   PAYFAST_PASSPHRASE: process.env.PAYFAST_PASSPHRASE || 'none',
 };
 
+// YouTube/Drive pipeline secrets — only created when a value is provided.
+const optionalSecrets = {
+  YT_OAUTH_CLIENT_ID: process.env.YT_OAUTH_CLIENT_ID ?? '',
+  YT_OAUTH_CLIENT_SECRET: process.env.YT_OAUTH_CLIENT_SECRET ?? '',
+  YT_OAUTH_REFRESH_TOKEN: process.env.YT_OAUTH_REFRESH_TOKEN ?? '',
+  YT_DRIVE_RECORDINGS_FOLDER: process.env.YT_DRIVE_RECORDINGS_FOLDER ?? '',
+};
+
 const auth = new GoogleAuth({ scopes: ['https://www.googleapis.com/auth/cloud-platform'] });
 const client = await auth.getClient();
 const creds = await auth.getCredentials();
@@ -72,7 +80,11 @@ async function grantAccess(name) {
 }
 
 let failures = 0;
-for (const [name, value] of Object.entries(secrets)) {
+for (const [name, value] of Object.entries({ ...secrets, ...optionalSecrets })) {
+  if (value === '') {
+    console.log(`skip ${name} (no value yet)`);
+    continue;
+  }
   try {
     await ensureSecret(name);
     await addVersion(name, value);
