@@ -38,7 +38,7 @@ async function ensureSecret(name) {
 
 async function addVersion(name, value) {
   const res = await client.request({
-    url: `${base}/secrets/${name}/versions`,
+    url: `${base}/secrets/${name}:addVersion`,
     method: 'POST',
     data: { payload: { data: Buffer.from(value, 'utf8').toString('base64') } },
   });
