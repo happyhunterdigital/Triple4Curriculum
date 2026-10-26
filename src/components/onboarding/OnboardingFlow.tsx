@@ -13,9 +13,10 @@ import { Card } from '../ui/card';
 import { FileUpload, type UploadedFileMeta } from '../ui/FileUpload';
 import { auth, db, storage } from '../../lib/firebase';
 import {
-  createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup, type User as FbUser
+  createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile,
+  GoogleAuthProvider, signInWithPopup, type User as FbUser
 } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { createPayfastCheckout, submitPayfastCheckout } from '../../lib/payfast';
 
@@ -246,14 +247,53 @@ export const OnboardingFlow: React.FC = () => {
     setError(null);
     setSubmitting(true);
     try {
-      let fbUser = googleUser;
+      // Reuse an already-signed-in session when it matches the submitted email.
+      // This is the common retry case: the account was created but the profile
+      // write failed, or the page was reloaded before registration finished.
+      let fbUser: FbUser | null = googleUser;
       if (!fbUser) {
-        const cred = await createUserWithEmailAndPassword(auth, data.email!, data.password!);
-        await updateProfile(cred.user, { displayName: data.name });
-        fbUser = cred.user;
+        const active = auth.currentUser;
+        if (active && (active.email || '').toLowerCase() === (data.email || '').toLowerCase()) {
+          fbUser = active;
+        }
       }
 
-      const provider = googleUser ? 'google' : 'email';
+      if (!fbUser) {
+        try {
+          const cred = await createUserWithEmailAndPassword(auth, data.email!, data.password!);
+          await updateProfile(cred.user, { displayName: data.name });
+          fbUser = cred.user;
+        } catch (e) {
+          const code = (e as { code?: string })?.code || '';
+          if (code !== 'auth/email-already-in-use') throw e;
+
+          // The address already has an account, usually from a previous,
+          // partially completed application. Sign in with the password just
+          // entered and finish saving the application instead of dead-ending.
+          try {
+            const cred = await signInWithEmailAndPassword(auth, data.email!, data.password!);
+            fbUser = cred.user;
+            if (!cred.user.displayName && data.name) {
+              await updateProfile(cred.user, { displayName: data.name });
+            }
+          } catch (signInError) {
+            const signInCode = (signInError as { code?: string })?.code || '';
+            if (['auth/wrong-password', 'auth/invalid-credential', 'auth/invalid-login-credentials'].includes(signInCode)) {
+              throw new Error(
+                'This email is already registered. If you started an application before, enter the same password you used then - or choose "Continue with Google" if that is how you signed up. Still stuck? Email support@triple4c.com.'
+              );
+            }
+            if (signInCode === 'auth/too-many-requests') {
+              throw new Error('Too many attempts. Please wait a few minutes and try again.');
+            }
+            throw signInError;
+          }
+        }
+      }
+
+      if (!fbUser) throw new Error('Could not start your account. Please retry.');
+
+      const provider = fbUser.providerData?.some((p) => p.providerId === 'google.com') ? 'google' : 'email';
       const base = {
         uid: fbUser.uid, role: data.role, department: data.department,
         name: data.name || fbUser.displayName || fbUser.email, email: data.email || fbUser.email,
@@ -261,6 +301,15 @@ export const OnboardingFlow: React.FC = () => {
       };
 
       const fileMetas = (key: string) => (uploads[key] || []).map(f => ({ path: f.path, name: f.name, size: f.size, type: f.type, downloadURL: (f as any).downloadURL || '' }));
+
+      // A returning applicant should never have their existing record
+      // overwritten by a fresh application. Send them to their dashboard.
+      const profileCollection = data.role === 'learner' ? 'students' : 'teacher_applications';
+      const existingProfile = await getDoc(doc(db, profileCollection, fbUser.uid));
+      if (existingProfile.exists()) {
+        window.location.assign('/dashboard');
+        return;
+      }
 
       if (data.role === 'learner') {
         await setDoc(doc(db, 'students', fbUser.uid), {
@@ -349,7 +398,15 @@ export const OnboardingFlow: React.FC = () => {
 
       setCompleted(true);
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Registration failed';
+      const code = (e as { code?: string })?.code || '';
+      const messages: Record<string, string> = {
+        'auth/weak-password': 'Choose a password with at least 6 characters.',
+        'auth/invalid-email': 'Enter a valid email address.',
+        'auth/network-request-failed': 'Network problem - check your connection and try again.',
+        'auth/too-many-requests': 'Too many attempts. Please wait a few minutes and try again.',
+        'permission-denied': 'Your account was created, but your application could not be saved. Press "Complete registration" again to finish it.',
+      };
+      const msg = messages[code] || (e instanceof Error ? e.message : 'Registration failed. Please retry.');
       setError(msg);
     } finally {
       setSubmitting(false);
