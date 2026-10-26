@@ -177,7 +177,7 @@ export const LearnerProgressDashboard: React.FC<LearnerProgressDashboardProps> =
         type,
         teacherName: activeTeacher?.name
       });
-      setNudgeSuccessAlert(`Direct ${type} notification dispatched to ${learner.studentName}!`);
+      setNudgeSuccessAlert(`Direct ${type} announcement sent to ${learner.studentName}!`);
       setTimeout(() => setNudgeSuccessAlert(null), 4000);
     } catch (err) {
       console.error('Failed to send nudge:', err);
@@ -196,10 +196,10 @@ export const LearnerProgressDashboard: React.FC<LearnerProgressDashboardProps> =
       });
       setNudgeModalOpen(false);
       setNudgeMessage('');
-      setNudgeSuccessAlert(`Broadcast alert successfully dispatched to ${res.dispatchedCount} learners!`);
+      setNudgeSuccessAlert(`Announcement successfully sent to ${res.dispatchedCount} learners!`);
       setTimeout(() => setNudgeSuccessAlert(null), 4000);
     } catch (err) {
-      console.error('Failed to dispatch broadcast:', err);
+      console.error('Failed to send announcement:', err);
     } finally {
       setNudgeSending(false);
     }
@@ -1092,7 +1092,7 @@ export const LearnerProgressDashboard: React.FC<LearnerProgressDashboardProps> =
                 className="px-5 py-2 rounded-xl bg-emerald-900 text-yellow-300 text-xs font-black hover:bg-emerald-800 shadow-md transition disabled:opacity-50 flex items-center gap-2"
               >
                 <Send className="w-3.5 h-3.5" />
-                <span>{nudgeSending ? 'Dispatched...' : 'Dispatch Broadcast'}</span>
+                <span>{nudgeSending ? 'Sending...' : 'Send Announcement'}</span>
               </button>
             </div>
 

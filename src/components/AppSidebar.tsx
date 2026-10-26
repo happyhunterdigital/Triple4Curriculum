@@ -69,7 +69,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
   const secondaryMenu: MenuItem[] = [
     { id: 'attendance', label: "Attendance Records", icon: <CheckSquare size={20} strokeWidth={2.4} /> },
     { id: 'discussions', label: "Academic Discussions", icon: <MessageSquare size={20} strokeWidth={2.4} /> },
-    { id: 'notices', label: "Dispatches & Notices", icon: <Bell size={20} strokeWidth={2.4} />, count: 2 },
+    { id: 'notices', label: "Announcements", icon: <Bell size={20} strokeWidth={2.4} />, count: 2 },
   ];
 
   return (

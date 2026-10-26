@@ -517,7 +517,7 @@ export const api = {
       const updated = await getDoc(ref);
       const submission = withId<AssignmentSubmission>(ref.id, (updated.data() || {}) as Record<string, unknown>);
       void logAudit({ action: 'SPEED_GRADER_EVALUATE', resource: `/submissions/${submissionId}`, details: `Assigned grade ${payload.grade} to ${current.studentName}` });
-      return { message: 'Grade recorded and student notification dispatched.', submission };
+      return { message: 'Grade recorded and student notification sent.', submission };
     } catch (e) {
       return friendly(e);
     }
@@ -957,7 +957,7 @@ export const api = {
         timestamp: stamp(),
         createdAt: serverTimestamp(),
       });
-      return { success: true, message: `Nudge successfully dispatched to ${record.studentName}.` };
+      return { success: true, message: `Nudge successfully sent to ${record.studentName}.` };
     } catch (e) {
       return friendly(e);
     }

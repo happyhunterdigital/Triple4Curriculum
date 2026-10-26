@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   X, Lock, Key, Shield, Download, Smartphone, 
-  Check, RefreshCw, AlertCircle, CheckCircle2 
+  Check, RefreshCw, AlertCircle, CheckCircle2, Eye, EyeOff
 } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
 
@@ -16,6 +16,7 @@ export const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({ isOp
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPasswords, setShowPasswords] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -146,38 +147,68 @@ export const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({ isOp
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="block font-bold text-neutral-700 mb-1">Current Password</label>
-                <input
-                  type="password"
-                  value={currentPassword}
-                  onChange={e => setCurrentPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:border-academic-green"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showPasswords ? 'text' : 'password'}
+                    value={currentPassword}
+                    onChange={e => setCurrentPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full px-3 py-2 pr-10 rounded-lg border border-neutral-300 focus:outline-none focus:border-academic-green"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPasswords(v => !v)}
+                    aria-label={showPasswords ? 'Hide passwords' : 'Show passwords'}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-neutral-500 hover:text-academic-green"
+                  >
+                    {showPasswords ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <div>
                 <label className="block font-bold text-neutral-700 mb-1">New Password</label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={e => setNewPassword(e.target.value)}
-                  placeholder="Min 8 chars"
-                  className="w-full px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:border-academic-green"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showPasswords ? 'text' : 'password'}
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                    placeholder="Min 8 chars"
+                    className="w-full px-3 py-2 pr-10 rounded-lg border border-neutral-300 focus:outline-none focus:border-academic-green"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPasswords(v => !v)}
+                    aria-label={showPasswords ? 'Hide passwords' : 'Show passwords'}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-neutral-500 hover:text-academic-green"
+                  >
+                    {showPasswords ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <div>
                 <label className="block font-bold text-neutral-700 mb-1">Confirm New Password</label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:border-academic-green"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showPasswords ? 'text' : 'password'}
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full px-3 py-2 pr-10 rounded-lg border border-neutral-300 focus:outline-none focus:border-academic-green"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPasswords(v => !v)}
+                    aria-label={showPasswords ? 'Hide passwords' : 'Show passwords'}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-neutral-500 hover:text-academic-green"
+                  >
+                    {showPasswords ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
             </div>
 

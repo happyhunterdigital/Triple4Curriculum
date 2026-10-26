@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   GraduationCap, Users, CheckCircle2, ArrowRight, ArrowLeft, ShieldCheck,
-  FileText, CreditCard, Award, Briefcase, Landmark, Upload, User
+  FileText, CreditCard, Award, Briefcase, Landmark, Upload, User, Eye, EyeOff
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -99,6 +99,7 @@ export const OnboardingFlow: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [googleUser, setGoogleUser] = useState<FbUser | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   // ── Real file upload state (Firebase Storage) ──
   const [uploads, setUploads] = useState<Record<string, UploadedFileMeta[]>>({
@@ -551,7 +552,23 @@ export const OnboardingFlow: React.FC = () => {
                   {!googleUser && (
                     <div className="space-y-2">
                       <label className={label}>Password</label>
-                      <Input type="password" placeholder="••••••••" {...form.register('password')} />
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="••••••••"
+                          className="pr-10"
+                          {...form.register('password')}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((visible) => !visible)}
+                          aria-label={showPassword ? 'Hide password' : 'Show password'}
+                          title={showPassword ? 'Hide password' : 'Show password'}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-neutral-500 hover:text-[var(--color-t4c-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-t4c-green)]"
+                        >
+                          {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                      </div>
                       {form.formState.errors.password && <p className={errText}>{form.formState.errors.password.message as string}</p>}
                     </div>
                   )}

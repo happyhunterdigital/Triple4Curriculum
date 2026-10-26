@@ -64,7 +64,7 @@ export const StudentNotifications: React.FC = () => {
             </span>
           </div>
           <h1 className="text-2xl font-black text-neutral-900 mt-1">
-            Push Notifications & Alerts Center
+            Push Notifications &amp; Announcements
           </h1>
           <p className="text-xs text-neutral-500">
             Instant updates on grade releases, schedule shifts, and daily learning milestones

@@ -44,7 +44,7 @@ export const TeacherHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
   const [tasks] = useState<QueuedTask[]>([
     { id: '1', type: 'grade', title: 'Grade 11 Math Exams', context: 'Trigonometry midterm submissions', count: 12, urgency: 'high' },
     { id: '2', type: 'review', title: 'Extension Request: Sarah Jenkins', context: 'History Essay timeline adjustments', urgency: 'medium' },
-    { id: '3', type: 'respond', title: 'Unread Parent Inquiries', context: 'Awaiting portal messaging dispatch', count: 4, urgency: 'low' },
+    { id: '3', type: 'respond', title: 'Unread Parent Inquiries', context: 'Awaiting a reply', count: 4, urgency: 'low' },
   ]);
   const [alerts] = useState<StudentAlert[]>([
     { id: '1', name: 'John Doe', metric: 'Attendance', reason: 'Missed 3 consecutive live sessions', severity: 'high' },
@@ -268,7 +268,7 @@ export const TeacherHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
           {/* Message inbox shortcut */}
           <BentoCard eyebrow="Parent desk" icon={<MessageSquare size={16} className="text-[#64748B]" />}>
             <p className="text-sm font-medium leading-snug">4 unread parent inquiries</p>
-            <p className="mt-1 text-[11px] text-[#64748B]">Portal messages, awaiting dispatch</p>
+            <p className="mt-1 text-[11px] text-[#64748B]">Portal messages, awaiting a reply</p>
             <button
               onClick={() => onNavigate('notices')}
               className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-[var(--color-t4c-green)] hover:underline"

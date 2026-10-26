@@ -50,7 +50,7 @@ export const AdminAnnouncements: React.FC = () => {
       triggerToast({
         id: `toast_${Date.now()}`,
         title: '📢 Push Alert Transmitted',
-        message: `Dispatched to 1,205 registered student devices and portals.`,
+        message: `Sent to 1,205 registered student devices and portals.`,
         category: 'announcement',
         timestamp: 'Just now',
         read: false,
@@ -74,7 +74,7 @@ export const AdminAnnouncements: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold px-2 py-0.5 rounded bg-yellow-100 text-yellow-900 border border-yellow-300">
-              Admin Operations & Push Dispatch
+              Admin Operations &amp; Announcements
             </span>
             <span className="text-xs font-semibold text-neutral-500">
               Instant Broadcast Channel
@@ -172,7 +172,7 @@ export const AdminAnnouncements: React.FC = () => {
         <div className="bg-white rounded-3xl p-6 border border-emerald-950/10 shadow-xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
             <h3 className="text-base font-black text-neutral-900">
-              Live Broadcast Dispatch History
+              Announcement History
             </h3>
             <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-900">
               Active Delivery
