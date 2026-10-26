@@ -20,6 +20,18 @@ service firebase.storage {
             || request.resource.contentType.matches('application/pdf'));
     }
 
+    function validAvatar() {
+      return request.resource.size > 0
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|jpg|png|webp)');
+    }
+
+    // Profile photos: owner uploads, readable by anyone with the URL.
+    match /avatars/{uid}/{file} {
+      allow read: if true;
+      allow write: if isOwner(uid) && validAvatar();
+    }
+
     // Registration documents: owner-only write, owner or admin read
     match /registrations/{uid}/{file} {
       allow read: if isOwner(uid) || isAdmin();

@@ -100,6 +100,9 @@ export const OnboardingFlow: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [googleUser, setGoogleUser] = useState<FbUser | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState('');
+  const [avatarError, setAvatarError] = useState('');
 
   // ── Real file upload state (Firebase Storage) ──
   const [uploads, setUploads] = useState<Record<string, UploadedFileMeta[]>>({
@@ -208,6 +211,28 @@ export const OnboardingFlow: React.FC = () => {
   };
   const back = () => setStep(s => Math.max(1, s - 1));
 
+  const onAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!/^image\/(jpeg|jpg|png|webp)$/.test(file.type)) {
+      setAvatarError('Choose a JPG, PNG or WebP image.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setAvatarError('Image must be 5 MB or smaller.');
+      return;
+    }
+    setAvatarError('');
+    setAvatarFile(file);
+    setAvatarPreview(URL.createObjectURL(file));
+  };
+
+  const clearAvatar = () => {
+    setAvatarFile(null);
+    setAvatarPreview('');
+    setAvatarError('');
+  };
+
   const handleGoogle = async () => {
     if (!form.getValues('role')) { setErr('role', 'Select a role first'); return; }
     if (!form.getValues('department')) { setError('Select a department first (Step 2)'); setStep(2); return; }
@@ -294,10 +319,27 @@ export const OnboardingFlow: React.FC = () => {
 
       if (!fbUser) throw new Error('Could not start your account. Please retry.');
 
+      // Optional professional profile photo — uploaded after the account exists
+      // so the path can be scoped to the uid (storage.rules: avatars/{uid}/...).
+      let avatarUrl = fbUser.photoURL || googleUser?.photoURL || '';
+      if (avatarFile) {
+        try {
+          const safeName = avatarFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+          const avatarRef = ref(storage, `avatars/${fbUser.uid}/${Date.now()}_${safeName}`);
+          await uploadBytes(avatarRef, avatarFile, { contentType: avatarFile.type });
+          avatarUrl = await getDownloadURL(avatarRef);
+          await updateProfile(fbUser, { photoURL: avatarUrl }).catch(() => {});
+        } catch {
+          // Never block registration because a photo could not be stored.
+          avatarUrl = fbUser.photoURL || googleUser?.photoURL || '';
+        }
+      }
+
       const provider = fbUser.providerData?.some((p) => p.providerId === 'google.com') ? 'google' : 'email';
       const base = {
         uid: fbUser.uid, role: data.role, department: data.department,
         name: data.name || fbUser.displayName || fbUser.email, email: data.email || fbUser.email,
+        photoURL: avatarUrl || '', avatarUrl: avatarUrl || '',
         provider, createdAt: serverTimestamp(),
       };
 
@@ -378,6 +420,7 @@ export const OnboardingFlow: React.FC = () => {
         // Self-service sign-up is always a learner until an admin grants a
         // staff claim; the role field must match the rules (role == 'learner').
         uid: fbUser.uid, role: 'learner', name: base.name, email: base.email,
+        avatarUrl: base.avatarUrl, photoURL: base.photoURL,
         departmentId: data.department || '', provider,
         privacyPolicyAccepted: true, codeOfConductAccepted: true, termsAccepted: true,
         createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
@@ -539,6 +582,44 @@ export const OnboardingFlow: React.FC = () => {
                   </div>
                 )}
                 <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border border-[#E2E8F0] bg-[var(--color-canvas-soft)] flex items-center justify-center">
+                      {avatarPreview ? (
+                        <img src={avatarPreview} alt="Profile photo preview" className="h-full w-full object-cover" />
+                      ) : (
+                        <User size={22} className="text-neutral-400" />
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className={label}>
+                        Professional profile photo <span className="font-normal text-neutral-500">(optional)</span>
+                      </p>
+                      <p className="text-[11px] leading-relaxed text-neutral-500">
+                        Face clearly visible, plain background, no filters. JPG, PNG or WebP, max 5 MB.
+                      </p>
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider hover:border-[var(--color-t4c-green)]">
+                          {avatarPreview ? 'Change photo' : 'Upload photo'}
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            className="hidden"
+                            onChange={onAvatarChange}
+                          />
+                        </label>
+                        {avatarPreview && (
+                          <button
+                            type="button"
+                            onClick={clearAvatar}
+                            className="text-[11px] font-bold uppercase tracking-wider text-rose-600 underline underline-offset-2"
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                      {avatarError && <p className="mt-1 text-[11px] text-rose-600">{avatarError}</p>}
+                    </div>
+                  </div>
                   <div className="space-y-2">
                     <label className={label}>Full name</label>
                     <Input disabled={!!googleUser} placeholder="Sarah Student" {...form.register('name')} />

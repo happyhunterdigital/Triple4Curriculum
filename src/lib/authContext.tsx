@@ -59,6 +59,7 @@ async function resolveUser(fbUser: FirebaseUser, forceRefresh = false): Promise<
           name: (d.name as string) || displayName || email?.split('@')[0] || 'Learner',
           email: (d.email as string) || email || '',
           role,
+          avatarUrl: (d.avatarUrl as string | undefined) || (d.photoURL as string | undefined) || fbUser.photoURL || undefined,
           departmentId: d.department as string | undefined ?? (d.departmentId as string | undefined),
           departmentName: d.departmentName as string | undefined,
           studentId: d.studentId as string | undefined,

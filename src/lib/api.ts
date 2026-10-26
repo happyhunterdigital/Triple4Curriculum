@@ -195,6 +195,7 @@ export async function getUsersPaged(limitN = 100, cursor?: DocumentSnapshot | nu
       name: (data.name as string) || 'Member',
       email: (data.email as string) || '',
       role: toAppRole(data.role),
+      avatarUrl: (data.avatarUrl as string | undefined) ?? (data.photoURL as string | undefined),
       departmentId: (data.departmentId as string | undefined) ?? (data.department as string | undefined),
       departmentName: (data.departmentName as string | undefined) ?? (data.departmentId as string | undefined) ?? (data.department as string | undefined),
       studentId: data.studentId as string | undefined,

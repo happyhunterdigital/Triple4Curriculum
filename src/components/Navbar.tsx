@@ -112,8 +112,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
         {/* User Identity Module with Logout */}
         <div className="relative h-full flex items-center">
           <button onClick={() => setUserMenuOpen(o => !o)} className="flex items-center gap-1.5 sm:gap-2.5 pl-1.5 sm:pl-2 sm:border-l border-white/10 h-full cursor-pointer hover:bg-white/5 px-1 sm:px-2 transition-all">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--color-t4c-black)] text-white font-mono font-bold flex items-center justify-center text-[10px] sm:text-xs border-2 border-[var(--color-t4c-yellow)] shrink-0 shadow-xs">
-              {(currentUser?.name?.[0] || 'S').toUpperCase()}
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--color-t4c-black)] text-white font-mono font-bold flex items-center justify-center text-[10px] sm:text-xs border-2 border-[var(--color-t4c-yellow)] shrink-0 shadow-xs overflow-hidden">
+              {currentUser?.avatarUrl ? (
+                <img src={currentUser.avatarUrl} alt={currentUser.name || 'Profile'} className="h-full w-full object-cover" />
+              ) : (
+                (currentUser?.name?.[0] || 'S').toUpperCase()
+              )}
             </div>
             <div className="text-left hidden xl:block">
               <p className="text-xs font-bold text-white leading-none truncate max-w-[120px]">{currentUser?.name || 'S. Student'}</p>
