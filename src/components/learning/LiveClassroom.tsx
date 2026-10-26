@@ -23,6 +23,7 @@ export const LiveClassroom: React.FC = () => {
   const [status, setStatus] = useState<'connecting' | 'in-class' | 'external' | 'error'>('connecting');
   const [attendance, setAttendance] = useState<'pending' | 'recorded' | 'skipped' | 'failed'>('pending');
   const [error, setError] = useState('');
+  const [meetWindowOpen, setMeetWindowOpen] = useState(false);
 
   const rawRoom = params.get('room') || '';
   const courseId = params.get('courseId') || '';
@@ -103,7 +104,26 @@ export const LiveClassroom: React.FC = () => {
 
   const joinExternal = () => {
     recordAttendance();
-    window.open(rawRoom, '_blank', 'noopener,noreferrer');
+    // Open Meet in a managed popup window: the T4C tab stays open behind it,
+    // so the learner is never navigated away from the platform. Meet cannot be
+    // iframed (Google sends X-Frame-Options: SAMEORIGIN).
+    const width = Math.min(1280, Math.max(720, window.screen.availWidth - 80));
+    const height = Math.min(860, Math.max(560, window.screen.availHeight - 80));
+    const left = Math.max(0, Math.round((window.screen.availWidth - width) / 2));
+    const top = Math.max(0, Math.round((window.screen.availHeight - height) / 2));
+    const features = `popup=yes,width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`;
+    const popup = window.open(rawRoom, 't4c-meet-classroom', features);
+    if (!popup) {
+      // Popup blocked — fall back to a new tab.
+      window.open(rawRoom, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    try {
+      popup.opener = null;
+    } catch {
+      // cross-origin window — ignore
+    }
+    setMeetWindowOpen(true);
   };
 
   return (
@@ -185,16 +205,24 @@ export const LiveClassroom: React.FC = () => {
           <div className="space-y-1">
             <h2 className="text-base font-black text-neutral-900">This class runs on Google Meet</h2>
             <p className="mx-auto max-w-md text-xs text-neutral-500">
-              Google Meet opens in a new tab. Keep this page open so your attendance is recorded when you join.
+              Meet opens in a secure classroom window so this page stays open — your attendance is recorded when you
+              join. If the window does not appear, allow popups for triple4c.com and try again.
             </p>
           </div>
-          <button
-            onClick={joinExternal}
-            className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-5 py-2.5 text-xs font-black text-yellow-300 shadow-xs transition hover:bg-emerald-900"
-          >
-            <ExternalLink className="h-4 w-4" />
-            Join in Google Meet
-          </button>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <button
+              onClick={joinExternal}
+              className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-5 py-2.5 text-xs font-black text-yellow-300 shadow-xs transition hover:bg-emerald-900"
+            >
+              <ExternalLink className="h-4 w-4" />
+              {meetWindowOpen ? 'Reopen classroom window' : 'Open classroom window'}
+            </button>
+          </div>
+          {meetWindowOpen && (
+            <p className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-800">
+              <CheckCircle2 className="h-3.5 w-3.5" /> Classroom window opened — return to this tab after class.
+            </p>
+          )}
         </div>
       ) : (
         <div className="bg-neutral-950 rounded-2xl overflow-hidden border border-neutral-800" style={{ height: 'min(70vh, 720px)' }}>

@@ -31,8 +31,8 @@ const FAQS = [
     a: 'Yes — sign in with the account you registered with. Only that learner is admitted; please do not share the link with siblings or friends.',
   },
   {
-    q: 'Why does Meet open in a new tab?',
-    a: 'Google blocks Meet from being embedded on other websites for security. The class opens in its own tab, and your attendance is saved when you join from the platform.',
+    q: 'Why does Meet open in a separate window?',
+    a: 'Google blocks Meet from being embedded inside other websites for security, so it opens in a dedicated classroom window. The T4C tab stays open behind it, and your attendance is recorded when you join from the platform.',
   },
   {
     q: 'What if the Meet link does not work?',
