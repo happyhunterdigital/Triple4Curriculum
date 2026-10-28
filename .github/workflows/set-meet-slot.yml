@@ -7,6 +7,10 @@ name: Set Google Meet link on timetable
 on:
   workflow_dispatch:
     inputs:
+      meet_url:
+        description: Google Meet link (https://meet.google.com/...) — falls back to CLASSROOM_MEET_URL secret
+        required: false
+        default: ""
       day:
         description: Day of week (Monday..Friday)
         required: false
@@ -45,7 +49,7 @@ jobs:
         env:
           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           GCP_PROJECT: triple4curriculum
-          MEET_URL: ${{ secrets.CLASSROOM_MEET_URL }}
+          MEET_URL: ${{ inputs.meet_url || secrets.CLASSROOM_MEET_URL }}
           DAY: ${{ inputs.day }}
           START: ${{ inputs.start }}
           END: ${{ inputs.end }}
