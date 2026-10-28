@@ -451,6 +451,7 @@ export const createCertificate = onCall(async (request) => {
 // ── Phase 4: retention + DSR (purgeExpired, exportMyDataStrict, eraseMyData) ──
 export * from "./retention";
 export * from "./youtubeSync";
+export * from "./attendanceThanks";
 
 // ── Payment webhooks (signature-verified, PayFast-validated, idempotent) ───
 

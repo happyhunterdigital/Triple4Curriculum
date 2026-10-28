@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Search, Bell, ChevronDown, HelpCircle, House, Menu, X, LogOut, User } from 'lucide-react';
 import { useAuth } from '../lib/authContext';
 import { cloudinaryImage } from '../lib/image';
@@ -109,7 +109,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
           <HelpCircle size={16} />
         </button>
 
-        {/* User Identity Module with Logout */}
+        {/* User Identity Module with Sign out */}
+        {currentUser ? (
         <div className="relative h-full flex items-center">
           <button onClick={() => setUserMenuOpen(o => !o)} className="flex items-center gap-1.5 sm:gap-2.5 pl-1.5 sm:pl-2 sm:border-l border-white/10 h-full cursor-pointer hover:bg-white/5 px-1 sm:px-2 transition-all">
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--color-t4c-black)] text-white font-mono font-bold flex items-center justify-center text-[10px] sm:text-xs border-2 border-[var(--color-t4c-yellow)] shrink-0 shadow-xs overflow-hidden">
@@ -135,15 +136,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
                   <span className="inline-flex mt-1 text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#EFF6FF] border border-blue-200 text-[#2563EB] uppercase">{currentUser?.role || 'student'}</span>
                 </div>
                 <div className="p-1.5">
-                  <a href="/onboarding" className="flex items-center gap-2 px-3 py-2 text-xs font-medium hover:bg-[#F8FAFC] rounded-[6px] text-[#1E293B]"><User size={14} /> Profile / Switch account</a>
+                  <Link to="/dashboard" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-medium hover:bg-[#F8FAFC] rounded-[6px] text-[#1E293B]"><User size={14} /> My dashboard</Link>
                   <button onClick={() => { setUserMenuOpen(false); logout(); }} className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold hover:bg-rose-50 rounded-[6px] text-rose-700">
-                    <LogOut size={14} /> Log out
+                    <LogOut size={14} /> Sign out
                   </button>
                 </div>
               </div>
             </>
           )}
         </div>
+        ) : (
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-t4c-yellow)] px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-t4c-black)] hover:bg-white transition-colors"
+          >
+            <User size={13} /> Sign in
+          </Link>
+        )}
       </div>
 
     </header>

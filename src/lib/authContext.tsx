@@ -170,7 +170,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setCurrentUser(null);
     setToken(null);
     setAuthError(null);
-    window.location.href = '/onboarding';
+    window.location.href = '/login';
   };
 
   const refreshCurrentUser = async () => {

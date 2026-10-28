@@ -26,6 +26,7 @@ import { AdmissionsPage } from './pages/AdmissionsPage';
 import { FaqPage } from './pages/FaqPage';
 import { ContactPage } from './pages/ContactPage';
 import { ClassroomPage } from './pages/ClassroomPage';
+import { LoginPage } from './pages/LoginPage';
 import { SiteFooter } from './components/site/SiteFooter';
 import { CookieConsent } from './components/site/CookieConsent';
 import { DashboardSkeleton } from './components/common/DashboardSkeleton';
@@ -105,6 +106,7 @@ function Shell() {
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/classroom" element={<ClassroomPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/google-meet" element={<Navigate to="/classroom" replace />} />
             <Route path="/live-classes" element={<Navigate to="/classroom" replace />} />
             <Route path="/onboarding" element={<Card><OnboardingFlow /></Card>} />

@@ -28,7 +28,7 @@ export const RequireAuth: React.FC<{
   }
 
   if (!currentUser) {
-    return <Navigate to="/onboarding" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 
   if (roles && !roles.map(normalizeRole).includes(normalizeRole(currentUser.role))) {

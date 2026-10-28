@@ -172,6 +172,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
                 { id:'classroom', label:'T4C Classroom' },
                 { id:'faq', label:'FAQ' },
                 { id:'contact', label:'Contact' },
+                { id:'login', label:'Sign in' },
               ].map(s=>(
                 <button
                   key={s.id}

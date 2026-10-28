@@ -36,7 +36,8 @@ export function SiteFooter() {
               <li><Link to="/privacy" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Privacy</Link></li>
               <li><Link to="/terms" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Terms</Link></li>
               <li><Link to="/child-protection" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Child Protection</Link></li>
-              <li><Link to="/onboarding" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Sign in / Apply</Link></li>
+              <li><Link to="/login" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Sign in</Link></li>
+              <li><Link to="/onboarding" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Apply</Link></li>
             </ul>
           </div>
 
