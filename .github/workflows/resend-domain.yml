@@ -1,0 +1,23 @@
+name: Resend domain setup
+
+# Registers triple4c.com as a sending domain on Resend and prints the DNS
+# records needed for verification. Never prints the API key.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  domain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Register domain and print DNS records
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_DOMAIN: triple4c.com
+        run: node scripts/resend-domain.mjs
