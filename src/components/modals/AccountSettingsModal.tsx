@@ -3,6 +3,11 @@ import {
   X, Lock, Key, Shield, Download, Smartphone, 
   Check, RefreshCw, AlertCircle, CheckCircle2, Eye, EyeOff
 } from 'lucide-react';
+import {
+  updatePassword, reauthenticateWithCredential, reauthenticateWithPopup,
+  EmailAuthProvider, GoogleAuthProvider,
+} from 'firebase/auth';
+import { auth } from '../../lib/firebase';
 import { useAuth } from '../../lib/authContext';
 
 interface AccountSettingsModalProps {
@@ -17,16 +22,19 @@ export const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({ isOp
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPasswords, setShowPasswords] = useState(false);
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   if (!isOpen || !currentUser) return null;
 
-  const handleUpdatePassword = (e: React.FormEvent) => {
+  const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newPassword.length < 8) {
       setErrorMsg('Password must be at least 8 characters long with uppercase and numbers.');
+      return;
+    }
+    if (!/\d/.test(newPassword)) {
+      setErrorMsg('Include at least one number.');
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -34,23 +42,58 @@ export const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({ isOp
       return;
     }
 
+    const user = auth.currentUser;
+    if (!user) {
+      setErrorMsg('You are signed out — reload and try again.');
+      return;
+    }
+
     setErrorMsg('');
-    setPasswordSuccess(true);
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
+    try {
+      // Re-verify identity before a password change (POPIA-aligned protection
+      // against an unlocked device being used to take over the account).
+      const isGoogle = (user.providerData[0]?.providerId || '') === 'google.com';
+      if (isGoogle) {
+        await reauthenticateWithPopup(user, new GoogleAuthProvider());
+      } else {
+        if (!currentPassword) {
+          setErrorMsg('Enter your current password to confirm the change.');
+          return;
+        }
+        await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email || '', currentPassword));
+      }
+      await updatePassword(user, newPassword);
 
-    triggerToast({
-      id: `toast_${Date.now()}`,
-      title: 'Security Credentials Updated',
-      message: 'Your institutional password was securely hashed and synchronized.',
-      category: 'urgent',
-      timestamp: 'Just now',
-      read: false,
-      priority: 'high'
-    });
+      setPasswordSuccess(true);
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
 
-    setTimeout(() => setPasswordSuccess(false), 3500);
+      triggerToast({
+        id: `toast_${Date.now()}`,
+        title: 'Security Credentials Updated',
+        message: 'Your password was changed after identity verification.',
+        category: 'urgent',
+        timestamp: 'Just now',
+        read: false,
+        priority: 'high'
+      });
+
+      setTimeout(() => setPasswordSuccess(false), 3500);
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code || '';
+      if (code === 'auth/wrong-password' || code === 'auth/invalid-credential' || code === 'auth/invalid-login-credentials') {
+        setErrorMsg('Current password is incorrect.');
+      } else if (code === 'auth/weak-password') {
+        setErrorMsg('Choose a stronger password (8+ characters with a number).');
+      } else if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+        setErrorMsg('Verification cancelled.');
+      } else if (code === 'auth/requires-recent-login' || code === 'auth/user-mismatch') {
+        setErrorMsg('Verification expired — sign in again and retry.');
+      } else {
+        setErrorMsg('Could not update the password. Please retry.');
+      }
+    }
   };
 
   const handleExportData = () => {
@@ -232,21 +275,17 @@ export const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({ isOp
               <div>
                 <p className="font-bold text-neutral-900">Two-Factor Authentication (2FA)</p>
                 <p className="text-[11px] text-neutral-500">
-                  {twoFactorEnabled ? 'Enabled via Mobile Authenticator / SMS OTP' : 'Disabled (Recommended to enable)'}
+                  Coming soon — your sign-in is protected by Firebase account security.
                 </p>
               </div>
             </div>
 
-            <button
-              onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                twoFactorEnabled 
-                  ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' 
-                  : 'bg-neutral-200 text-neutral-700'
-              }`}
+            <span
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-neutral-200 text-neutral-500"
+              title="Two-factor sign-in will be available in a future update"
             >
-              {twoFactorEnabled ? 'Active ✓' : 'Enable 2FA'}
-            </button>
+              Coming soon
+            </span>
           </div>
 
           {/* Active Session Audit */}
