@@ -1,0 +1,29 @@
+name: Diagnostics (email, scheduler, YouTube sync logs)
+
+# Read-only. Prints secret names (never values), Resend domain status, Cloud
+# Scheduler jobs and recent syncMeetRecordings / sendAttendanceThanks logs.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install google-auth-library
+        run: npm install --no-save google-auth-library
+
+      - name: Run diagnostics
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GCP_PROJECT: triple4curriculum
+        run: |
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/gcp-key.json"
+          node scripts/diagnostics.mjs
