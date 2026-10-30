@@ -105,6 +105,7 @@ async function sendThanks(date: string, dryRun: boolean): Promise<ThanksSummary>
     }
 
     const coursesText = group.courses.join(', ');
+    let emailed = false;
     try {
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -126,11 +127,16 @@ async function sendThanks(date: string, dryRun: boolean): Promise<ThanksSummary>
             </div>`,
         }),
       });
-      if (res.ok) summary.emailsSent += 1;
+      emailed = res.ok;
+      if (emailed) summary.emailsSent += 1;
       else logger.warn('sendAttendanceThanks: Resend rejected email', { uid, status: res.status });
     } catch (e) {
       logger.error('sendAttendanceThanks: email failed', { uid, error: String(e) });
     }
+
+    // Only mark as thanked once the email actually left, so a bad key/outage
+    // retries on the next run (the daily job looks back 3 days).
+    if (!emailed) continue;
 
     if (!dryRun) {
       await db.collection('notifications').add({
@@ -176,9 +182,18 @@ export const sendAttendanceThanks = onSchedule(
     secrets: [RESEND_SECRET],
   },
   async () => {
-    const date = saudiDate();
-    const summary = await sendThanks(date, false);
-    logger.info('sendAttendanceThanks complete', summary);
+    // Look back 3 days so a failed email (bad key, outage) is retried without
+    // ever double-sending thanks (attendance docs carry thanksSentAt).
+    const today = new Date();
+    const dates = [0, 1, 2].map((daysAgo) => {
+      const d = new Date(today);
+      d.setDate(d.getDate() - daysAgo);
+      return saudiDate(d);
+    });
+    for (const date of dates) {
+      const summary = await sendThanks(date, false);
+      logger.info('sendAttendanceThanks complete', summary);
+    }
   },
 );
 

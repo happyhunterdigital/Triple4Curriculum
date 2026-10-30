@@ -22,6 +22,7 @@ const optionalSecrets = {
   YT_OAUTH_CLIENT_SECRET: process.env.YT_OAUTH_CLIENT_SECRET ?? '',
   YT_OAUTH_REFRESH_TOKEN: process.env.YT_OAUTH_REFRESH_TOKEN ?? '',
   YT_DRIVE_RECORDINGS_FOLDER: process.env.YT_DRIVE_RECORDINGS_FOLDER ?? '',
+  RESEND_API_KEY: process.env.RESEND_API_KEY ?? '',
 };
 
 const auth = new GoogleAuth({ scopes: ['https://www.googleapis.com/auth/cloud-platform'] });
