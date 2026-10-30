@@ -41,5 +41,5 @@ const detailRes = await fetch(`https://api.resend.com/domains/${target.id}`, { h
 const detail = await detailRes.json();
 console.log(`DOMAIN ${target.name}: status=${detail.status}`);
 for (const rec of detail.records || []) {
-  console.log(`DNS ${rec.type} ${rec.name} ${rec.priority || ''} -> ${String(rec.value).slice(0, 160)}`);
+  console.log(`DNS |${rec.type}|${rec.name}|${rec.priority || '-'}|${String(rec.value)}`);
 }
