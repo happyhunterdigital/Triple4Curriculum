@@ -13,7 +13,7 @@ export function ContactPage() {
           <SectionEyebrow>Contact</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95]">Talk to a real teacher.</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">South Africa or UK, we reply within one school day. Mon-Thu live teaching, Fri admin &amp; support.</p>
-          <a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest">Send WhatsApp → +44 757-7924-174</a>
+          <a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Send WhatsApp → +44 757-7924-174</a>
         </div>
       </div>
 
@@ -75,16 +75,16 @@ export function ContactPage() {
                   className="mt-5 grid gap-4"
                 >
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <label className="flex flex-col gap-1.5 text-xs font-semibold">Name<input required name="name" placeholder="Your name" className="border border-black/15 rounded-[10px] px-3 py-2.5 text-sm outline-none focus:border-[var(--color-t4c-green)]" /></label>
-                    <label className="flex flex-col gap-1.5 text-xs font-semibold">Email<input required type="email" name="email" placeholder="you@example.com" className="border border-black/15 rounded-[10px] px-3 py-2.5 text-sm outline-none focus:border-[var(--color-t4c-green)]" /></label>
+                    <label className="flex flex-col gap-1.5 text-xs font-semibold">Name<input required name="name" autoComplete="name" placeholder="Your name" className="w-full min-w-0 border border-black/15 rounded-[10px] px-3 py-3 text-base sm:text-sm outline-none focus:border-[var(--color-t4c-green)]" /></label>
+                    <label className="flex flex-col gap-1.5 text-xs font-semibold">Email<input required type="email" name="email" autoComplete="email" inputMode="email" placeholder="you@example.com" className="w-full min-w-0 border border-black/15 rounded-[10px] px-3 py-3 text-base sm:text-sm outline-none focus:border-[var(--color-t4c-green)]" /></label>
                   </div>
-                  <label className="flex flex-col gap-1.5 text-xs font-semibold">Phone<input name="phone" placeholder="+27 ..." className="border border-black/15 rounded-[10px] px-3 py-2.5 text-sm outline-none focus:border-[var(--color-t4c-green)]" /></label>
-                  <label className="flex flex-col gap-1.5 text-xs font-semibold">Message<textarea required minLength={10} maxLength={2000} name="message" rows={4} placeholder="How can we help?" className="border border-black/15 rounded-[10px] px-3 py-2.5 text-sm outline-none focus:border-[var(--color-t4c-green)] resize-none" /></label>
+                  <label className="flex flex-col gap-1.5 text-xs font-semibold">Phone<input name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="+27 ..." className="w-full min-w-0 border border-black/15 rounded-[10px] px-3 py-3 text-base sm:text-sm outline-none focus:border-[var(--color-t4c-green)]" /></label>
+                  <label className="flex flex-col gap-1.5 text-xs font-semibold">Message<textarea required minLength={10} maxLength={2000} name="message" rows={4} placeholder="How can we help?" className="w-full min-w-0 border border-black/15 rounded-[10px] px-3 py-3 text-base sm:text-sm outline-none focus:border-[var(--color-t4c-green)] resize-none" /></label>
                   {/* Honeypot anti-spam field — hidden from humans. */}
-                  <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
+                  <div aria-hidden="true" className="sr-only">
                     <label>Website (leave blank)<input type="text" tabIndex={-1} autoComplete="off" name="companyWebsite" /></label>
                   </div>
-                  <button type="submit" className="justify-self-start bg-[var(--color-t4c-black)] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors">Send Message</button>
+                  <button type="submit" className="justify-self-start bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors">Send Message</button>
                 </form>
               )}
             </div>

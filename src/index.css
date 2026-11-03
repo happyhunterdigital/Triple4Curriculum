@@ -1,5 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter:wght@400;600&display=swap');
 @import "tailwindcss";
+
+/* Self-hosted webfonts (latin subset, variable). No third-party font requests,
+   no render-blocking stylesheet hop to fonts.googleapis.com. Files live in
+   public/fonts and are preloaded from index.html. Each file covers the full
+   weight range the design uses, so one request per family serves every weight. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-latin.woff2') format('woff2');
+}
 
 @theme {
   --font-sans: "Inter", sans-serif;
@@ -41,6 +59,16 @@
 html {
   overflow-x: hidden;
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Anchor targets (#apply, #fees, hash links) must clear the sticky header
+   instead of landing underneath it. scroll-margin (not scroll-padding) keeps
+   the offset correct for both native hashes and ScrollManager's
+   scrollIntoView, without double-counting the inset. */
+[id] {
+  scroll-margin-top: 104px;
 }
 
 body {
@@ -52,10 +80,75 @@ body {
   min-width: 320px;
 }
 
+/* Respect the OS "reduce motion" setting: kills smooth scrolling and long
+   transitions/animations for users who ask for less movement. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 #root {
   background-color: var(--color-canvas-soft);
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* iOS Safari zooms the whole page when a focused field is smaller than 16px.
+   Element specificity beats Tailwind's .text-sm / .text-xs utilities, so every
+   text field stays 16px on phones while desktop keeps the compact design. */
+@media (max-width: 767px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']),
+  select,
+  textarea {
+    font-size: max(16px, 1em);
+  }
+}
+
+/* Floating UI (cookie banner, chat launcher) clears the iPhone home indicator. */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* App shell sizing.
+   100vh is taller than the visible area on iOS Safari / Android Chrome while
+   the browser bars are showing, which pushed the sidebar footer behind the
+   URL bar. Use dynamic viewport units where supported, plain vh elsewhere. */
+.app-min-viewport {
+  min-height: 100vh;
+}
+.app-viewport {
+  height: calc(100vh - 56px);
+}
+@media (min-width: 640px) {
+  .app-viewport { height: calc(100vh - 64px); }
+}
+@media (min-width: 768px) {
+  .app-viewport { height: calc(100vh - 70px); }
+}
+@media (min-width: 1024px) {
+  .app-viewport { height: calc(100vh - 74px); }
+}
+@supports (height: 100dvh) {
+  .app-min-viewport { min-height: 100dvh; }
+  .app-viewport { height: calc(100dvh - 56px); }
+  @media (min-width: 640px) {
+    .app-viewport { height: calc(100dvh - 64px); }
+  }
+  @media (min-width: 768px) {
+    .app-viewport { height: calc(100dvh - 70px); }
+  }
+  @media (min-width: 1024px) {
+    .app-viewport { height: calc(100dvh - 74px); }
+  }
 }
 
 .hide-scrollbar::-webkit-scrollbar { display: none; }

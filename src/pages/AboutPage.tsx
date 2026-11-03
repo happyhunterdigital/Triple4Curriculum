@@ -12,7 +12,7 @@ export function AboutPage() {
           <SectionEyebrow>About T4C</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Education that<br />preserves fresh minds.</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">A global micro-school built on balance, self-reliance and intimacy, welcoming learners from across Africa and the world.</p>
-          <a href="#welcome" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest">Read Zanola's Letter</a>
+          <a href="#welcome" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Read Zanola's Letter</a>
         </div>
       </div>
 
@@ -48,9 +48,9 @@ export function AboutPage() {
             </div>
             <div className="bg-[var(--color-t4c-green)] text-white rounded-[16px] p-6 sm:p-8">
               <SectionHeading className="text-[22px] !text-white">The 4-4-4 Model</SectionHeading>
-              <div className="mt-4 grid grid-cols-3 gap-3">
+              <div className="mt-4 grid grid-cols-1 xs:grid-cols-3 gap-3">
                 {[{n:'4',l:'Days'},{n:'4',l:'Hours'},{n:'4×16',l:'Lessons × Cap'}].map(x=>(
-                  <div key={x.l} className="bg-white/10 rounded-[12px] p-4 text-center border border-white/10"><span className="font-display text-[28px] font-bold">{x.n}</span><span className="block text-xs uppercase tracking-widest text-white/70">{x.l}</span></div>
+                  <div key={x.l} className="bg-white/10 rounded-[12px] px-4 py-3 xs:py-4 text-center border border-white/10"><span className="font-display text-[28px] font-bold">{x.n}</span><span className="block text-xs uppercase tracking-widest text-white/70">{x.l}</span></div>
                 ))}
               </div>
               <p className="mt-4 text-sm text-white/80">By moving online and capping at 16, four hours are pure live instruction, no crowd control, no dead time.</p>
@@ -147,7 +147,7 @@ export function AboutPage() {
           </div>
         </RevealStagger>
 
-        <div className="text-center"><Link to="/how-it-works" className="inline-flex bg-[var(--color-t4c-black)] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest">How the 4-4-4 works →</Link></div>
+        <div className="text-center"><Link to="/how-it-works" className="inline-flex bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">How the 4-4-4 works →</Link></div>
       </PageShell>
     </div>
   );

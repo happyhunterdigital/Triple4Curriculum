@@ -23,7 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
         {/* Mobile / Tablet Drawer Toggle (<= 1024px) */}
         <button
           onClick={onToggleMenu}
-          className="lg:hidden p-1.5 -ml-1 text-emerald-100 hover:text-[var(--color-t4c-yellow)] hover:bg-white/5 rounded transition-colors"
+          className="lg:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2.5 -ml-1 text-emerald-100 hover:text-[var(--color-t4c-yellow)] hover:bg-white/5 rounded transition-colors"
           aria-label="Toggle navigation drawer"
         >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -47,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
             <span className="block text-xs sm:text-sm font-extrabold tracking-tight text-white uppercase leading-none">
               Triple 4C Platform
             </span>
-            <span className="block text-[8px] sm:text-[9px] font-mono uppercase tracking-widest text-[var(--color-t4c-yellow)] font-bold mt-0.5">
+            <span className="block text-[10px] sm:text-[9px] font-mono uppercase tracking-widest text-[var(--color-t4c-yellow)] font-bold mt-0.5">
               Academic Core
             </span>
           </span>
@@ -57,8 +57,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
         </button>
       </div>
 
-      {/* Saturated Query System / Center Block (Visible from >= 768px) */}
-      <div className="flex-1 max-w-xs md:max-w-md lg:max-w-xl mx-3 sm:mx-6 md:mx-8 hidden md:block">
+      {/* Saturated Query System / Center Block (ultra-wide only; the field is a
+          decorative index query, so it yields to navigation first) */}
+      <div className="flex-1 min-w-0 max-w-xs 2xl:max-w-xl mx-6 md:mx-8 hidden min-[1760px]:block">
         <div className="relative w-full flex items-center">
           <Search size={14} className="absolute left-3.5 text-emerald-200/60" />
           <input
@@ -70,42 +71,42 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
       </div>
 
       {/* Public nav, PDF sections (desktop) */}
-      <nav className="hidden xl:flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest shrink-0" aria-label="Primary">
-        <a href="/about" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">About</a>
-        <a href="/how-it-works" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">How it Works</a>
-        <a href="/curriculum" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Curriculum</a>
-        <a href="/learners" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Learners</a>
-        <a href="/admissions" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Admissions</a>
-        <a href="/classroom" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Classroom</a>
-        <a href="/faq" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">FAQ</a>
-        <a href="/contact" className="px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Contact</a>
+      <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1 text-[10px] 2xl:text-[11px] font-bold uppercase tracking-widest shrink-0" aria-label="Primary">
+        <a href="/about" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">About</a>
+        <a href="/how-it-works" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">How it Works</a>
+        <a href="/curriculum" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Curriculum</a>
+        <a href="/learners" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Learners</a>
+        <a href="/admissions" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Admissions</a>
+        <a href="/classroom" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Classroom</a>
+        <a href="/faq" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">FAQ</a>
+        <a href="/contact" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Contact</a>
       </nav>
 
       {/* Control Utility Suite / Right Block */}
       <div className="flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-5 h-full shrink-0">
         {/* Dynamic Action Trigger Button */}
-        <button className="bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] font-mono text-[9px] sm:text-[10px] uppercase tracking-widest px-2.5 sm:px-3.5 md:px-4 py-1.5 sm:py-2 rounded font-bold hover:bg-white transition-all shadow-xs border-b-2 border-amber-600 cursor-pointer whitespace-nowrap active:scale-95">
+        <button className="hidden 2xl:inline-flex items-center justify-center min-h-11 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] font-mono text-[9px] sm:text-[10px] uppercase tracking-widest px-2.5 sm:px-3.5 md:px-4 py-2.5 sm:py-2 rounded font-bold hover:bg-white transition-all shadow-xs border-b-2 border-amber-600 cursor-pointer whitespace-nowrap active:scale-95">
           <span className="hidden sm:inline">Transmit File +</span>
           <span className="sm:hidden">Transmit +</span>
         </button>
 
         <div className="hidden sm:block w-px h-5 sm:h-6 bg-white/10" />
 
-        {/* Home */}
+        {/* Home — hidden on phones: the crest logo already navigates home */}
         <button
           onClick={goHome}
-          className="flex items-center gap-1.5 text-emerald-100 hover:text-[var(--color-t4c-yellow)] cursor-pointer transition-colors p-1 font-mono text-[10px] uppercase tracking-widest"
+          className="hidden sm:flex items-center justify-center gap-1.5 min-h-11 min-w-11 text-emerald-100 hover:text-[var(--color-t4c-yellow)] cursor-pointer transition-colors p-2 font-mono text-[10px] uppercase tracking-widest"
           aria-label="Home"
         >
           <House size={16} />
-          <span className="hidden lg:inline">Home</span>
+          <span className="hidden 2xl:inline">Home</span>
         </button>
 
         {/* Icon Utilities (Hidden on tiny screens <= 480px, visible >= 640px) */}
-        <button className="hidden sm:flex text-emerald-100 hover:text-[var(--color-t4c-yellow)] cursor-pointer transition-colors p-1" aria-label="Notifications">
+        <button className="hidden sm:flex items-center justify-center min-h-11 min-w-11 text-emerald-100 hover:text-[var(--color-t4c-yellow)] cursor-pointer transition-colors p-2" aria-label="Notifications">
           <Bell size={16} />
         </button>
-        <button className="hidden md:flex text-emerald-100 hover:text-[var(--color-t4c-yellow)] cursor-pointer transition-colors p-1" aria-label="Help">
+        <button className="hidden lg:flex items-center justify-center min-h-11 min-w-11 text-emerald-100 hover:text-[var(--color-t4c-yellow)] cursor-pointer transition-colors p-2" aria-label="Help">
           <HelpCircle size={16} />
         </button>
 
@@ -148,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
         ) : (
           <Link
             to="/login"
-            className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-t4c-yellow)] px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-t4c-black)] hover:bg-white transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 min-h-11 rounded-full bg-[var(--color-t4c-yellow)] px-3 sm:px-4 py-2.5 sm:py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-t4c-black)] hover:bg-white transition-colors"
           >
             <User size={13} /> Sign in
           </Link>

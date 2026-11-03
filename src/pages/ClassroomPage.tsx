@@ -119,13 +119,13 @@ export function ClassroomPage() {
               href="https://meet.google.com"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-[var(--color-t4c-green)] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-black)] transition-colors"
+              className="inline-flex items-center gap-2 bg-[var(--color-t4c-green)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-black)] transition-colors"
             >
               <Video size={14} /> Open Google Meet <ExternalLink size={12} />
             </a>
             <Link
               to={currentUser ? '/timetable' : '/onboarding'}
-              className="inline-flex items-center gap-2 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors"
+              className="inline-flex items-center gap-2 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors"
             >
               {currentUser ? 'View full timetable' : 'Sign in / Apply'} <ArrowRight size={14} />
             </Link>
@@ -206,7 +206,7 @@ export function ClassroomPage() {
                       </p>
                       <button
                         onClick={() => joinClass(slot)}
-                        className="mt-4 inline-flex items-center justify-center gap-2 bg-[var(--color-t4c-green)] text-white px-4 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-black)] transition-colors"
+                        className="mt-4 inline-flex items-center justify-center gap-2 bg-[var(--color-t4c-green)] text-white px-4 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-black)] transition-colors"
                       >
                         <Video size={14} /> Join live
                       </button>
@@ -324,10 +324,10 @@ export function ClassroomPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link to="/admissions" className="inline-flex items-center gap-2 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest">
+              <Link to="/admissions" className="inline-flex items-center gap-2 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">
                 Admissions &amp; fees <ArrowRight size={14} />
               </Link>
-              <Link to="/contact" className="inline-flex items-center gap-2 border border-white/30 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/10">
+              <Link to="/contact" className="inline-flex items-center gap-2 border border-white/30 px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/10">
                 Book a call
               </Link>
             </div>

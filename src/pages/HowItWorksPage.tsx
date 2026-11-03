@@ -13,7 +13,7 @@ export function HowItWorksPage() {
           <SectionEyebrow>How It Works</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95]">Four hours.<br />Zero dead time.</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">We cover the full curriculum in four focused hours, eliminating crowd control and transitions that waste traditional school days.</p>
-          <Link to="/curriculum" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest">View Curriculum</Link>
+          <Link to="/curriculum" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">View Curriculum</Link>
         </div>
       </div>
 

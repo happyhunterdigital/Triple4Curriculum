@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   AlertCircle,
   ArrowUpRight,
@@ -94,7 +94,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
                   </p>
                   <button
                     onClick={() => onNavigate('classroom')}
-                    className="mt-5 inline-flex items-center gap-2 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-4 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors"
+                    className="mt-5 inline-flex items-center gap-2 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-4 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors"
                   >
                     Join portal <ArrowUpRight size={14} />
                   </button>

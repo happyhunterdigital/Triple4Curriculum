@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import {
@@ -83,7 +83,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
         />
       )}
 
-      <div className="relative flex h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] md:h-[calc(100vh-70px)] lg:h-[calc(100vh-74px)] shrink-0">
+      <div className="relative flex app-viewport shrink-0">
         <aside
           onMouseEnter={() => setIsExpanded(true)}
           onMouseLeave={() => { setIsExpanded(false); setShowCreateFlyout(false); }}
@@ -96,24 +96,26 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
             
             {/* Top User Profile Header / Mobile Close */}
             <div className={`p-3 sm:p-4 flex items-center border-b border-[var(--color-t4c-black)]/10 ${(isExpanded || open) ? 'justify-between' : 'justify-center'}`}>
-              <div className={`flex items-center gap-3 overflow-hidden ${(!isExpanded && !open) ? 'justify-center w-full' : ''}`}>
-                <div className="w-8 h-8 rounded-md bg-[var(--color-t4c-black)] text-white font-mono font-bold flex items-center justify-center text-xs border border-white/20 shrink-0 shadow-xs">
-                  SS
-                </div>
-                {(isExpanded || open) && (
+              {/* Collapsed 64px rail has no room for avatar + controls; the
+                  avatar reappears as soon as the rail expands (hover/click). */}
+              {(isExpanded || open) && (
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className="w-8 h-8 rounded-md bg-[var(--color-t4c-black)] text-white font-mono font-bold flex items-center justify-center text-xs border border-white/20 shrink-0 shadow-xs">
+                    SS
+                  </div>
                   <div className="truncate">
                     <p className="text-xs font-bold leading-none mb-0.5">Sarah Student</p>
-                    <p className="font-mono text-[8px] uppercase tracking-wider text-[var(--color-t4c-black)]/60 font-semibold">Matrix Node</p>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-t4c-black)]/60 font-semibold">Matrix Node</p>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Desktop Expand Toggle / Mobile Close Button */}
               <div className="flex items-center gap-1">
                 {open && (
                   <button
                     onClick={onClose}
-                    className="lg:hidden p-1.5 rounded hover:bg-[var(--color-t4c-black)]/10 text-[var(--color-t4c-black)] cursor-pointer"
+                    className="lg:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2.5 rounded hover:bg-[var(--color-t4c-black)]/10 text-[var(--color-t4c-black)] cursor-pointer"
                     aria-label="Close menu"
                   >
                     <X size={18} />
@@ -134,7 +136,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
             <div className="p-2 sm:p-3 relative">
               <button
                 onClick={() => (isExpanded || open) && setShowCreateFlyout(!showCreateFlyout)}
-                className={`w-full flex items-center bg-[var(--color-t4c-black)] text-white text-xs font-bold rounded py-2 sm:py-2.5 border border-amber-600 transition-colors cursor-pointer hover:bg-neutral-800 active:scale-98 ${(isExpanded || open) ? 'justify-between px-3' : 'justify-center px-2'}`}
+                className={`w-full flex items-center min-h-11 bg-[var(--color-t4c-black)] text-white text-xs font-bold rounded py-2 sm:py-2.5 border border-amber-600 transition-colors cursor-pointer hover:bg-neutral-800 active:scale-98 ${(isExpanded || open) ? 'justify-between px-3' : 'justify-center px-2'}`}
                 title="File Submission"
               >
                 <div className="flex items-center gap-2">
@@ -161,7 +163,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
             {/* Site, PDF marketing (public) */}
             <nav className="px-2 space-y-0.5 mt-1 sm:mt-2">
               {(isExpanded || open) && (
-                <p className="px-2 font-mono text-[8px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">Discover T4C</p>
+                <p className="px-2 font-mono text-[10px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">Discover T4C</p>
               )}
               {[
                 { id:'', label:'Home' },
@@ -177,7 +179,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
                 <button
                   key={s.id}
                   onClick={() => handleNavigate(s.id)}
-                  className={`w-full flex items-center ${(isExpanded||open)?'px-3 justify-start':'justify-center px-2'} py-2 rounded text-[11px] font-bold transition-colors text-left cursor-pointer ${currentRoute===s.id ? 'bg-white text-[var(--color-t4c-black)] border border-black/10' : 'text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10 border border-transparent'}`}
+                  className={`w-full flex items-center ${(isExpanded||open)?'px-3 justify-start':'justify-center px-2'} py-3 min-h-11 rounded text-[11px] font-bold transition-colors text-left cursor-pointer ${currentRoute===s.id ? 'bg-white text-[var(--color-t4c-black)] border border-black/10' : 'text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10 border border-transparent'}`}
                 >
                   {(isExpanded||open) ? s.label : s.label[0]}
                 </button>
@@ -187,7 +189,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
             {/* Core Registry Menu */}
             <nav className="px-2 space-y-0.5 mt-3">
               {(isExpanded || open) && (
-                <p className="px-2 font-mono text-[8px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">
+                <p className="px-2 font-mono text-[10px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">
                   Core Registry
                 </p>
               )}
@@ -198,7 +200,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
                     <button
                       onClick={() => handleNavigate(item.id)}
                       title={item.label}
-                      className={`w-full flex items-center ${(isExpanded || open) ? 'justify-between px-3' : 'justify-center px-2'} py-2.5 rounded text-xs font-bold transition-all border group text-left cursor-pointer ${
+                      className={`w-full flex items-center ${(isExpanded || open) ? 'justify-between px-3' : 'justify-center px-2'} py-3 min-h-11 rounded text-xs font-bold transition-all border group text-left cursor-pointer ${
                         isSelected
                           ? 'bg-[var(--color-t4c-black)] text-white border-[var(--color-t4c-black)] shadow-xs'
                           : 'text-[var(--color-t4c-black)] border-transparent hover:bg-[var(--color-t4c-black)]/10'
@@ -239,7 +241,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
             {/* Administration Menu */}
             <nav className="px-2 space-y-0.5 pt-3 sm:pt-4">
               {(isExpanded || open) && (
-                <p className="px-2 font-mono text-[8px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">
+                <p className="px-2 font-mono text-[10px] uppercase tracking-widest text-[var(--color-t4c-black)]/60 font-extrabold mb-1.5">
                   Administration
                 </p>
               )}
@@ -248,7 +250,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
                   key={item.id}
                   onClick={() => handleNavigate(item.id)}
                   title={item.label}
-                  className={`w-full flex items-center ${(isExpanded || open) ? 'justify-between px-3' : 'justify-center px-2'} py-2.5 rounded text-xs font-bold transition-all text-left cursor-pointer ${
+                  className={`w-full flex items-center ${(isExpanded || open) ? 'justify-between px-3' : 'justify-center px-2'} py-3 min-h-11 rounded text-xs font-bold transition-all text-left cursor-pointer ${
                     currentRoute === item.id
                       ? 'bg-[var(--color-t4c-black)] text-white shadow-xs'
                       : 'text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10'
@@ -274,7 +276,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
           <div className="p-2 space-y-1 border-t border-[var(--color-t4c-black)]/10 shrink-0">
             <button
               title="System Settings"
-              className={`w-full flex items-center ${(isExpanded || open) ? 'px-3' : 'justify-center px-2'} py-2 text-xs font-bold rounded text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10 text-left cursor-pointer`}
+              className={`w-full flex items-center ${(isExpanded || open) ? 'px-3' : 'justify-center px-2'} py-3 min-h-11 text-xs font-bold rounded text-[var(--color-t4c-black)]/80 hover:bg-[var(--color-t4c-black)]/10 text-left cursor-pointer`}
             >
               <Settings size={18} strokeWidth={2.4} className="text-[var(--color-t4c-black)] shrink-0" />
               {(isExpanded || open) && <span className="ml-3">System Settings</span>}
@@ -282,7 +284,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
             <button
               title="Terminate Link - Log out"
               onClick={() => logout()}
-              className={`w-full flex items-center ${(isExpanded || open) ? 'px-3' : 'justify-center px-2'} py-2 text-xs font-bold rounded text-red-800 hover:bg-red-900/10 text-left cursor-pointer`}
+              className={`w-full flex items-center ${(isExpanded || open) ? 'px-3' : 'justify-center px-2'} py-3 min-h-11 text-xs font-bold rounded text-red-800 hover:bg-red-900/10 text-left cursor-pointer`}
             >
               <LogOut size={18} strokeWidth={2.4} className="shrink-0" />
               {(isExpanded || open) && <span className="ml-3">Log out</span>}

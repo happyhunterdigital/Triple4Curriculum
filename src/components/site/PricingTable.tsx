@@ -25,7 +25,7 @@ export function PricingTable({ teaser = false }: { teaser?: boolean }) {
         <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">Monthly tuition · Pay in {cur === 'ZAR' ? 'Zar (R)' : cur === 'USD' ? 'USD ($)' : 'GBP (£)'}</p>
         <div className="inline-flex rounded-full border border-[var(--color-t4c-black)]/10 overflow-hidden bg-white">
           {(['ZAR','USD','GBP'] as Currency[]).map(k => (
-            <button key={k} onClick={() => setCur(k)} className={`px-3.5 py-1.5 text-xs font-bold ${cur===k ? 'bg-[var(--color-t4c-black)] text-white' : 'text-neutral-700 hover:bg-neutral-50'}`}>{k}</button>
+            <button key={k} onClick={() => setCur(k)} className={`min-h-11 px-3.5 py-2 text-xs font-bold ${cur===k ? 'bg-[var(--color-t4c-black)] text-white' : 'text-neutral-700 hover:bg-neutral-50'}`}>{k}</button>
           ))}
         </div>
       </div>

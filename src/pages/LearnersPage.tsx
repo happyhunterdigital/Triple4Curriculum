@@ -72,7 +72,7 @@ export function LearnersPage() {
           </p>
           <Link
             to="/admissions"
-            className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest"
+            className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest"
           >
             See how admissions work
           </Link>
@@ -126,7 +126,7 @@ export function LearnersPage() {
         <div className="text-center">
           <Link
             to="/how-it-works"
-            className="inline-flex bg-[var(--color-t4c-black)] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest"
+            className="inline-flex bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest"
           >
             How the 4-4-4 works →
           </Link>

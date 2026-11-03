@@ -43,7 +43,7 @@ export function FaqPage() {
           <SectionEyebrow>FAQ</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95]">Straight answers.<br />No repeats.</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">Short answers here. Deep dives on their home pages, click Read more.</p>
-          <Link to="/contact" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest">Still stuck? Contact us</Link>
+          <Link to="/contact" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Still stuck? Contact us</Link>
         </div>
       </div>
       <PageShell>
@@ -65,7 +65,7 @@ export function FaqPage() {
         <RevealStagger>
           <div className="rounded-[16px] bg-[var(--color-t4c-black)] text-white p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div><h3 className="font-display text-[18px] font-semibold">Need a human?</h3><p className="text-sm text-white/70">SA or UK, we reply within one school day.</p></div>
-            <Link to="/contact" className="shrink-0 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest">Contact us</Link>
+            <Link to="/contact" className="shrink-0 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Contact us</Link>
           </div>
         </RevealStagger>
       </PageShell>

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   AlertTriangle,
   ArrowUpRight,
@@ -104,7 +104,7 @@ export const TeacherHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
                     <p className="mt-1 text-xs text-white/60">{liveSlot.sub}</p>
                     <button
                       onClick={() => onNavigate('classroom')}
-                      className="mt-5 inline-flex items-center gap-2 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-4 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors"
+                      className="mt-5 inline-flex items-center gap-2 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-4 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors"
                     >
                       Open classroom <ArrowUpRight size={14} />
                     </button>
@@ -246,7 +246,7 @@ export const TeacherHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-semibold">
-                      {alert.name} <span className="font-normal text-[#64748B]">· {alert.metric}</span>
+                      {alert.name} <span className="font-normal text-[#64748B]">� {alert.metric}</span>
                     </p>
                     <p className="text-[11px] text-[#475569] mt-0.5 leading-relaxed">{alert.reason}</p>
                     <div className="mt-1.5">

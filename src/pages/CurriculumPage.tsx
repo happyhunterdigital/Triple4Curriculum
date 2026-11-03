@@ -12,7 +12,7 @@ export function CurriculumPage() {
           <SectionEyebrow>Academics</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95]">A blended path<br />to a valid NSC.</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">CAPS plus international depth, from playful Foundation to SACCAI-aligned FET Matric.</p>
-          <Link to="/admissions#docs" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest">Check eligibility</Link>
+          <Link to="/admissions#docs" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Check eligibility</Link>
         </div>
       </div>
 
@@ -28,9 +28,9 @@ export function CurriculumPage() {
                 { k:'Senior', g:'Grade 7-9', d:'Depth & subject choice' },
                 { k:'FET', g:'Grade 10-12', d:'SACCAI NSC Matric' },
               ].map(s=>(
-                <div key={s.k} className="border border-black/10 rounded-[12px] p-4 text-center">
-                  <p className="font-display font-bold text-[var(--color-t4c-green)]">{s.k}</p>
-                  <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">{s.g}</p>
+                <div key={s.k} className="border border-black/10 rounded-[12px] p-3 sm:p-4 text-center">
+                  <p className="font-display font-bold text-sm sm:text-base text-[var(--color-t4c-green)] break-words">{s.k}</p>
+                  <p className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-neutral-500">{s.g}</p>
                   <p className="text-xs text-neutral-600 mt-1">{s.d}</p>
                 </div>
               ))}
@@ -76,7 +76,7 @@ export function CurriculumPage() {
             <div className="bg-[var(--color-t4c-green)] text-white rounded-[16px] p-6 sm:p-8 lg:p-10">
               <SectionHeading className="text-[22px] !text-white">FET &amp; valid Matric</SectionHeading>
               <p className="mt-3 text-sm leading-relaxed text-white/90">Will my child receive a valid matric certificate at the end of Grade 12? <strong>Yes.</strong> Our FET phase (Grades 10-12) aligns with SACCAI requirements, SBAs, practical tasks, and required study hours, so matriculants sit for accredited final national examinations and graduate with a universally recognised <strong>NSC</strong> Matric certificate.</p>
-              <Link to="/admissions#fees" className="inline-flex mt-4 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest">See FET fees</Link>
+              <Link to="/admissions#fees" className="inline-flex mt-4 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">See FET fees</Link>
             </div>
             <div className="bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
               <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">FET at a glance</p>

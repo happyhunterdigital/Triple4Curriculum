@@ -89,7 +89,7 @@ function Shell() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[var(--color-canvas-soft)] flex flex-col antialiased overflow-x-hidden">
+    <div className="w-full app-min-viewport bg-[var(--color-canvas-soft)] flex flex-col antialiased overflow-x-hidden">
       <Navbar onToggleMenu={() => setMenuOpen((o) => !o)} menuOpen={menuOpen} />
       <div className="w-full flex flex-1 items-stretch overflow-hidden">
         <AppSidebar onNavigate={handleNavigate} currentRoute={currentRoute} open={menuOpen} onClose={() => setMenuOpen(false)} />

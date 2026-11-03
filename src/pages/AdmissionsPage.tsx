@@ -13,7 +13,7 @@ export function AdmissionsPage() {
           <SectionEyebrow>Admissions</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95]">Two ways to join.<br />One standard.</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">Choose Online School or Homeschool support, same 16-cap live classes, same accredited path.</p>
-          <a href="#apply" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest">Start Application <ArrowRight size={14} className="ml-1" /></a>
+          <a href="#apply" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Start Application <ArrowRight size={14} className="ml-1" /></a>
         </div>
       </div>
 
@@ -103,9 +103,9 @@ export function AdmissionsPage() {
             <SectionHeading className="text-[22px]">Apply to T4C</SectionHeading>
             <p className="mt-2 text-sm leading-relaxed text-neutral-700">Start your application, our admissions team will guide you through document verification and placement.</p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link to="/onboarding" className="inline-flex bg-[var(--color-t4c-black)] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest">Start Application</Link>
-              <a href="mailto:admissions@t4c.com" className="inline-flex border border-black/10 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)]">Email admissions@t4c.com</a>
-              <a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="inline-flex border border-black/10 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)]">WhatsApp UK</a>
+              <Link to="/onboarding" className="inline-flex bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Start Application</Link>
+              <a href="mailto:admissions@t4c.com" className="inline-flex border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)]">Email admissions@t4c.com</a>
+              <a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="inline-flex border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)]">WhatsApp UK</a>
             </div>
             <p className="mt-4 text-xs text-neutral-500">Prefer to talk? Call SA +27 689-758-960 / +27 639-642-288 or see <Link to="/contact" className="underline">Contact</Link>.</p>
           </div>

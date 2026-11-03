@@ -8,7 +8,7 @@ export function SiteFooter() {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           <div>
-            <Link to="/" className="flex items-center gap-3 rounded hover:opacity-90 transition-opacity" aria-label="Triple 4C Curriculum home">
+            <Link to="/" className="inline-flex items-center gap-3 min-h-11 rounded hover:opacity-90 transition-opacity" aria-label="Triple 4C Curriculum home">
               <img
                 src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787254845/Triple_4_Curriculum_latest_logo_variant4_hjviza.png', 72)}
                 alt="Triple 4C Curriculum logo"
@@ -24,31 +24,31 @@ export function SiteFooter() {
 
           <div>
             <p className="text-[11px] font-mono tracking-[0.16em] uppercase text-white/60">Explore</p>
-            <ul className="mt-3 space-y-2 text-sm">
-              <li><Link to="/about" className="hover:text-[var(--color-t4c-yellow)] transition-colors">About</Link></li>
-              <li><Link to="/how-it-works" className="hover:text-[var(--color-t4c-yellow)] transition-colors">How it Works</Link></li>
-              <li><Link to="/curriculum" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Curriculum</Link></li>
-            <li><Link to="/learners" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Learners</Link></li>
-              <li><Link to="/admissions" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Admissions & Fees</Link></li>
-              <li><Link to="/classroom" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Classroom</Link></li>
-              <li><Link to="/faq" className="hover:text-[var(--color-t4c-yellow)] transition-colors">FAQ</Link></li>
-              <li><Link to="/contact" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Contact</Link></li>
-              <li><Link to="/privacy" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Privacy</Link></li>
-              <li><Link to="/terms" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Terms</Link></li>
-              <li><Link to="/child-protection" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Child Protection</Link></li>
-              <li><Link to="/login" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Sign in</Link></li>
-              <li><Link to="/onboarding" className="hover:text-[var(--color-t4c-yellow)] transition-colors">Apply</Link></li>
+            <ul className="mt-2 space-y-0.5 text-sm">
+              <li><Link to="/about" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">About</Link></li>
+              <li><Link to="/how-it-works" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">How it Works</Link></li>
+              <li><Link to="/curriculum" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Curriculum</Link></li>
+            <li><Link to="/learners" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Learners</Link></li>
+              <li><Link to="/admissions" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Admissions & Fees</Link></li>
+              <li><Link to="/classroom" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Classroom</Link></li>
+              <li><Link to="/faq" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">FAQ</Link></li>
+              <li><Link to="/contact" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Contact</Link></li>
+              <li><Link to="/privacy" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Privacy</Link></li>
+              <li><Link to="/terms" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Terms</Link></li>
+              <li><Link to="/child-protection" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Child Protection</Link></li>
+              <li><Link to="/login" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Sign in</Link></li>
+              <li><Link to="/onboarding" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Apply</Link></li>
             </ul>
           </div>
 
           <div>
             <p className="text-[11px] font-mono tracking-[0.16em] uppercase text-white/60">Contact</p>
             <ul className="mt-3 space-y-2 text-sm leading-relaxed">
-              <li><a href="tel:+27689758960" className="hover:text-[var(--color-t4c-yellow)] transition-colors">SA: +27 689-758-960</a> <span className="text-white/50">/</span> <a href="tel:+27639642288" className="hover:text-[var(--color-t4c-yellow)] transition-colors">+27 639-642-288</a></li>
-              <li><a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="hover:text-[var(--color-t4c-yellow)] transition-colors">UK WhatsApp: +44 757-7924-174</a></li>
-              <li><a href="mailto:info@t4c.com" className="hover:text-[var(--color-t4c-yellow)] transition-colors">info@t4c.com</a> <span className="text-white/50">·</span> <a href="mailto:admissions@t4c.com" className="hover:text-[var(--color-t4c-yellow)] transition-colors">admissions@t4c.com</a></li>
-              <li><a href="mailto:support@triple4c.com" className="hover:text-[var(--color-t4c-yellow)] transition-colors">support@triple4c.com</a></li>
-              <li><a href="https://www.triple4c.com" target="_blank" rel="noreferrer" className="hover:text-[var(--color-t4c-yellow)] transition-colors">www.triple4c.com</a></li>
+              <li><a href="tel:+27689758960" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">SA: +27 689-758-960</a> <span className="text-white/50">/</span> <a href="tel:+27639642288" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">+27 639-642-288</a></li>
+              <li><a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">UK WhatsApp: +44 757-7924-174</a></li>
+              <li><a href="mailto:info@t4c.com" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">info@t4c.com</a> <span className="text-white/50">·</span> <a href="mailto:admissions@t4c.com" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">admissions@t4c.com</a></li>
+              <li><a href="mailto:support@triple4c.com" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">support@triple4c.com</a></li>
+              <li><a href="https://www.triple4c.com" target="_blank" rel="noreferrer" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">www.triple4c.com</a></li>
               <li className="text-white/60 text-xs pt-1"><SocialLinks /></li>
             </ul>
           </div>
@@ -65,7 +65,7 @@ export function SiteFooter() {
           <button
             type="button"
             onClick={() => document.dispatchEvent(new Event('hh:open-consent'))}
-            className="underline underline-offset-2 hover:text-[var(--color-t4c-yellow)] transition-colors"
+            className="inline-block py-2 underline underline-offset-2 hover:text-[var(--color-t4c-yellow)] transition-colors"
           >
             Cookie settings
           </button>

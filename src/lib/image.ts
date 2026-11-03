@@ -33,3 +33,16 @@ export function cloudinaryImage(url: string | null | undefined, width: number): 
   const w = Math.max(16, Math.round(width));
   return `${base}${CLOUDINARY_IMAGE}f_auto,q_auto,w_${w},c_limit/${rest}`;
 }
+
+/**
+ * Build a responsive `srcSet` for a Cloudinary asset so phones download a
+ * phone-sized file instead of the desktop hero. Pair with `sizes`, e.g.
+ *   srcSet={cloudinarySrcSet(url, [480, 768, 1024, 1400])}
+ *   sizes="(min-width: 1400px) 1400px, 100vw"
+ */
+export function cloudinarySrcSet(url: string | null | undefined, widths: number[]): string {
+  if (!url) return '';
+  return widths
+    .map((w) => `${cloudinaryImage(url, w)} ${w}w`)
+    .join(', ');
+}

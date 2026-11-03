@@ -57,7 +57,7 @@ export function SocialLinks() {
           rel="noreferrer noopener"
           aria-label={`Triple 4C on ${name}`}
           title={name}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/75 transition-colors hover:border-[var(--color-t4c-yellow)] hover:bg-white/5 hover:text-[var(--color-t4c-yellow)]"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-white/75 transition-colors hover:border-[var(--color-t4c-yellow)] hover:bg-white/5 hover:text-[var(--color-t4c-yellow)]"
         >
           <Icon className="h-4 w-4" />
         </a>

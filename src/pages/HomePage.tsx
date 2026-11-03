@@ -4,7 +4,9 @@ import { motion } from 'framer-motion';
 import { Users, Clock, Video, GraduationCap, Heart, Shield, Lightbulb, ArrowRight, Award, BookOpen } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
 import { PricingTable } from '../components/site/PricingTable';
-import { cloudinaryImage } from '../lib/image';
+import { cloudinaryImage, cloudinarySrcSet } from '../lib/image';
+
+const HERO_IMAGE = 'https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg';
 
 function FaqTeaser() {
   const items = [
@@ -34,16 +36,16 @@ export function HomePage() {
       <section className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         <div className="relative rounded-[24px] sm:rounded-[40px] overflow-hidden bg-white border border-black/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] min-h-[520px] sm:min-h-[560px] flex">
           <div className="absolute inset-0">
-            <img src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg', 1400)} alt="Learners in a Triple 4C live online class" fetchPriority="high" loading="eager" decoding="async" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent" />
+            <img src={cloudinaryImage(HERO_IMAGE, 960)} srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1400])} sizes="(min-width: 1400px) 1400px, 100vw" alt="Learners in a Triple 4C live online class" fetchPriority="high" loading="eager" decoding="async" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 sm:to-transparent" />
           </div>
           <div className="relative z-10 flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-10 sm:py-14 max-w-[640px]">
             <SectionEyebrow>Preserving Fresh Minds Globally</SectionEyebrow>
             <h1 className="mt-3 font-display text-[30px] sm:text-[42px] lg:text-[52px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Small Classes.<br />Big Futures.</h1>
             <p className="mt-3 text-[14px] sm:text-[15px] leading-relaxed text-neutral-700 max-w-[48ch]">Daily live classes capped at 16. Four days, four hours, four lessons, with a Friday for real-world skills.</p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link to="/admissions#apply" className="inline-flex items-center gap-2 bg-[var(--color-t4c-black)] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors">Check Availability <ArrowRight size={14} /></Link>
-              <Link to="/how-it-works" className="inline-flex items-center gap-2 bg-white border border-black/10 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)] transition-colors">Discover the Model</Link>
+              <Link to="/admissions#apply" className="inline-flex items-center gap-2 bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors">Check Availability <ArrowRight size={14} /></Link>
+              <Link to="/how-it-works" className="inline-flex items-center gap-2 bg-white border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)] transition-colors">Discover the Model</Link>
             </div>
             <p className="mt-3 text-xs text-neutral-500">SACCAI-track · CAPS + international · Grade R-12 · 100% live</p>
           </div>
@@ -92,7 +94,7 @@ export function HomePage() {
                   </li>
                 ))}
               </ul>
-              <Link to="/how-it-works" className="inline-flex mt-5 text-xs font-bold uppercase tracking-widest underline decoration-[var(--color-t4c-yellow)] decoration-2 underline-offset-4 hover:text-[var(--color-t4c-green)]">How the week works →</Link>
+              <Link to="/how-it-works" className="inline-flex items-center min-h-11 mt-5 text-xs font-bold uppercase tracking-widest underline decoration-[var(--color-t4c-yellow)] decoration-2 underline-offset-4 hover:text-[var(--color-t4c-green)]">How the week works →</Link>
             </div>
             <div className="bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
               <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">Why it works</p>
@@ -110,7 +112,7 @@ export function HomePage() {
         <RevealStagger>
           <div className="rounded-[16px] overflow-hidden border border-black/10 bg-white grid lg:grid-cols-2">
             <div className="h-[240px] sm:h-[320px] bg-neutral-100 overflow-hidden">
-              <img src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg', 800)} alt="Live classroom capped at 16 learners" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+              <img src={cloudinaryImage(HERO_IMAGE, 800)} srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 800, 1024])} sizes="(min-width: 1024px) 50vw, 100vw" alt="Live classroom capped at 16 learners" loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </div>
             <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
               <SectionHeading className="text-[22px] sm:text-[26px]">100% live. Capped at 16. Parent hands-off.</SectionHeading>
@@ -131,7 +133,7 @@ export function HomePage() {
               <SectionHeading>Fees that respect families</SectionHeading>
               <Body className="mt-2">Same 16-cap live classes across every phase, monthly or annual, in ZAR, USD or GBP.</Body>
             </div>
-            <Link to="/admissions#fees" className="shrink-0 inline-flex text-xs font-bold uppercase tracking-widest border border-black/10 rounded-full px-5 py-2.5 hover:border-[var(--color-t4c-yellow)] transition-colors">View full fees</Link>
+            <Link to="/admissions#fees" className="shrink-0 inline-flex items-center min-h-11 text-xs font-bold uppercase tracking-widest border border-black/10 rounded-full px-5 py-2.5 hover:border-[var(--color-t4c-yellow)] transition-colors">View full fees</Link>
           </div>
           <div className="mt-5"><PricingTable teaser /></div>
         </RevealStagger>
@@ -141,7 +143,7 @@ export function HomePage() {
           <SectionHeading>Straight answers</SectionHeading>
           <Body className="mt-2">Top questions from families, full answers live on the FAQ page.</Body>
           <div className="mt-5"><FaqTeaser /></div>
-          <Link to="/faq" className="inline-flex mt-4 text-xs font-bold uppercase tracking-widest underline decoration-[var(--color-t4c-yellow)] decoration-2 underline-offset-4">Browse all questions →</Link>
+          <Link to="/faq" className="inline-flex items-center min-h-11 mt-4 text-xs font-bold uppercase tracking-widest underline decoration-[var(--color-t4c-yellow)] decoration-2 underline-offset-4">Browse all questions →</Link>
         </RevealStagger>
 
         {/* Final CTA banner */}
@@ -151,7 +153,7 @@ export function HomePage() {
               <h3 className="font-display text-[20px] sm:text-[24px] font-semibold tracking-tight">Keep childhood fresh. Keep learning elite.</h3>
               <p className="text-sm text-white/70 mt-1">Talk to a real teacher, SA or UK, within one school day.</p>
             </div>
-            <Link to="/contact" className="shrink-0 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">Book a discovery call</Link>
+            <Link to="/contact" className="shrink-0 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">Book a discovery call</Link>
           </div>
         </RevealStagger>
       </PageShell>
