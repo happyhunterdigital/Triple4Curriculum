@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { Users, Clock, Video, GraduationCap, Heart, Shield, Lightbulb, ArrowRight, Award, BookOpen } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
 import { PricingTable } from '../components/site/PricingTable';

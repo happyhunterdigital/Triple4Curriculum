@@ -118,6 +118,33 @@ body {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 
+/* Scroll-in reveal (replaces framer-motion on marketing pages).
+   Hidden state keeps content in the layout and accessibility tree. */
+.reveal--hidden {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.reveal--revealing {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal--visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal--hidden,
+  .reveal--revealing,
+  .reveal--visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* App shell sizing.
    100vh is taller than the visible area on iOS Safari / Android Chrome while
    the browser bars are showing, which pushed the sidebar footer behind the
