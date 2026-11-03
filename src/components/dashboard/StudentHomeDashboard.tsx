@@ -13,6 +13,7 @@ import {
   Trophy,
 } from 'lucide-react';
 import { BentoCard, BentoGrid, BentoPill } from '../ui/Bento';
+import { useAuth } from '../../lib/authContext';
 
 interface Course {
   id: string;
@@ -32,6 +33,8 @@ interface Deadline {
 const ELECTIVES = ['Mathematics', 'History', 'Physics', 'Coding', 'Music', 'Debate'];
 
 export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }> = ({ onNavigate }) => {
+  const { currentUser } = useAuth();
+  const firstName = (currentUser?.name || '').trim().split(/\s+/)[0];
   const [courses] = useState<Course[]>([
     { id: '1', name: 'Advanced Mathematics', code: 'MAT401', time: '09:00 - 10:15', status: 'live' },
     { id: '2', name: 'Modern World History', code: 'HIS202', time: '11:00 - 12:15', status: 'upcoming' },
@@ -52,7 +55,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
       <header className="px-5 xs:px-7 sm:px-9 lg:px-10 pt-6 sm:pt-8 pb-2 sm:pb-3 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2">
         <div>
           <p className="text-[10px] font-mono text-[#64748B] uppercase tracking-[0.18em]">Workspace overview</p>
-          <h1 className="mt-1 font-display text-xl sm:text-2xl font-semibold tracking-tight">Welcome back, Sarah.</h1>
+          <h1 className="mt-1 font-display text-xl sm:text-2xl font-semibold tracking-tight">Welcome back, {firstName || 'learner'}.</h1>
         </div>
         <div className="flex items-center gap-2">
           <BentoPill tone="green">Term 3</BentoPill>

@@ -136,7 +136,7 @@ function Shell() {
             <Route path="/teach/classes" element={<RequireAuth roles={['lecturer', 'admin']}><TeachClasses /></RequireAuth>} />
             <Route path="/teach/authoring" element={<RequireAuth roles={['lecturer', 'admin']}><TeachAuthoring /></RequireAuth>} />
             <Route path="/teach/attendance" element={<RequireAuth roles={['lecturer', 'admin']}><TeachAttendance /></RequireAuth>} />
-            <Route path="/learn/progress" element={<RequireAuth><LearnProgress /></RequireAuth>} />
+            <Route path="/learn/progress" element={<RequireAuth roles={['lecturer', 'admin']}><LearnProgress /></RequireAuth>} />
             <Route path="/certificates" element={<RequireAuth><div className="bg-white border rounded-xl p-4 sm:p-6"><CertificatesRoute /></div></RequireAuth>} />
             <Route path="/workspace" element={<RequireAuth><ClassroomRoute /></RequireAuth>} />
             <Route path="/live" element={<RequireAuth><LiveRoute /></RequireAuth>} />

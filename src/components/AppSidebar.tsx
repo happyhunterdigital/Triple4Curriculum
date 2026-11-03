@@ -24,6 +24,21 @@ interface AppSidebarProps {
 
 export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute = 'dashboard', open = false, onClose }) => {
   const { logout, currentUser } = useAuth();
+
+  // Real identity in the rail header — previously hardcoded demo copy.
+  const initials = (currentUser?.name || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase() || 'T4';
+  const roleLabel = currentUser?.role === 'admin'
+    ? 'Administrator'
+    : currentUser?.role === 'lecturer'
+      ? 'Faculty'
+      : 'Learner';
   const [isExpanded, setIsExpanded] = useState(false);
   const [showCreateFlyout, setShowCreateFlyout] = useState(false);
   const [unreadLectures, setUnreadLectures] = useState(0);
@@ -119,11 +134,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
               {(isExpanded || open) && (
                 <div className="flex items-center gap-3 overflow-hidden">
                   <div className="w-8 h-8 rounded-md bg-[var(--color-t4c-black)] text-white font-mono font-bold flex items-center justify-center text-xs border border-white/20 shrink-0 shadow-xs">
-                    SS
+                    {initials}
                   </div>
                   <div className="truncate">
-                    <p className="text-xs font-bold leading-none mb-0.5">Sarah Student</p>
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-t4c-black)]/60 font-semibold">Matrix Node</p>
+                    <p className="text-xs font-bold leading-none mb-0.5 truncate">{currentUser?.name || 'Signed in'}</p>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-t4c-black)]/60 font-semibold">{roleLabel}</p>
                   </div>
                 </div>
               )}
