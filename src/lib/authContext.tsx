@@ -1,6 +1,6 @@
 ﻿import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, UserRole, PushNotification } from '../types';
-import { auth as fbAuth, db } from './firebase';
+import { auth as fbAuth, getDb } from './firebase';
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -11,8 +11,16 @@ import {
   updateProfile,
   type User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { resolveClaimRole } from './claims';
+
+/**
+ * Firestore is code-split out of the boot bundle, so profile reads pull it in
+ * on demand (first signed-in page view, or registration).
+ */
+async function firestoreApi() {
+  const [mod, db] = await Promise.all([import('firebase/firestore'), getDb()]);
+  return { ...mod, db };
+}
 
 interface AuthContextType {
   currentUser: User | null;
@@ -48,6 +56,7 @@ async function resolveUser(fbUser: FirebaseUser, forceRefresh = false): Promise<
   const email = fbUser.email;
   const displayName = fbUser.displayName;
 
+  const { db, doc, getDoc } = await firestoreApi();
   const candidates = [doc(db, 'users', uid), doc(db, 'students', uid), doc(db, 'teachers', uid)];
   for (const ref of candidates) {
     try {
@@ -143,6 +152,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
       // Self-registration is always a learner. Elevated roles are granted only
       // by an admin through the setCustomRole function (custom claims).
+      const { db, doc, setDoc, serverTimestamp } = await firestoreApi();
       await setDoc(doc(db, 'users', cred.user.uid), {
         uid: cred.user.uid,
         name: payload.name,

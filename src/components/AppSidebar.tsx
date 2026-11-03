@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { getDb } from '../lib/firebase';
 import {
   LayoutDashboard, BookOpen, Calendar, FileText,
   CheckSquare, MessageSquare, Bell, Settings,
@@ -32,17 +31,36 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
 
   useEffect(() => {
     if (!currentUser?.id) return;
-    const q = query(collection(db, 'notifications'), where('studentId', '==', currentUser.id), where('isRead', '==', false));
-    const unsub = onSnapshot(q, (snap) => {
-      let l = 0, a = 0;
-      snap.docs.forEach(d => {
-        const c = d.data().category;
-        if (c === 'lectures') l++;
-        if (c === 'assignments') a++;
-      });
-      setUnreadLectures(l); setUnreadAssignments(a);
-    }, () => {});
-    return () => unsub();
+    let cancelled = false;
+    let unsubscribe: () => void = () => {};
+
+    // Firestore is code-split; only signed-in sessions pay for it.
+    (async () => {
+      const [{ collection, query, where, onSnapshot }, db] = await Promise.all([
+        import('firebase/firestore'),
+        getDb(),
+      ]);
+      if (cancelled) return;
+      const q = query(
+        collection(db, 'notifications'),
+        where('studentId', '==', currentUser.id),
+        where('isRead', '==', false),
+      );
+      unsubscribe = onSnapshot(q, (snap) => {
+        let l = 0, a = 0;
+        snap.docs.forEach(d => {
+          const c = d.data().category;
+          if (c === 'lectures') l++;
+          if (c === 'assignments') a++;
+        });
+        setUnreadLectures(l); setUnreadAssignments(a);
+      }, () => {});
+    })().catch(() => {});
+
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, [currentUser?.id]);
 
   const handleNavigate = (id: string) => {

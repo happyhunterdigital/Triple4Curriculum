@@ -4,7 +4,8 @@ import {
   Badge, AuditLog, PushNotification, ChatMessage, SystemAnnouncement,
   LearnerCourseProgress, TeacherSummary, GeneratedQuiz
 } from '../types';
-import { auth as fbAuth, db } from './firebase';
+import { auth as fbAuth } from './firebase';
+import { firestore } from './firestore';
 import { resolveClaimRole } from './claims';
 import {
   addDoc,
@@ -24,6 +25,11 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
+
+// Firestore is code-split out of the boot bundle. This module is only imported
+// by data screens (all React.lazy routes), so importing the Firestore singleton
+// here keeps the SDK out of the first payload.
+const db = firestore();
 
 // ── Firestore collections ──
 const C = {

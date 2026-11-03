@@ -3,8 +3,7 @@
  * it as a normal form POST (PayFast requires a full-page redirect; card details
  * never pass through T4C or Firebase).
  */
-import { httpsCallable } from "firebase/functions";
-import { functions } from "./functions";
+import { callable } from "./functions";
 
 export interface PayfastCheckout {
   url: string;
@@ -18,7 +17,7 @@ export async function createPayfastCheckout(payload: {
   phase?: string;
 }): Promise<PayfastCheckout | null> {
   try {
-    const fn = httpsCallable<typeof payload, PayfastCheckout>(functions, "createPayfastCheckout");
+    const fn = await callable<typeof payload, PayfastCheckout>("createPayfastCheckout");
     const res = await fn(payload);
     if (res.data?.url && res.data.fields) return res.data;
     return null;

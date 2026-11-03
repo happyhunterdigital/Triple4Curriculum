@@ -39,12 +39,26 @@ export default defineConfig(({command, mode}) => {
       assetsInlineLimit: 4096,
       rollupOptions: {
         output: {
-          manualChunks: {
-            vendor: ['react', 'react-dom', 'react-router-dom'],
-            firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage', 'firebase/functions', 'firebase/app-check'],
-            charts: ['recharts'],
-            motion: ['framer-motion', 'motion'],
-            markdown: ['react-markdown'],
+          // Keep the boot payload small: `firebase/app` + `firebase/auth` are
+          // the only Firebase pieces on the critical path. Firestore, storage,
+          // functions and app-check are dynamically imported, so each gets its
+          // own chunk and is only fetched when a screen actually needs it.
+          manualChunks(id) {
+            if (!id.includes('node_modules')) return;
+            if (id.includes('@firebase/auth') || id.includes('firebase/auth')) return 'firebase-auth';
+            if (
+              id.includes('@firebase/firestore') ||
+              id.includes('firebase/firestore') ||
+              id.includes('@firebase/webchannel-wrapper')
+            ) return 'firebase-firestore';
+            if (id.includes('@firebase/storage') || id.includes('firebase/storage')) return 'firebase-storage';
+            if (id.includes('@firebase/functions') || id.includes('firebase/functions')) return 'firebase-functions';
+            if (id.includes('@firebase/app-check') || id.includes('firebase/app-check')) return 'firebase-app-check';
+            if (id.includes('@firebase/') || id.includes('node_modules/firebase/')) return 'firebase-core';
+            if (id.includes('recharts')) return 'charts';
+            if (id.includes('framer-motion') || id.includes('/node_modules/motion')) return 'motion';
+            if (id.includes('react-markdown') || id.includes('remark') || id.includes('micromark') || id.includes('mdast') || id.includes('hast')) return 'markdown';
+            if (id.includes('react-router') || id.includes('react-dom') || id.includes('/node_modules/react/') || id.includes('/node_modules/scheduler/')) return 'vendor';
           },
         },
       },

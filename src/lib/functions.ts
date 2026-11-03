@@ -1,7 +1,18 @@
-import { getFunctions, httpsCallable } from "firebase/functions";
-import app from "./firebase";
+import { getFunctionsClient } from "./firebase";
 
-const functions = getFunctions(app);
+/**
+ * Lazy callable factory. `firebase/functions` is code-split, so a visitor who
+ * never triggers a Cloud Function never downloads the SDK.
+ */
+export async function callable<TIn, TOut>(name: string) {
+  const [{ httpsCallable }, functions] = await Promise.all([
+    import("firebase/functions"),
+    getFunctionsClient(),
+  ]);
+  return httpsCallable<TIn, TOut>(functions, name);
+}
+
+export { getFunctionsClient };
 
 export interface Quiz {
   question: string;
@@ -34,7 +45,7 @@ function cannedQuiz(topic: string): Quiz {
 
 async function callFn<T>(name: string, payload: unknown, fallback: T): Promise<T> {
   try {
-    const fn = httpsCallable<unknown, T>(functions, name);
+    const fn = await callable<unknown, T>(name);
     const res = await fn(payload);
     return res.data;
   } catch {
@@ -45,7 +56,7 @@ async function callFn<T>(name: string, payload: unknown, fallback: T): Promise<T
 export async function generateQuiz(topic: string, difficulty = "Undergraduate Level 3"): Promise<QuizResponse> {
   const fallback: QuizResponse = { quiz: cannedQuiz(topic), cached: false };
   try {
-    const fn = httpsCallable<{ topic: string; difficulty: string }, QuizResponse>(functions, "generateQuiz");
+    const fn = await callable<{ topic: string; difficulty: string }, QuizResponse>("generateQuiz");
     const res = await fn({ topic, difficulty });
     if (res.data?.quiz?.question) return res.data;
     return fallback;
@@ -114,5 +125,3 @@ export function writeAuditEntry(
 ): Promise<{ success: boolean; id: string }> {
   return callFn("writeAudit", { action, resource, details }, { success: false, id: "" });
 }
-
-export { functions };

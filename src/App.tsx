@@ -4,18 +4,7 @@ import { AuthProvider, useAuth } from './lib/authContext';
 import { Navbar } from './components/Navbar';
 import { AppSidebar } from './components/AppSidebar';
 import { AIFloatingChatbot } from './components/ai/AIFloatingChatbot';
-import { StudentTimetable } from './components/student/StudentTimetable';
-import { StudentAssignments } from './components/student/StudentAssignments';
-import { StudentAttendance } from './components/student/StudentAttendance';
-import { StudentMessages } from './components/student/StudentMessages';
-import { StudentNotifications } from './components/student/StudentNotifications';
-import { StudentLectures } from './components/student/StudentLectures';
-import { OnboardingFlow } from './components/onboarding/OnboardingFlow';
-import { StudentHomeDashboard } from './components/dashboard/StudentHomeDashboard';
-import { TeacherHomeDashboard } from './components/dashboard/TeacherHomeDashboard';
-import { AdminHomeDashboard } from './components/dashboard/AdminHomeDashboard';
 import { RequireAuth } from './components/RequireAuth';
-import LegalDoc from './pages/LegalDoc';
 import { NotFound } from './pages/NotFound';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
@@ -25,11 +14,27 @@ import { LearnersPage } from './pages/LearnersPage';
 import { AdmissionsPage } from './pages/AdmissionsPage';
 import { FaqPage } from './pages/FaqPage';
 import { ContactPage } from './pages/ContactPage';
-import { ClassroomPage } from './pages/ClassroomPage';
 import { LoginPage } from './pages/LoginPage';
 import { SiteFooter } from './components/site/SiteFooter';
 import { CookieConsent } from './components/site/CookieConsent';
 import { DashboardSkeleton } from './components/common/DashboardSkeleton';
+
+// ── Lazy routes ──────────────────────────────────────────────────────────────
+// Everything that touches Firestore, uploads, Cloud Functions or markdown is
+// split out of the first payload. A visitor landing on the marketing site
+// downloads React + auth + the page, nothing else.
+const StudentTimetable = lazy(() => import('./components/student/StudentTimetable').then(m => ({ default: m.StudentTimetable })));
+const StudentAssignments = lazy(() => import('./components/student/StudentAssignments').then(m => ({ default: m.StudentAssignments })));
+const StudentAttendance = lazy(() => import('./components/student/StudentAttendance').then(m => ({ default: m.StudentAttendance })));
+const StudentMessages = lazy(() => import('./components/student/StudentMessages').then(m => ({ default: m.StudentMessages })));
+const StudentNotifications = lazy(() => import('./components/student/StudentNotifications').then(m => ({ default: m.StudentNotifications })));
+const StudentLectures = lazy(() => import('./components/student/StudentLectures').then(m => ({ default: m.StudentLectures })));
+const OnboardingFlow = lazy(() => import('./components/onboarding/OnboardingFlow').then(m => ({ default: m.OnboardingFlow })));
+const StudentHomeDashboard = lazy(() => import('./components/dashboard/StudentHomeDashboard').then(m => ({ default: m.StudentHomeDashboard })));
+const TeacherHomeDashboard = lazy(() => import('./components/dashboard/TeacherHomeDashboard').then(m => ({ default: m.TeacherHomeDashboard })));
+const AdminHomeDashboard = lazy(() => import('./components/dashboard/AdminHomeDashboard').then(m => ({ default: m.AdminHomeDashboard })));
+const ClassroomPage = lazy(() => import('./pages/ClassroomPage').then(m => ({ default: m.ClassroomPage })));
+const LegalDoc = lazy(() => import('./pages/LegalDoc'));
 
 // ── Phase 2 lazy role routes (named exports mapped to default for React.lazy) ──
 const TeachDashboard = lazy(() => import('./components/lecturer/LecturerDashboard').then(m => ({ default: m.LecturerDashboard })));

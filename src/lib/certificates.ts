@@ -1,5 +1,6 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { auth as fbAuth, db } from './firebase';
+import { auth as fbAuth } from './firebase';
+import { firestore } from './firestore';
 import { createCertificate as createCertificateFn } from './functions';
 
 export interface Certificate {
@@ -32,6 +33,7 @@ export async function requestCertificate(
 /** List certificates for the current (or explicit) student, newest first. */
 export async function myCertificates(uid?: string): Promise<Certificate[]> {
   const id = currentUid(uid);
+  const db = firestore();
   const snap = await getDocs(query(collection(db, 'certificates'), where('studentId', '==', id)));
   const rows = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Certificate, 'id'>) }));
   return rows.sort((a, b) => (b.issuedAt || '').localeCompare(a.issuedAt || ''));

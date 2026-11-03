@@ -1,5 +1,5 @@
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage';
-import { storage } from './firebase';
+import { getStorageClient } from './firebase';
 
 export interface UploadedSubmissionMeta {
   path: string;
@@ -37,6 +37,7 @@ export async function uploadSubmissionFile(
   if (!uid) throw new Error('Sign in before uploading a submission.');
   if (!assignmentId) throw new Error('Assignment is required.');
   const path = `submissions/${uid}/${assignmentId}/${Date.now()}_${safeName(file.name)}`;
+  const storage = await getStorageClient();
   const storageRef = ref(storage, path);
   if (onProgress) {
     const task = uploadBytesResumable(storageRef, file, { contentType: file.type });
@@ -68,6 +69,7 @@ export async function uploadRegistrationDoc(
   if (err) throw new Error(err);
   if (!uid) throw new Error('Sign in (Step 3) before uploading documents.');
   const path = `registrations/${uid}/${Date.now()}_${safeName(file.name)}`;
+  const storage = await getStorageClient();
   const storageRef = ref(storage, path);
   if (onProgress) {
     const task = uploadBytesResumable(storageRef, file, { contentType: file.type });
@@ -91,5 +93,6 @@ export async function uploadRegistrationDoc(
 
 /** Resolve a download URL for a known Storage path. */
 export async function getDownloadUrl(path: string): Promise<string> {
+  const storage = await getStorageClient();
   return getDownloadURL(ref(storage, path));
 }

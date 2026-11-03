@@ -11,7 +11,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Card } from '../ui/card';
 import { FileUpload, type UploadedFileMeta } from '../ui/FileUpload';
-import { auth, db, storage } from '../../lib/firebase';
+import { auth, getDb, getStorageClient } from '../../lib/firebase';
 import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile,
   GoogleAuthProvider, signInWithPopup, type User as FbUser
@@ -116,6 +116,7 @@ export const OnboardingFlow: React.FC = () => {
     if (!uid) throw new Error('Sign in (Step 3) before uploading documents.');
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
     const path = `registrations/${uid}/${Date.now()}_${safeName}`;
+    const storage = await getStorageClient();
     const storageRef = ref(storage, path);
     await uploadBytes(storageRef, file, { contentType: file.type });
     const url = await getDownloadURL(storageRef);
@@ -272,6 +273,7 @@ export const OnboardingFlow: React.FC = () => {
     }
     setError(null);
     setSubmitting(true);
+    const [db, storage] = await Promise.all([getDb(), getStorageClient()]);
     try {
       // Reuse an already-signed-in session when it matches the submitted email.
       // This is the common retry case: the account was created but the profile
