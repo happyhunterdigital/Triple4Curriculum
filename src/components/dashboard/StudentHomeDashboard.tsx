@@ -169,26 +169,20 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
   const level = currentUser?.level ?? 1;
   const streak = currentUser?.streakDays ?? 0;
 
-  if (loading) {
-    return (
-      <div className="w-full bg-[var(--color-canvas-soft)] -m-3 xs:-m-4 sm:-m-5 md:-m-6 lg:-m-6 xl:-m-8 p-5 sm:p-7 lg:p-9" role="status" aria-live="polite">
-        <div className="h-7 w-64 rounded-md bg-[#E2E8F0] animate-pulse" />
-        <div className="mt-2 h-4 w-40 rounded bg-[#E2E8F0] animate-pulse" />
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className={`rounded-[20px] bg-white border border-[#E2E8F0] p-5 ${i < 2 ? 'lg:col-span-2 h-64' : 'h-40'}`}>
-              <div className="h-3 w-24 rounded bg-[#E2E8F0] animate-pulse" />
-              <div className="mt-3 h-4 w-40 rounded bg-[#E2E8F0] animate-pulse" />
-              <div className="mt-6 space-y-2">
-                <div className="h-3 w-full rounded bg-[#F1F5F9] animate-pulse" />
-                <div className="h-3 w-5/6 rounded bg-[#F1F5F9] animate-pulse" />
-              </div>
-            </div>
-          ))}
-        </div>
+  /**
+   * Panels paint immediately and fill in as their queries resolve — the page
+   * structure never disappears behind a full-screen loader.
+   */
+  const PanelBody: React.FC<{ children: React.ReactNode }> = ({ children }) =>
+    loading ? (
+      <div className="space-y-2 py-1" aria-hidden="true">
+        <div className="h-3 w-2/3 rounded bg-[#E2E8F0] animate-pulse" />
+        <div className="h-3 w-full rounded bg-[#F1F5F9] animate-pulse" />
+        <div className="h-3 w-4/5 rounded bg-[#F1F5F9] animate-pulse" />
       </div>
+    ) : (
+      <>{children}</>
     );
-  }
 
   if (failed) {
     return (
@@ -221,8 +215,9 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
             Welcome back, {firstName || 'learner'}.
           </h1>
           <p className="mt-1 text-xs text-[#64748B]">
-            {view.weekday} · {data.courses.length} course{data.courses.length === 1 ? '' : 's'} ·
-            {' '}{view.todaySlots.length} class{view.todaySlots.length === 1 ? '' : 'es'} today
+            {loading
+              ? 'Loading your workspace…'
+              : `${view.weekday} · ${data.courses.length} course${data.courses.length === 1 ? '' : 's'} · ${view.todaySlots.length} class${view.todaySlots.length === 1 ? '' : 'es'} today`}
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -256,7 +251,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
               {[
                 { label: 'XP', value: xp.toLocaleString('en-ZA') },
                 { label: 'Streak', value: `${streak}d` },
-                { label: 'Courses', value: String(data.courses.length) },
+                { label: 'Courses', value: loading ? '�' : String(data.courses.length) },
               ].map((stat) => (
                 <div key={stat.label} className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
                   <dt className="text-[10px] font-mono uppercase tracking-wider text-white/50">{stat.label}</dt>
@@ -288,12 +283,12 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
             eyebrow="Enrolled"
             title="Your courses"
             icon={<GraduationCap size={16} className="text-[#64748B]" />}
-            action={<span className="text-[10px] font-mono uppercase tracking-wider text-[#64748B]">{data.courses.length}</span>}
+            action={<span className="text-[10px] font-mono uppercase tracking-wider text-[#64748B]">{loading ? '·' : data.courses.length}</span>}
             className="lg:col-span-2 lg:row-span-2"
             onClick={() => onNavigate('lectures')}
             ariaLabel="Open your courses and lectures"
           >
-            {data.courses.length === 0 ? (
+            <PanelBody>{data.courses.length === 0 ? (
               <div className="rounded-xl border border-dashed border-[#CBD5E1] p-6 text-center">
                 <GraduationCap size={22} className="mx-auto text-[#94A3B8]" />
                 <p className="mt-2 text-sm font-semibold text-[#0F172A]">No courses assigned yet</p>
@@ -325,7 +320,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
                   );
                 })}
               </ul>
-            )}
+            )}</PanelBody>
           </BentoCard>
 
           {/* ── Today ── */}
@@ -336,7 +331,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
             onClick={() => onNavigate('timetable')}
             ariaLabel="Open class timetable"
           >
-            {view.todaySlots.length === 0 ? (
+            <PanelBody>{view.todaySlots.length === 0 ? (
               <div className="flex h-full flex-col justify-center py-4 text-center">
                 <CheckCircle2 size={20} className="mx-auto text-[#94A3B8]" />
                 <p className="mt-2 text-xs font-semibold text-[#0F172A]">No live classes today</p>
@@ -365,18 +360,18 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
                   </li>
                 )}
               </ul>
-            )}
+            )}</PanelBody>
           </BentoCard>
 
           {/* ── Deadlines ── */}
           <BentoCard
-            eyebrow="Assignments"
-            title="Coming up"
+            eyebrow="Deadlines"
+            title="Assignments"
             icon={<FileText size={16} className="text-[#64748B]" />}
             onClick={() => onNavigate('assignments')}
             ariaLabel="Open assignments"
           >
-            {view.deadlines.length === 0 ? (
+            <PanelBody>{view.deadlines.length === 0 ? (
               <div className="flex h-full flex-col justify-center py-4 text-center">
                 <CheckCircle2 size={20} className="mx-auto text-[#94A3B8]" />
                 <p className="mt-2 text-xs font-semibold text-[#0F172A]">Nothing due</p>
@@ -396,7 +391,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
                   );
                 })}
               </ul>
-            )}
+            )}</PanelBody>
           </BentoCard>
 
           {/* ── Attendance record ── */}
@@ -407,7 +402,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
             onClick={() => onNavigate('attendance')}
             ariaLabel="Open attendance records"
           >
-            {view.attendanceRate === null ? (
+            <PanelBody>{view.attendanceRate === null ? (
               <div className="flex h-full flex-col justify-center py-4 text-center">
                 <p className="text-xs font-semibold text-[#0F172A]">No sessions recorded</p>
                 <p className="mt-0.5 text-[11px] text-[#64748B]">Check in to your first live class to start your record.</p>
@@ -423,7 +418,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
                   {view.attendanceRate < 80 ? 'Below 80% requirement' : 'Meeting requirement'}
                 </p>
               </div>
-            )}
+            )}</PanelBody>
           </BentoCard>
 
           {/* ── Performance ── */}
@@ -434,7 +429,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
             onClick={() => onNavigate('assignments')}
             ariaLabel="Open graded assignments"
           >
-            <div className="grid grid-cols-2 gap-3">
+            <PanelBody><div className="grid grid-cols-2 gap-3">
               <div>
                 <p className="font-display text-2xl font-semibold text-[#0F172A]">
                   {view.averageGrade === null ? '—' : pct(view.averageGrade)}
@@ -448,17 +443,17 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
             </div>
             <div className="mt-3 flex items-center gap-1.5 rounded-lg bg-[#F1F5F9] px-2.5 py-2 text-[11px] font-semibold text-[#475569]">
               <Flame size={12} className="text-[#B45309]" /> {xp.toLocaleString('en-ZA')} XP · Level {level}
-            </div>
+            </div></PanelBody>
           </BentoCard>
 
           {/* ── Warnings ── */}
           <BentoCard
             eyebrow="Action needed"
-            title={view.warnings.length ? `${view.warnings.length} item${view.warnings.length === 1 ? '' : 's'} to review` : 'All clear'}
+            title={loading ? 'Checking…' : view.warnings.length ? `${view.warnings.length} item${view.warnings.length === 1 ? '' : 's'} to review` : 'All clear'}
             icon={<AlertTriangle size={16} className={view.warnings.length ? 'text-[#B45309]' : 'text-[#94A3B8]'} />}
             className="lg:col-span-4"
           >
-            {view.warnings.length === 0 ? (
+            <PanelBody>{view.warnings.length === 0 ? (
               <div className="flex items-center gap-2.5 rounded-xl border border-[#BBF7D0] bg-[#F0FDF4] px-3.5 py-3">
                 <CheckCircle2 size={16} className="shrink-0 text-[#15803D]" />
                 <p className="text-xs text-[#166534]">Attendance, submissions and profile all look good. Nothing needs your attention.</p>
@@ -503,7 +498,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
                   );
                 })}
               </ul>
-            )}
+            )}</PanelBody>
           </BentoCard>
 
           {/* ── Quick links ── */}
