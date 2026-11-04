@@ -86,24 +86,27 @@ export function LearnersPage() {
             Triple 4 Curriculum (T4C) is an online micro-school built on the 4-4-4 model: four
             days a week, four hours a day and four lessons a day, with classes capped at 16
             learners. These photos show the time outside live lessons: independent study,
-            reading and enrichment. Updated October 2026.
+            reading and enrichment. Updated November 2026.
           </Body>
-          <div className="mt-6 columns-1 sm:columns-2 lg:columns-3 gap-4">
-            {learnersGallery.map((image) => (
+          <div className="mt-6 grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {learnersGallery.map((image, index) => (
               <figure
                 key={image.src}
-                className="mb-4 break-inside-avoid bg-white border border-black/10 rounded-[16px] overflow-hidden"
+                className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-black/10 bg-white"
               >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  width={image.width}
-                  height={image.height}
-                  loading="lazy"
-                  decoding="async"
-                  className="block w-full h-auto"
-                />
-                <figcaption className="p-4 text-xs leading-relaxed text-neutral-600">
+                <div className="relative aspect-[4/5] overflow-hidden bg-neutral-100">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    width={image.width}
+                    height={image.height}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={index === 0 ? 'high' : undefined}
+                    decoding="async"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                  />
+                </div>
+                <figcaption className="flex flex-1 items-start p-3.5 text-xs leading-relaxed text-neutral-600">
                   {image.caption}
                 </figcaption>
               </figure>

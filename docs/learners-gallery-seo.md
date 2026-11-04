@@ -37,19 +37,18 @@ Last updated: October 2026. Applies to `/learners` and `public/images/learners/`
 | learner-piano-practice.jpg | Learner reading sheet music while playing a Casio digital piano in a music room. |
 | learner-online-coursework.jpg | Learner in a pink outfit working through coursework on a laptop from a green sofa. |
 | learner-chromebook-reading.jpg | Learner at a library table with a Chromebook and graphic novel editions of the Iliad and the Odyssey. |
-| learner-iliad-odyssey.jpg | Smiling learner with a Chromebook, a stack of Iliad and Odyssey books, and a tin of colouring pencils. |
 | learner-typing-coursework.jpg | Learner in a tie-dye t-shirt typing on a laptop on a turquoise sofa beside plants. |
-| learner-study-by-window.jpg | Learner typing on a laptop on a turquoise sofa by a window, bookshelves reflected in the glass. |
-| learner-reading-break.jpg | Smiling learner holding an open paperback, a laptop open on the table in front of her. |
 | learner-library-research.jpg | Learner using a Chromebook at a round table in the library, beneath the 330 Economics shelf sign. |
 | learners-reading-together.jpg | Two learners reading side by side on a green circular sofa in front of library shelves. |
 | learner-piano-lesson.jpg | Learner at a Casio piano with sheet music open, looking up from the keys. |
 | learner-music-practice.jpg | Learner playing a Casio piano from sheet music in a blue-walled music room. |
 | learner-piano-confidence.jpg | Smiling learner at a Casio piano with sheet music open, one hand raised over the keys. |
 
-One Cloudinary asset was submitted twice (learner1 and learner10 are the same
-bytes). Only one copy is published, so the gallery does not ship duplicate
-images.
+Three photos were withdrawn on 2026-11-04 (the classics/colouring-pencils
+shot, the paperback reading break and the study-by-window shot). Their files,
+table rows and sitemap entries were removed together; the gallery now ships nine
+images in a 3x3 grid. One Cloudinary asset was submitted twice (learner1 and
+learner10 are the same bytes); only one copy is published.
 
 ## GEO checklist
 
