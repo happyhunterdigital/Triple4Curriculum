@@ -327,6 +327,7 @@ export async function getCourseRoster(courseId: string): Promise<User[]> {
   const ids = new Set(enrolments.filter((e) => e.status !== 'withdrawn').map((e) => e.studentId));
   return users
     .filter((u) => ids.has(u.id))
+    .map((u) => ({ ...u, name: (u.name || '').trim() || u.email || 'Unnamed learner' }))
     .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 }
 
@@ -346,7 +347,10 @@ export async function markAttendance(
   entries: Array<{ student: User; status: 'Present' | 'Late' | 'Absent' }>,
   method: 'Self Check-in' | 'Lecturer Roster' | 'QR Code' = 'Lecturer Roster',
 ): Promise<{ written: number }> {
-  const course = (await readWhere<Course>(C.courses, 'id', courseId))[0];
+  const courseSnap = await getDoc(doc(db, C.courses, courseId));
+  const course = courseSnap.exists()
+    ? withId<Course>(courseSnap.id, (courseSnap.data() || {}) as Record<string, unknown>)
+    : null;
   if (!course) throw new Error('Select a course before saving attendance.');
 
   const existing = await readWhere<AttendanceRecord>(C.attendance, 'courseId', courseId);
