@@ -30,6 +30,9 @@ interface BentoCardProps {
   icon?: React.ReactNode;
   action?: React.ReactNode;
   padded?: boolean;
+  /** Makes the whole tile a keyboard-accessible button that navigates/acts. */
+  onClick?: () => void;
+  ariaLabel?: string;
 }
 
 const ACCENTS: Record<Accent, string> = {
@@ -48,11 +51,32 @@ export const BentoCard: React.FC<BentoCardProps> = ({
   icon,
   action,
   padded = true,
+  onClick,
+  ariaLabel,
 }) => {
   const hasHeader = Boolean(eyebrow || title || action);
+  const interactive = Boolean(onClick);
   return (
     <section
-      className={`${ACCENTS[accent]} rounded-[20px] overflow-hidden flex flex-col shadow-[0_1px_2px_rgba(15,23,42,0.04)] ${className}`}
+      role={interactive ? 'button' : undefined}
+      tabIndex={interactive ? 0 : undefined}
+      aria-label={interactive ? ariaLabel : undefined}
+      onClick={onClick}
+      onKeyDown={
+        interactive
+          ? (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                onClick?.();
+              }
+            }
+          : undefined
+      }
+      className={`${ACCENTS[accent]} rounded-[20px] overflow-hidden flex flex-col shadow-[0_1px_2px_rgba(15,23,42,0.04)] ${
+        interactive
+          ? 'text-left cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-12px_rgba(15,23,42,0.25)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-t4c-green)]'
+          : ''
+      } ${className}`}
     >
       {hasHeader && (
         <div

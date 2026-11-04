@@ -1,0 +1,58 @@
+name: Enrol learner in courses
+
+# Provisions enrollments/{uid}_{courseId} documents, which scope a learner's
+# dashboard, courses and assignments. Safe to re-run (merge writes).
+# Run manually:
+#   gh workflow run enroll-student.yml -f email=learner@example.com
+#   gh workflow run enroll-student.yml -f email=learner@example.com -f courses=AI-442,CSC-441
+#   gh workflow run enroll-student.yml -f all_learners=true     # backfill
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: Learner email (ignored when all_learners=true)
+        required: false
+        default: ""
+      all_learners:
+        description: Backfill every learner in users/ with role=learner
+        required: false
+        default: "false"
+      courses:
+        description: Comma-separated course codes (blank = every course)
+        required: false
+        default: ""
+      status:
+        description: active | completed | withdrawn
+        required: false
+        default: active
+      dry_run:
+        description: Preview without writing
+        required: false
+        default: "false"
+
+jobs:
+  enroll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install firebase-admin
+        run: npm install --no-save firebase-admin
+
+      - name: Write enrolments
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          STUDENT_EMAIL: ${{ inputs.email }}
+          ALL_LEARNERS: ${{ inputs.all_learners == 'true' && '1' || '' }}
+          COURSE_CODES: ${{ inputs.courses }}
+          STATUS: ${{ inputs.status }}
+          DRY_RUN: ${{ inputs.dry_run == 'true' && '1' || '' }}
+        run: |
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/gcp-key.json"
+          node scripts/enroll-student.mjs

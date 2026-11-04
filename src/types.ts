@@ -54,6 +54,25 @@ export interface Course {
   totalHours: number;
 }
 
+/**
+ * Links a learner to a course. This is the authorisation boundary for "my
+ * courses / my assignments": without an active enrolment a learner sees
+ * nothing rather than the whole catalogue.
+ */
+export interface Enrollment {
+  id: string;
+  studentId: string;
+  studentName?: string;
+  studentEmail?: string;
+  courseId: string;
+  courseCode: string;
+  courseTitle: string;
+  departmentId?: string;
+  status: 'active' | 'completed' | 'withdrawn';
+  enrolledAt?: string;
+  updatedAt?: string;
+}
+
 export interface Lecture {
   id: string;
   courseId: string;

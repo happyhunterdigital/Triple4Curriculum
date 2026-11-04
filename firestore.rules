@@ -131,6 +131,15 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // Enrolments: the learner↔course link that scopes "my courses" and
+    // "my assignments". Learners read only their own rows; staff provision.
+    match /enrollments/{id} {
+      allow read: if signedIn()
+                    && (request.auth.uid == resource.data.studentId || isStaff());
+      allow create, update: if isStaff();
+      allow delete: if isAdmin();
+    }
+
     // Notifications: staff create; recipient or staff read/update.
     match /notifications/{id} {
       allow read, update: if signedIn()

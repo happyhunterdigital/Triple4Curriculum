@@ -2,7 +2,7 @@ import {
   User, UserRole, Department, Course, Lecture, TimetableSlot,
   Assignment, AssignmentSubmission, AttendanceRecord,
   Badge, AuditLog, PushNotification, ChatMessage, SystemAnnouncement,
-  LearnerCourseProgress, TeacherSummary, GeneratedQuiz
+  LearnerCourseProgress, TeacherSummary, GeneratedQuiz, Enrollment
 } from '../types';
 import { auth as fbAuth } from './firebase';
 import { firestore } from './firestore';
@@ -47,6 +47,7 @@ const C = {
   messages: 'messages',
   learnerProgress: 'learner_progress',
   badges: 'badges',
+  enrollments: 'enrollments',
 } as const;
 
 type StoredRole = 'learner' | 'teacher' | 'admin' | 'student' | 'lecturer';
@@ -269,6 +270,41 @@ export async function getAttendancePaged(
   return pagedQuery<AttendanceRecord>(C.attendance, constraints, limitN, cursor);
 }
 
+// ── Enrolments: the learner↔course boundary ─────────────────────────────────
+// Without an active enrolment a learner sees no courses and no assignments —
+// this is what keeps "my deadlines" from becoming "everyone's deadlines".
+
+/** Courses this learner is enrolled in (withdrawn rows excluded). */
+export async function getMyEnrollments(): Promise<Enrollment[]> {
+  const rows = await readWhere<Enrollment>(C.enrollments, 'studentId', uid());
+  return rows.filter((e) => e.status !== 'withdrawn');
+}
+
+/** Enrolled courses joined to their catalogue records, ordered by code. */
+export async function getMyCourses(): Promise<Course[]> {
+  const [enrolments, courses] = await Promise.all([getMyEnrollments(), readAll<Course>(C.courses)]);
+  const ids = new Set(enrolments.map((e) => e.courseId));
+  return courses.filter((c) => ids.has(c.id)).sort((a, b) => a.code.localeCompare(b.code));
+}
+
+/** Assignments for enrolled courses only, soonest due first. */
+export async function getMyAssignments(): Promise<Assignment[]> {
+  const [enrolments, assignments] = await Promise.all([
+    getMyEnrollments(),
+    readAll<Assignment>(C.assignments),
+  ]);
+  if (enrolments.length === 0) return [];
+  const ids = new Set(enrolments.map((e) => e.courseId));
+  return assignments
+    .filter((a) => ids.has(a.courseId))
+    .sort((a, b) => (a.dueDate || '').localeCompare(b.dueDate || ''));
+}
+
+/** Per-course progress rows for this learner (written by Cloud Functions). */
+export async function getMyProgress(): Promise<LearnerCourseProgress[]> {
+  return readWhere<LearnerCourseProgress>(C.learnerProgress, 'studentId', uid());
+}
+
 const PRIVACY_NOTICE = {
   title: 'Privacy Policy (POPIA Act 4 of 2013)',
   summary:
@@ -323,6 +359,10 @@ export const api = {
 
   // ── Courses & lectures ──
   getCourses: () => readAll<Course>(C.courses),
+  getMyEnrollments,
+  getMyCourses,
+  getMyAssignments,
+  getMyProgress,
   getLectures: (courseId?: string) =>
     courseId ? readWhere<Lecture>(C.lectures, 'courseId', courseId) : readAll<Lecture>(C.lectures),
   createLecture: async (lecture: Partial<Lecture>) => {
