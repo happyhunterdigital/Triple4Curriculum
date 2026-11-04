@@ -24,6 +24,7 @@ import {
   startAfter,
   updateDoc,
   where,
+  writeBatch,
 } from 'firebase/firestore';
 
 // Firestore is code-split out of the boot bundle. This module is only imported
@@ -353,12 +354,14 @@ export async function markAttendance(
     : null;
   if (!course) throw new Error('Select a course before saving attendance.');
 
-  const existing = await readWhere<AttendanceRecord>(C.attendance, 'courseId', courseId);
-  const forDate = existing.filter((r) => r.date === date);
+  // One atomic batch keyed by course+date+student: fast (single round trip) and
+  // idempotent, so re-saving a corrected register updates instead of duplicating.
+  const batch = writeBatch(db);
+  const checkInTime = new Date().toTimeString().slice(0, 5);
 
   for (const { student, status } of entries) {
-    const prior = forDate.find((r) => r.studentId === student.id);
-    const payload = {
+    const ref = doc(db, C.attendance, `${courseId}_${date}_${student.id}`);
+    batch.set(ref, {
       date,
       courseId: course.id,
       courseCode: course.code,
@@ -366,15 +369,13 @@ export async function markAttendance(
       studentId: student.id,
       studentName: student.name,
       status,
-      checkInTime: status === 'Absent' ? '' : new Date().toTimeString().slice(0, 5),
+      checkInTime: status === 'Absent' ? '' : checkInTime,
       method,
-    };
-    if (prior) {
-      await updateDoc(doc(db, C.attendance, prior.id), { ...payload, updatedAt: serverTimestamp() });
-    } else {
-      await addDoc(collection(db, C.attendance), { ...payload, createdAt: serverTimestamp() });
-    }
+      updatedAt: serverTimestamp(),
+    }, { merge: true });
   }
+
+  await batch.commit();
   return { written: entries.length };
 }
 

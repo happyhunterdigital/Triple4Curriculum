@@ -23,6 +23,7 @@ export const StudentAttendance: React.FC = () => {
         ]);
         setRecords(rList);
         setCourses(cList);
+        setSelectedCourseId((prev) => prev || cList[0]?.id || '');
       } finally {
         setLoading(false);
       }
@@ -65,11 +66,11 @@ export const StudentAttendance: React.FC = () => {
     }
   };
 
-  const studentRecords = records.filter(r => r.studentId === (currentUser?.id || 'stu_01'));
+  const studentRecords = records.filter(r => r.studentId === currentUser?.id);
   const presentCount = studentRecords.filter(r => r.status === 'Present').length;
-  const attendanceRate = studentRecords.length > 0 
-    ? Math.round((presentCount / studentRecords.length) * 100) 
-    : 96;
+  const attendanceRate = studentRecords.length > 0
+    ? Math.round((presentCount / studentRecords.length) * 100)
+    : null;
 
   return (
     <div className="space-y-6 pb-12">
@@ -126,12 +127,14 @@ export const StudentAttendance: React.FC = () => {
             Overall Attendance Rate
           </span>
           <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-3xl font-black text-emerald-800">{attendanceRate}%</span>
-            <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
-              High Compliance
-            </span>
+            <span className="text-3xl font-black text-emerald-800">{attendanceRate === null ? '—' : `${attendanceRate}%`}</span>
+            {attendanceRate !== null && (
+              <span className={`text-xs font-bold px-2 py-0.5 rounded ${attendanceRate >= 85 ? 'text-emerald-700 bg-emerald-100' : 'text-rose-700 bg-rose-100'}`}>
+                {attendanceRate >= 85 ? 'Meets requirement' : 'Below 85%'}
+              </span>
+            )}
           </div>
-          <p className="text-[11px] text-neutral-500 mt-1">Exceeds 85% DBE minimum statutory requirement</p>
+          <p className="text-[11px] text-neutral-500 mt-1">{attendanceRate === null ? 'No sessions recorded yet.' : 'DBE minimum statutory requirement is 85%.'}</p>
         </div>
 
         <div className="bg-white rounded-2xl p-5 border border-emerald-950/10 shadow-xs">
@@ -139,10 +142,10 @@ export const StudentAttendance: React.FC = () => {
             Total Sessions Attended
           </span>
           <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-3xl font-black text-neutral-900">{presentCount || 18}</span>
-            <span className="text-xs font-bold text-neutral-500">of 19 scheduled</span>
+            <span className="text-3xl font-black text-neutral-900">{presentCount}</span>
+            <span className="text-xs font-bold text-neutral-500">of {studentRecords.length} recorded</span>
           </div>
-          <p className="text-[11px] text-neutral-500 mt-1">Semester 2 active cohort</p>
+          <p className="text-[11px] text-neutral-500 mt-1">Recorded sessions this year</p>
         </div>
 
         <div className="bg-white rounded-2xl p-5 border border-emerald-950/10 shadow-xs">
