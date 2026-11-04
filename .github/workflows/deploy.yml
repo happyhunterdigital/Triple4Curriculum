@@ -83,7 +83,7 @@ jobs:
       # ("npm --prefix $RESOURCE_DIR run build") exits 127. Run the Firebase CLI
       # directly on the runner instead, where Node/npm are available.
       - name: Setup Node (functions runtime)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
