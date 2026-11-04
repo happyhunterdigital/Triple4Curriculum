@@ -5,7 +5,7 @@ import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '
 import { PricingTable } from '../components/site/PricingTable';
 import { cloudinaryImage, cloudinarySrcSet } from '../lib/image';
 
-const HERO_IMAGE = 'https://res.cloudinary.com/dka0498ns/image/upload/v1787253903/Triple4c_learners_hero_image_mzxiye.jpg';
+const HERO_IMAGE = 'https://res.cloudinary.com/x4agmmbo/image/upload/v1793762771/T4C_hero_image.png';
 
 function FaqTeaser() {
   const items = [
@@ -31,14 +31,30 @@ export function HomePage() {
   useEffect(() => { document.title = 'Triple 4 Curriculum: Small Classes. Big Futures.'; }, []);
   return (
     <div className="w-full bg-[var(--color-canvas-soft)]">
-      {/* PDF: WELCOME + ABOUT US 4-4-4 teaser, Hero Split */}
+      {/* Hero: brand collage. A 16:9 collage cannot survive a portrait
+          background crop, so on phones it sits as its own band above the copy;
+          from sm up it becomes the card background under a white wash. */}
       <section className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
-        <div className="relative rounded-[24px] sm:rounded-[40px] overflow-hidden bg-white border border-black/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] min-h-[520px] sm:min-h-[560px] flex">
-          <div className="absolute inset-0">
-            <img src={cloudinaryImage(HERO_IMAGE, 960)} srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1400])} sizes="(min-width: 1400px) 1400px, 100vw" alt="Learners in a Triple 4C live online class" fetchPriority="high" loading="eager" decoding="async" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 sm:to-transparent" />
+        <div className="relative rounded-[24px] sm:rounded-[40px] overflow-hidden bg-white border border-black/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] flex flex-col sm:block sm:min-h-[560px]">
+          <div className="relative h-[210px] xs:h-[240px] sm:absolute sm:inset-0 sm:h-auto">
+            <img
+              src={cloudinaryImage(HERO_IMAGE, 960)}
+              srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1600])}
+              sizes="(min-width: 1400px) 1400px, 100vw"
+              alt="Triple 4C learners playing piano, studying on laptops and reading in the library"
+              width={2048}
+              height={1143}
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+              className="h-full w-full object-cover object-center sm:object-[center_42%]"
+            />
+            {/* phones: blend the band into the copy below */}
+            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/25 to-transparent sm:hidden" />
+            {/* tablet/desktop: white wash so the copy stays legible */}
+            <div className="hidden sm:block absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/25" />
           </div>
-          <div className="relative z-10 flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-10 sm:py-14 max-w-[640px]">
+          <div className="relative z-10 flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-8 sm:py-14 max-w-[640px]">
             <SectionEyebrow>Preserving Fresh Minds Globally</SectionEyebrow>
             <h1 className="mt-3 font-display text-[30px] sm:text-[42px] lg:text-[52px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Small Classes.<br />Big Futures.</h1>
             <p className="mt-3 text-[14px] sm:text-[15px] leading-relaxed text-neutral-700 max-w-[48ch]">Daily live classes capped at 16. Four days, four hours, four lessons, with a Friday for real-world skills.</p>

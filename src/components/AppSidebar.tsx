@@ -203,6 +203,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
                 { id:'about', label:'About' },
                 { id:'how-it-works', label:'How it Works' },
                 { id:'curriculum', label:'Curriculum' },
+                { id:'learners', label:'Learner Gallery' },
                 { id:'admissions', label:'Admissions & Fees' },
                 { id:'classroom', label:'T4C Classroom' },
                 { id:'faq', label:'FAQ' },
