@@ -88,13 +88,15 @@ export function LearnersPage() {
             learners. These photos show the time outside live lessons: independent study,
             reading and enrichment. Updated November 2026.
           </Body>
-          <div className="mt-6 grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div className="mt-6 grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
             {learnersGallery.map((image, index) => (
               <figure
                 key={image.src}
                 className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-black/10 bg-white"
               >
                 <div className="relative aspect-[4/5] overflow-hidden bg-neutral-100">
+                  {/* Tiles are cropped from the bottom only (object-position
+                      top by default), so no learner's head is ever cut. */}
                   <img
                     src={image.src}
                     alt={image.alt}
@@ -103,6 +105,7 @@ export function LearnersPage() {
                     loading={index === 0 ? 'eager' : 'lazy'}
                     fetchPriority={index === 0 ? 'high' : undefined}
                     decoding="async"
+                    style={{ objectPosition: image.focus ?? 'top' }}
                     className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                   />
                 </div>

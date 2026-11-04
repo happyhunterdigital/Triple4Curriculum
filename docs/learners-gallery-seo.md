@@ -37,6 +37,7 @@ Last updated: October 2026. Applies to `/learners` and `public/images/learners/`
 | learner-piano-practice.jpg | Learner reading sheet music while playing a Casio digital piano in a music room. |
 | learner-online-coursework.jpg | Learner in a pink outfit working through coursework on a laptop from a green sofa. |
 | learner-chromebook-reading.jpg | Learner at a library table with a Chromebook and graphic novel editions of the Iliad and the Odyssey. |
+| learner-reading-museum.jpg | Learner reading an open book on a colourful armchair beside a window, with the Hackney Museum entrance behind her. |
 | learner-typing-coursework.jpg | Learner in a tie-dye t-shirt typing on a laptop on a turquoise sofa beside plants. |
 | learner-library-research.jpg | Learner using a Chromebook at a round table in the library, beneath the 330 Economics shelf sign. |
 | learners-reading-together.jpg | Two learners reading side by side on a green circular sofa in front of library shelves. |

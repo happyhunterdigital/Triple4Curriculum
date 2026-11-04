@@ -4,6 +4,8 @@ export interface LearnerImage {
   caption: string;
   width: number;
   height: number;
+  /** Which edge to anchor when a tile has to crop � keeps heads in frame. */
+  focus?: 'top' | 'center' | 'bottom';
 }
 
 /**
@@ -12,8 +14,8 @@ export interface LearnerImage {
  * Triple 4 Curriculum. See docs/learners-gallery-seo.md before editing: the
  * alt text describes the actual photo and never keyword stuffs.
  *
- * Nine images, ordered so no 3x3 row is dominated by the same room: each row
- * mixes practice, study and reading rather than stacking the music shots.
+ * Ten images, ordered so practice, study and reading alternate down the
+ * masonry columns instead of stacking the music shots together.
  */
 export const learnersGallery: LearnerImage[] = [
   {
@@ -45,6 +47,12 @@ export const learnersGallery: LearnerImage[] = [
     height: 1487,
   },
   {
+    src: '/images/learners/triple-4-curriculum-learner-reading-museum.jpg',
+    alt: 'Learner reading an open book on a colourful armchair beside a window, with the Hackney Museum entrance behind her.',
+    caption: 'Reading, in her own time.',
+    width: 995,
+    height: 1600,
+  },  {
     src: '/images/learners/triple-4-curriculum-learner-library-research.jpg',
     alt: 'Learner using a Chromebook at a round table in the library, beneath the 330 Economics shelf sign.',
     caption: 'Research happens where the books are.',
@@ -64,6 +72,7 @@ export const learnersGallery: LearnerImage[] = [
     caption: 'The music room, mid-practice.',
     width: 1465,
     height: 1465,
+    focus: 'center',
   },
   {
     src: '/images/learners/triple-4-curriculum-learners-reading-together.jpg',
@@ -71,6 +80,7 @@ export const learnersGallery: LearnerImage[] = [
     caption: 'Different books, same room.',
     width: 1600,
     height: 1415,
+    focus: 'center',
   },
   {
     src: '/images/learners/triple-4-curriculum-learner-piano-confidence.jpg',

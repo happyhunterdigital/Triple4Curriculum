@@ -50,9 +50,10 @@ export function HomePage() {
               className="h-full w-full object-cover object-center sm:object-[center_42%]"
             />
             {/* phones: blend the band into the copy below */}
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/25 to-transparent sm:hidden" />
-            {/* tablet/desktop: white wash so the copy stays legible */}
-            <div className="hidden sm:block absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/25" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/15 to-transparent sm:hidden" />
+            {/* tablet/desktop: a light wash on the copy side only — the photo
+                stays roughly 60-70% clear across the rest of the card. */}
+            <div className="hidden sm:block absolute inset-0 bg-[linear-gradient(90deg,#FFFFFF_0%,rgba(255,255,255,0.88)_28%,rgba(255,255,255,0.42)_44%,rgba(255,255,255,0)_62%)]" />
           </div>
           <div className="relative z-10 flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-8 sm:py-14 max-w-[640px]">
             <SectionEyebrow>Preserving Fresh Minds Globally</SectionEyebrow>
