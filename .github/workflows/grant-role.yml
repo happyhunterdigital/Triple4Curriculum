@@ -1,0 +1,47 @@
+name: Grant or revoke staff role
+
+# Sets users/{uid}.role and the matching custom claim for one account.
+# Claims are what firestore.rules trusts, so this is the safe way to promote a
+# lecturer/admin (or revoke back to learner) without console access.
+#
+#   gh workflow run grant-role.yml -f email=person@example.com -f role=teacher
+#   gh workflow run grant-role.yml -f email=person@example.com -f role=learner
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: Account email (must already exist in Firebase Auth)
+        required: true
+      role:
+        description: learner | teacher | admin
+        required: true
+        default: teacher
+      dry_run:
+        description: Preview without writing
+        required: false
+        default: "false"
+
+jobs:
+  grant:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install firebase-admin
+        run: npm install --no-save firebase-admin
+
+      - name: Set role
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          EMAIL: ${{ inputs.email }}
+          ROLE: ${{ inputs.role }}
+          DRY_RUN: ${{ inputs.dry_run == 'true' && '1' || '' }}
+        run: |
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/gcp-key.json"
+          node scripts/grant-role.mjs
