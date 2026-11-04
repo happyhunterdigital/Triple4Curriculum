@@ -11,6 +11,7 @@ import type {
   LearnerCourseProgress, TimetableSlot,
 } from '../../types';
 import { AccountSettingsModal } from '../modals/AccountSettingsModal';
+import { daysUntilTerm, hasTermStarted, TERM_LABEL, termStartLabel } from '../../lib/term';
 
 interface DashboardData {
   enrollments: Enrollment[];
@@ -74,6 +75,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const firstName = (currentUser?.name || '').trim().split(/\s+/)[0];
+  const termStarted = hasTermStarted();
 
   const load = React.useCallback(async () => {
     setLoading(true);
@@ -217,7 +219,9 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
           <p className="mt-1 text-xs text-[#64748B]">
             {loading
               ? 'Loading your workspace…'
-              : `${view.weekday} · ${data.courses.length} course${data.courses.length === 1 ? '' : 's'} · ${view.todaySlots.length} class${view.todaySlots.length === 1 ? '' : 'es'} today`}
+              : !termStarted
+                ? `${TERM_LABEL} begins ${termStartLabel()} · ${daysUntilTerm()} days to go`
+                : `${view.weekday} · ${data.courses.length} course${data.courses.length === 1 ? '' : 's'} · ${view.todaySlots.length} class${view.todaySlots.length === 1 ? '' : 'es'} today`}
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -331,7 +335,13 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
             onClick={() => onNavigate('timetable')}
             ariaLabel="Open class timetable"
           >
-            <PanelBody>{view.todaySlots.length === 0 ? (
+            <PanelBody>{!termStarted ? (
+              <div className="flex h-full flex-col justify-center py-4 text-center">
+                <CalendarDays size={20} className="mx-auto text-[#94A3B8]" />
+                <p className="mt-2 text-xs font-semibold text-[#0F172A]">No live classes yet</p>
+                <p className="mt-0.5 text-[11px] text-[#64748B]">{TERM_LABEL} begins {termStartLabel()}.</p>
+              </div>
+            ) : view.todaySlots.length === 0 ? (
               <div className="flex h-full flex-col justify-center py-4 text-center">
                 <CheckCircle2 size={20} className="mx-auto text-[#94A3B8]" />
                 <p className="mt-2 text-xs font-semibold text-[#0F172A]">No live classes today</p>

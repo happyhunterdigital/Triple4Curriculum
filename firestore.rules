@@ -118,7 +118,10 @@ service cloud.firestore {
 
     // Attendance: students check in as self; staff manage.
     match /attendance/{id} {
-      allow create: if signedIn() && request.auth.uid == request.resource.data.studentId;
+      // Staff record the register for their cohorts; a learner may only check
+      // themselves in.
+      allow create: if isStaff()
+                    || (signedIn() && request.auth.uid == request.resource.data.studentId);
       allow read: if signedIn() && (request.auth.uid == resource.data.studentId || isStaff());
       allow update, delete: if isStaff();
     }

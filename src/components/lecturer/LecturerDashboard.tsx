@@ -93,6 +93,13 @@ export const LecturerDashboard: React.FC<LecturerDashboardProps> = ({ onNavigate
               <span>Learner Progress Tracker</span>
             </button>
             <button
+              onClick={() => onNavigate('/teach/schedule')}
+              className="px-4 py-2.5 rounded-xl bg-[#FAF9F5] hover:bg-neutral-100 text-deep-onyx text-xs font-bold border-2 border-neutral-300 shadow-xs flex items-center gap-2 transition"
+            >
+              <Video className="w-4 h-4 text-academic-green" />
+              <span>Classes &amp; Meet</span>
+            </button>
+            <button
               onClick={() => onNavigate('/lecturer/authoring')}
               className="px-4 py-2.5 rounded-xl bg-academic-green hover:bg-academic-green/90 text-white text-xs font-bold shadow-xs flex items-center gap-2 transition"
             >

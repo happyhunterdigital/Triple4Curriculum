@@ -40,6 +40,7 @@ const LegalDoc = lazy(() => import('./pages/LegalDoc'));
 const TeachDashboard = lazy(() => import('./components/lecturer/LecturerDashboard').then(m => ({ default: m.LecturerDashboard })));
 const TeachGrading = lazy(() => import('./components/lecturer/LecturerGrading').then(m => ({ default: m.LecturerGrading })));
 const TeachClasses = lazy(() => import('./components/lecturer/LecturerClasses').then(m => ({ default: m.LecturerClasses })));
+const TeachSchedule = lazy(() => import('./components/lecturer/LecturerSchedule').then(m => ({ default: m.LecturerSchedule })));
 const TeachAuthoring = lazy(() => import('./components/lecturer/LecturerAuthoring').then(m => ({ default: m.LecturerAuthoring })));
 const TeachAttendance = lazy(() => import('./components/lecturer/LecturerAttendance').then(m => ({ default: m.LecturerAttendance })));
 const LearnProgress = lazy(() => import('./components/lecturer/LearnerProgressDashboard').then(m => ({ default: m.LearnerProgressDashboard })));
@@ -134,6 +135,7 @@ function Shell() {
             <Route path="/teach" element={<RequireAuth roles={['lecturer', 'admin']}><TeachDashboardRoute /></RequireAuth>} />
             <Route path="/teach/grading" element={<RequireAuth roles={['lecturer', 'admin']}><TeachGrading /></RequireAuth>} />
             <Route path="/teach/classes" element={<RequireAuth roles={['lecturer', 'admin']}><TeachClasses /></RequireAuth>} />
+            <Route path="/teach/schedule" element={<RequireAuth roles={['lecturer', 'admin']}><TeachSchedule /></RequireAuth>} />
             <Route path="/teach/authoring" element={<RequireAuth roles={['lecturer', 'admin']}><TeachAuthoring /></RequireAuth>} />
             <Route path="/teach/attendance" element={<RequireAuth roles={['lecturer', 'admin']}><TeachAttendance /></RequireAuth>} />
             <Route path="/learn/progress" element={<RequireAuth roles={['lecturer', 'admin']}><LearnProgress /></RequireAuth>} />
