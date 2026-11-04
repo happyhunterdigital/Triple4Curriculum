@@ -30,3 +30,10 @@ export function termStartLabel(): string {
 export function termStartWeekday(): string {
   return start.toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'Africa/Johannesburg' });
 }
+
+/** Compact form for buttons and chips, e.g. "13 Jan". */
+export function termStartShort(): string {
+  return start.toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'short', timeZone: 'Africa/Johannesburg',
+  });
+}

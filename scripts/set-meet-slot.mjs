@@ -17,8 +17,8 @@ const meetUrl = (process.env.MEET_URL || '').trim();
 const day = (process.env.DAY || 'Monday').trim();
 const start = (process.env.START || '12:00').trim();
 const end = (process.env.END || '13:00').trim();
-const courseCode = (process.env.COURSE_CODE || 'LIVE').trim();
-const title = (process.env.TITLE || 'T4C Live Classroom').trim();
+const courseCode = (process.env.COURSE_CODE || 'T4C').trim();
+const title = (process.env.TITLE || 'T4C Classroom').trim();
 
 if (!meetUrl.startsWith('https://meet.google.com/')) {
   throw new Error(`MEET_URL must be a https://meet.google.com/... link (got "${meetUrl}")`);

@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Video, Users, CheckCircle2, Filter, AlertCircle, Link2, Check } from 'lucide-react';
 import { api } from '../../lib/api';
 import { getLiveLink } from '../../lib/liveClass';
-import { hasTermStarted, TERM_LABEL, termStartLabel } from '../../lib/term';
+import { hasTermStarted, TERM_LABEL, termStartLabel, termStartShort } from '../../lib/term';
 import { TimetableSlot } from '../../types';
 
 export const StudentTimetable: React.FC = () => {
   const navigate = useNavigate();
+  const termStarted = hasTermStarted();
   const [slots, setSlots] = useState<TimetableSlot[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>('All');
   const [loading, setLoading] = useState(true);
@@ -56,10 +57,10 @@ export const StudentTimetable: React.FC = () => {
             </span>
           </div>
           <h1 className="text-2xl font-black text-neutral-900 mt-1">
-            Class Timetable & Live Stream Schedule
+            Class Timetable
           </h1>
           <p className="text-xs text-neutral-500">
-            Synchronized with Academic Room Allocations & Live Lecture Streams
+            Room allocations and meeting links for the published schedule
           </p>
         </div>
 
@@ -79,7 +80,7 @@ export const StudentTimetable: React.FC = () => {
         </div>
       </div>
 
-      {!hasTermStarted() && (
+      {!termStarted && (
         <div className="flex items-start gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-5 py-4">
           <Calendar className="w-5 h-5 shrink-0 text-amber-700" />
           <div className="text-xs leading-relaxed text-amber-900">
@@ -175,7 +176,7 @@ export const StudentTimetable: React.FC = () => {
                     type="button"
                     onClick={joinLive}
                     disabled={!hasTermStarted()}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-yellow-300 font-bold text-xs shadow-xs transition disabled:opacity-45 disabled:cursor-not-allowed"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-yellow-300 font-bold text-xs shadow-xs transition disabled:bg-neutral-200 disabled:text-neutral-500 disabled:shadow-none disabled:cursor-not-allowed"
                     title={
                       !hasTermStarted()
                         ? `Joining opens on ${termStartLabel()}`
@@ -187,12 +188,27 @@ export const StudentTimetable: React.FC = () => {
                     }
                   >
                     <Video className="w-3.5 h-3.5" />
-                    <span>{live.provider === 'google-meet' ? 'Join Live' : isInApp ? 'Enter Classroom' : 'Join Live Stream'}</span>
+                    <span>
+                      {!termStarted
+                        ? `Opens ${termStartShort()}`
+                        : live.provider === 'google-meet'
+                          ? 'Join Live'
+                          : isInApp
+                            ? 'Enter Classroom'
+                            : 'Join Live Stream'}
+                    </span>
                   </button>
                 </div>
               </div>
-              {live.isFallback && (
+              {/* Pre-term there is no room to join yet, so the fallback note
+                  ("temporary Jitsi room was generated") would be noise. */}
+              {live.isFallback && termStarted && (
                 <p className="text-[10px] text-neutral-500 leading-relaxed">{live.embedNote}</p>
+              )}
+              {!termStarted && (
+                <p className="text-[10px] text-neutral-500 leading-relaxed">
+                  Published schedule for {TERM_LABEL}. Joining and attendance open on {termStartLabel()}.
+                </p>
               )}
             </div>
           </div>

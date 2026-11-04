@@ -26,11 +26,11 @@ on:
       course_code:
         description: Course code shown on the card (used only if a new slot is created)
         required: false
-        default: LIVE
+        default: T4C
       title:
         description: Slot title (used only if a new slot is created)
         required: false
-        default: T4C Live Classroom
+        default: T4C Classroom
 
 jobs:
   set-slot:

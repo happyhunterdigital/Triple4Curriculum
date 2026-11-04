@@ -1,0 +1,50 @@
+name: Retitle timetable slots
+
+# Bulk-renames slots by course code — used to clear placeholder wording such as
+# courseCode "LIVE" / "T4C Live Classroom" that reads like a live status.
+#
+#   gh workflow run retitle-slot.yml -f match_code=LIVE -f new_code=T4C -f new_title="T4C Classroom"
+
+on:
+  workflow_dispatch:
+    inputs:
+      match_code:
+        description: Existing course code to match (e.g. LIVE)
+        required: true
+      new_code:
+        description: New course code (blank = leave unchanged)
+        required: false
+        default: "T4C"
+      new_title:
+        description: New course title (blank = leave unchanged)
+        required: false
+        default: "T4C Classroom"
+      dry_run:
+        description: Preview without writing
+        required: false
+        default: "false"
+
+jobs:
+  retitle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install firebase-admin
+        run: npm install --no-save firebase-admin
+
+      - name: Retitle slots
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          MATCH_CODE: ${{ inputs.match_code }}
+          NEW_CODE: ${{ inputs.new_code }}
+          NEW_TITLE: ${{ inputs.new_title }}
+          DRY_RUN: ${{ inputs.dry_run == 'true' && '1' || '' }}
+        run: |
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/gcp-key.json"
+          node scripts/retitle-slot.mjs
