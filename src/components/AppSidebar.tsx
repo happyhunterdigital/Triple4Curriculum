@@ -3,7 +3,7 @@ import { getDb } from '../lib/firebase';
 import {
   LayoutDashboard, BookOpen, Calendar, FileText,
   CheckSquare, MessageSquare, Bell, Settings,
-  LogOut, ChevronLeft, ChevronRight, Plus, FolderPlus, FilePlus, X
+  LogOut, ChevronLeft, ChevronRight, Plus, FolderPlus, FilePlus, X, Video
 } from 'lucide-react';
 import { useAuth } from '../lib/authContext';
 
@@ -39,6 +39,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
     : currentUser?.role === 'lecturer'
       ? 'Faculty'
       : 'Learner';
+
+  const isStaff = currentUser?.role === 'lecturer' || currentUser?.role === 'admin';
   const [isExpanded, setIsExpanded] = useState(false);
   const [showCreateFlyout, setShowCreateFlyout] = useState(false);
   const [unreadLectures, setUnreadLectures] = useState(0);
@@ -97,10 +99,13 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
       ]
     },
     { id: 'timetable', label: "Class Timetable", icon: <Calendar size={20} strokeWidth={2.4} /> },
+    ...(isStaff ? [{ id: 'teach/schedule', label: 'Classes & Meet', icon: <Video size={20} strokeWidth={2.4} /> }] : []),
   ];
 
   const secondaryMenu: MenuItem[] = [
-    { id: 'attendance', label: "Attendance Records", icon: <CheckSquare size={20} strokeWidth={2.4} /> },
+    isStaff
+      ? { id: 'teach/attendance', label: "Attendance Register", icon: <CheckSquare size={20} strokeWidth={2.4} /> }
+      : { id: 'attendance', label: "Attendance Records", icon: <CheckSquare size={20} strokeWidth={2.4} /> },
     { id: 'discussions', label: "Academic Discussions", icon: <MessageSquare size={20} strokeWidth={2.4} /> },
     { id: 'notices', label: "Announcements", icon: <Bell size={20} strokeWidth={2.4} />, count: 2 },
   ];

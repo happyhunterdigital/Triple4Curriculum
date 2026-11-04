@@ -305,6 +305,75 @@ export async function getMyProgress(): Promise<LearnerCourseProgress[]> {
   return readWhere<LearnerCourseProgress>(C.learnerProgress, 'studentId', uid());
 }
 
+// ── Staff scheduling & attendance ───────────────────────────────────────────
+
+/** Patch a timetable slot (time, room, Meet link). Staff-only by rules. */
+export async function updateTimetableSlot(id: string, patch: Partial<TimetableSlot>): Promise<TimetableSlot> {
+  const clean: Record<string, unknown> = { updatedAt: serverTimestamp() };
+  (['startTime', 'endTime', 'room', 'type', 'dayOfWeek', 'onlineLink'] as const).forEach((key) => {
+    if (patch[key] !== undefined) clean[key] = patch[key];
+  });
+  await updateDoc(doc(db, C.timetable, id), clean);
+  const snap = await getDoc(doc(db, C.timetable, id));
+  return withId<TimetableSlot>(id, (snap.data() || {}) as Record<string, unknown>);
+}
+
+/** Learners actively enrolled in a course (staff view of the roster). */
+export async function getCourseRoster(courseId: string): Promise<User[]> {
+  const [enrolments, users] = await Promise.all([
+    readWhere<Enrollment>(C.enrollments, 'courseId', courseId),
+    readAll<User>(C.users),
+  ]);
+  const ids = new Set(enrolments.filter((e) => e.status !== 'withdrawn').map((e) => e.studentId));
+  return users
+    .filter((u) => ids.has(u.id))
+    .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+}
+
+/** Every attendance record recorded for a course, newest date first. */
+export async function getAttendanceForCourse(courseId: string): Promise<AttendanceRecord[]> {
+  const rows = await readWhere<AttendanceRecord>(C.attendance, 'courseId', courseId);
+  return rows.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+}
+
+/**
+ * Write a day's register. Existing rows for the same student + date are
+ * updated rather than duplicated, so re-saving a corrected register is safe.
+ */
+export async function markAttendance(
+  courseId: string,
+  date: string,
+  entries: Array<{ student: User; status: 'Present' | 'Late' | 'Absent' }>,
+  method: 'Self Check-in' | 'Lecturer Roster' | 'QR Code' = 'Lecturer Roster',
+): Promise<{ written: number }> {
+  const course = (await readWhere<Course>(C.courses, 'id', courseId))[0];
+  if (!course) throw new Error('Select a course before saving attendance.');
+
+  const existing = await readWhere<AttendanceRecord>(C.attendance, 'courseId', courseId);
+  const forDate = existing.filter((r) => r.date === date);
+
+  for (const { student, status } of entries) {
+    const prior = forDate.find((r) => r.studentId === student.id);
+    const payload = {
+      date,
+      courseId: course.id,
+      courseCode: course.code,
+      courseTitle: course.title,
+      studentId: student.id,
+      studentName: student.name,
+      status,
+      checkInTime: status === 'Absent' ? '' : new Date().toTimeString().slice(0, 5),
+      method,
+    };
+    if (prior) {
+      await updateDoc(doc(db, C.attendance, prior.id), { ...payload, updatedAt: serverTimestamp() });
+    } else {
+      await addDoc(collection(db, C.attendance), { ...payload, createdAt: serverTimestamp() });
+    }
+  }
+  return { written: entries.length };
+}
+
 const PRIVACY_NOTICE = {
   title: 'Privacy Policy (POPIA Act 4 of 2013)',
   summary:
@@ -363,6 +432,10 @@ export const api = {
   getMyCourses,
   getMyAssignments,
   getMyProgress,
+  updateTimetableSlot,
+  getCourseRoster,
+  getAttendanceForCourse,
+  markAttendance,
   getLectures: (courseId?: string) =>
     courseId ? readWhere<Lecture>(C.lectures, 'courseId', courseId) : readAll<Lecture>(C.lectures),
   createLecture: async (lecture: Partial<Lecture>) => {
@@ -448,8 +521,10 @@ export const api = {
       const startTime = slot.startTime || '09:00';
       const endTime = slot.endTime || '10:30';
       const room = slot.room || 'Lecture Hall B';
+      // Online classes do not occupy a physical room, so only physical rooms
+      // run the double-booking check (two teachers may run parallel Meet lessons).
       const existing = await readWhere<TimetableSlot>(C.timetable, 'dayOfWeek', dayOfWeek);
-      const clash = existing.find(
+      const clash = slot.onlineLink ? undefined : existing.find(
         (s) =>
           s.room.toLowerCase() === room.toLowerCase() &&
           !(endTime <= s.startTime || startTime >= s.endTime)
@@ -474,7 +549,10 @@ export const api = {
         room,
         type: slot.type || 'Lecture',
         departmentId: course.departmentId,
-        onlineLink: `https://meet.triple4c.com/${course.code.toLowerCase()}`,
+        // A real Google Meet link when the teacher supplied one; an empty
+        // string otherwise so the UI falls back to an in-app Jitsi room
+        // instead of a dead meet.triple4c.com placeholder.
+        onlineLink: slot.onlineLink || '',
         createdAt: serverTimestamp(),
       });
       const snap = await getDoc(ref);

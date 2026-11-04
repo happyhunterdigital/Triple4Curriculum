@@ -16,6 +16,15 @@ export interface LiveLink {
 
 const FAKE_HOST = 'meet.triple4c.com';
 
+/** A real Google Meet room link (not the legacy placeholder host). */
+export function isMeetLink(raw: string): boolean {
+  try {
+    return new URL(raw).hostname.replace(/^www\./, '') === 'meet.google.com';
+  } catch {
+    return false;
+  }
+}
+
 function sanitizeRoomPart(part: string): string {
   return (part || '')
     .toLowerCase()

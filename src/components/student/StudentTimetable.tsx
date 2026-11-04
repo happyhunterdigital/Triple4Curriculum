@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Video, Users, CheckCircle2, Filter, AlertCircle, Link2, Check } from 'lucide-react';
 import { api } from '../../lib/api';
 import { getLiveLink } from '../../lib/liveClass';
+import { hasTermStarted, TERM_LABEL, termStartLabel } from '../../lib/term';
 import { TimetableSlot } from '../../types';
 
 export const StudentTimetable: React.FC = () => {
@@ -48,7 +49,7 @@ export const StudentTimetable: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold px-2 py-0.5 rounded bg-yellow-100 text-yellow-900 border border-yellow-300">
-              Semester 2 Master Schedule
+              {TERM_LABEL} Master Schedule
             </span>
             <span className="text-xs font-semibold text-neutral-500">
               Triple 4C Curriculum
@@ -77,6 +78,18 @@ export const StudentTimetable: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {!hasTermStarted() && (
+        <div className="flex items-start gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-5 py-4">
+          <Calendar className="w-5 h-5 shrink-0 text-amber-700" />
+          <div className="text-xs leading-relaxed text-amber-900">
+            <p className="font-bold">No live classes yet — {TERM_LABEL} begins {termStartLabel()}.</p>
+            <p className="mt-0.5 text-amber-800">
+              This is the published schedule. Joining opens on the first teaching day.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Timetable Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -161,13 +174,16 @@ export const StudentTimetable: React.FC = () => {
                   <button
                     type="button"
                     onClick={joinLive}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-yellow-300 font-bold text-xs shadow-xs transition"
+                    disabled={!hasTermStarted()}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-yellow-300 font-bold text-xs shadow-xs transition disabled:opacity-45 disabled:cursor-not-allowed"
                     title={
-                      live.provider === 'google-meet'
-                        ? 'Join in Google Meet (attendance recorded)'
-                        : isInApp
-                          ? 'Enter the embedded classroom (attendance auto-recorded)'
-                          : 'Open the staff-provided live link'
+                      !hasTermStarted()
+                        ? `Joining opens on ${termStartLabel()}`
+                        : live.provider === 'google-meet'
+                          ? 'Join in Google Meet (attendance recorded)'
+                          : isInApp
+                            ? 'Enter the embedded classroom (attendance auto-recorded)'
+                            : 'Open the staff-provided live link'
                     }
                   >
                     <Video className="w-3.5 h-3.5" />
