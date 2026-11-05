@@ -17,6 +17,7 @@ import { ContactPage } from './pages/ContactPage';
 import { LoginPage } from './pages/LoginPage';
 import { SiteFooter } from './components/site/SiteFooter';
 import { CookieConsent } from './components/site/CookieConsent';
+import { FirstTermPrompt } from './components/site/FirstTermPrompt';
 import { DashboardSkeleton } from './components/common/DashboardSkeleton';
 
 // ── Lazy routes ──────────────────────────────────────────────────────────────
@@ -150,6 +151,7 @@ function Shell() {
       </div>
       <SiteFooter />
       <CookieConsent />
+      <FirstTermPrompt />
       <AIFloatingChatbot />
     </div>
   );

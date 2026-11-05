@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
 import { learnerFaqs, learnersGallery } from '../data/learnersGallery';
+import { MasonryGallery } from '../components/site/MasonryGallery';
 import { injectJsonLd, setCanonical, setMetaDescription } from '../lib/seo';
 
 const SITE = 'https://triple4c.com';
@@ -88,33 +89,7 @@ export function LearnersPage() {
             learners. These photos show the time outside live lessons: independent study,
             reading and enrichment. Updated November 2026.
           </Body>
-          <div className="mt-6 grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
-            {learnersGallery.map((image, index) => (
-              <figure
-                key={image.src}
-                className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-black/10 bg-white"
-              >
-                <div className="relative aspect-[4/5] overflow-hidden bg-neutral-100">
-                  {/* Tiles are cropped from the bottom only (object-position
-                      top by default), so no learner's head is ever cut. */}
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    width={image.width}
-                    height={image.height}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    fetchPriority={index === 0 ? 'high' : undefined}
-                    decoding="async"
-                    style={{ objectPosition: image.focus ?? 'top' }}
-                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-                  />
-                </div>
-                <figcaption className="flex flex-1 items-start p-3.5 text-xs leading-relaxed text-neutral-600">
-                  {image.caption}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          <MasonryGallery images={learnersGallery} />
         </RevealStagger>
 
         <RevealStagger>

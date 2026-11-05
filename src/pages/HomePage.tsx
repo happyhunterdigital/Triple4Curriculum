@@ -36,7 +36,7 @@ export function HomePage() {
           from sm up it becomes the card background under a white wash. */}
       <section className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         <div className="relative rounded-[24px] sm:rounded-[40px] overflow-hidden bg-white border border-black/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] flex flex-col sm:block sm:min-h-[560px]">
-          <div className="relative h-[210px] xs:h-[240px] sm:absolute sm:inset-0 sm:h-auto">
+          <div className="relative sm:absolute sm:inset-0 sm:h-auto">
             <img
               src={cloudinaryImage(HERO_IMAGE, 960)}
               srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1600])}
@@ -47,7 +47,9 @@ export function HomePage() {
               fetchPriority="high"
               loading="eager"
               decoding="async"
-              className="h-full w-full object-cover object-center sm:object-[center_42%]"
+              /* Phones: width-driven, so the whole 16:9 collage shows without a
+                 crop or letterbox. From sm up it becomes a cover background. */
+              className="block h-auto w-full sm:h-full sm:w-full sm:object-cover sm:object-[center_42%]"
             />
             {/* phones: blend the band into the copy below */}
             <div className="absolute inset-0 bg-gradient-to-t from-white via-white/15 to-transparent sm:hidden" />
