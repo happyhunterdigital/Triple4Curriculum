@@ -4,7 +4,7 @@ export interface LearnerImage {
   caption: string;
   width: number;
   height: number;
-  /** Which edge to anchor when a tile has to crop � keeps heads in frame. */
+  /** Which edge to anchor when a tile has to crop - keeps heads in frame. */
   focus?: 'top' | 'center' | 'bottom';
 }
 
@@ -14,8 +14,9 @@ export interface LearnerImage {
  * Triple 4 Curriculum. See docs/learners-gallery-seo.md before editing: the
  * alt text describes the actual photo and never keyword stuffs.
  *
- * Ten images, ordered so practice, study and reading alternate down the
- * masonry columns instead of stacking the music shots together.
+ * Shown as a waterfall masonry at each photo's natural aspect ratio. The order
+ * alternates music, study and reading so the columns fill with a mix rather
+ * than a run of near-identical shots.
  */
 export const learnersGallery: LearnerImage[] = [
   {
@@ -40,6 +41,27 @@ export const learnersGallery: LearnerImage[] = [
     height: 1600,
   },
   {
+    src: '/images/learners/triple-4-curriculum-learner-violin-practice.jpg',
+    alt: 'Learner playing the violin in a study room, with a world map and an alphabet chart on the wall behind her.',
+    caption: 'Bow to string, in the study room.',
+    width: 1136,
+    height: 1840,
+  },
+  {
+    src: '/images/learners/triple-4-curriculum-learner-notebook-revision.jpg',
+    alt: 'Learner in a red hoodie reading a marbled notebook at a desk, with a study planner listing Maths, History and Science behind him.',
+    caption: 'A plan on the wall, a notebook in hand.',
+    width: 1157,
+    height: 2048,
+  },
+  {
+    src: '/images/learners/triple-4-curriculum-learner-reading-pink-dress.jpg',
+    alt: 'Learner in a pink floral dress reading an open book, with a world map and colour-coded notes on the wall behind her.',
+    caption: 'Reading, with the map and the plan in reach.',
+    width: 718,
+    height: 1228,
+  },
+  {
     src: '/images/learners/triple-4-curriculum-learner-piano-lesson.jpg',
     alt: 'Learner at a Casio piano with sheet music open, looking up from the keys.',
     caption: 'Confidence on the keys.',
@@ -47,12 +69,20 @@ export const learnersGallery: LearnerImage[] = [
     height: 1487,
   },
   {
-    src: '/images/learners/triple-4-curriculum-learner-reading-museum.jpg',
-    alt: 'Learner reading an open book on a colourful armchair beside a window, with the Hackney Museum entrance behind her.',
-    caption: 'Reading, in her own time.',
-    width: 995,
-    height: 1600,
-  },  {
+    src: '/images/learners/triple-4-curriculum-learner-homeschool-desk.jpg',
+    alt: 'Learner at a wooden desk with a laptop, calculator and folders beneath a homeschool weekly schedule board and a world map.',
+    caption: 'The week\u2019s schedule, pinned above the desk.',
+    width: 1376,
+    height: 1824,
+  },
+  {
+    src: '/images/learners/triple-4-curriculum-learner-reading-sofa.jpg',
+    alt: 'Learner in a dark hoodie reading a Pirates of the Caribbean book on a grey sofa, with a homeschool schedule board and bookshelves behind him.',
+    caption: 'A chapter before the next lesson.',
+    width: 1376,
+    height: 1824,
+  },
+  {
     src: '/images/learners/triple-4-curriculum-learner-library-research.jpg',
     alt: 'Learner using a Chromebook at a round table in the library, beneath the 330 Economics shelf sign.',
     caption: 'Research happens where the books are.',
@@ -60,11 +90,11 @@ export const learnersGallery: LearnerImage[] = [
     height: 1600,
   },
   {
-    src: '/images/learners/triple-4-curriculum-learner-typing-coursework.jpg',
-    alt: 'Learner in a tie-dye t-shirt typing on a laptop on a turquoise sofa beside plants.',
-    caption: 'Independent study, with a mentor close by.',
-    width: 1172,
-    height: 1318,
+    src: '/images/learners/triple-4-curriculum-learner-writing-exercise-book.jpg',
+    alt: 'Learner in a red hoodie writing in an open exercise book at a wooden desk, with a stack of books and a pinboard behind him.',
+    caption: 'Handwritten notes, one subject at a time.',
+    width: 937,
+    height: 1677,
   },
   {
     src: '/images/learners/triple-4-curriculum-learner-music-practice.jpg',
@@ -73,6 +103,13 @@ export const learnersGallery: LearnerImage[] = [
     width: 1465,
     height: 1465,
     focus: 'center',
+  },
+  {
+    src: '/images/learners/triple-4-curriculum-learner-macbook-desk.jpg',
+    alt: 'Learner in a grey hoodie and black beanie typing on a MacBook at a school desk, with a Learn Grow Discover sign above the bookshelves.',
+    caption: 'Coursework at his own desk.',
+    width: 896,
+    height: 1279,
   },
   {
     src: '/images/learners/triple-4-curriculum-learners-reading-together.jpg',
@@ -88,6 +125,20 @@ export const learnersGallery: LearnerImage[] = [
     caption: 'Practice, then a look at the camera.',
     width: 1451,
     height: 1597,
+  },
+  {
+    src: '/images/learners/triple-4-curriculum-learner-reading-museum.jpg',
+    alt: 'Learner reading an open book on a colourful armchair beside a window, with the Hackney Museum entrance behind her.',
+    caption: 'Reading, in her own time.',
+    width: 995,
+    height: 1600,
+  },
+  {
+    src: '/images/learners/triple-4-curriculum-learner-typing-coursework.jpg',
+    alt: 'Learner in a tie-dye t-shirt typing on a laptop on a turquoise sofa beside plants.',
+    caption: 'Independent study, with a mentor close by.',
+    width: 1172,
+    height: 1318,
   },
 ];
 

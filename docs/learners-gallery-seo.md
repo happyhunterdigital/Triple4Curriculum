@@ -38,6 +38,13 @@ Last updated: October 2026. Applies to `/learners` and `public/images/learners/`
 | learner-online-coursework.jpg | Learner in a pink outfit working through coursework on a laptop from a green sofa. |
 | learner-chromebook-reading.jpg | Learner at a library table with a Chromebook and graphic novel editions of the Iliad and the Odyssey. |
 | learner-reading-museum.jpg | Learner reading an open book on a colourful armchair beside a window, with the Hackney Museum entrance behind her. |
+| learner-violin-practice.jpg | Learner playing the violin in a study room, with a world map and an alphabet chart on the wall behind her. |
+| learner-notebook-revision.jpg | Learner in a red hoodie reading a marbled notebook at a desk, with a study planner listing Maths, History and Science behind him. |
+| learner-reading-pink-dress.jpg | Learner in a pink floral dress reading an open book, with a world map and colour-coded notes on the wall behind her. |
+| learner-homeschool-desk.jpg | Learner at a wooden desk with a laptop, calculator and folders beneath a homeschool weekly schedule board and a world map. |
+| learner-reading-sofa.jpg | Learner in a dark hoodie reading a Pirates of the Caribbean book on a grey sofa, with a homeschool schedule board and bookshelves behind him. |
+| learner-writing-exercise-book.jpg | Learner in a red hoodie writing in an open exercise book at a wooden desk, with a stack of books and a pinboard behind him. |
+| learner-macbook-desk.jpg | Learner in a grey hoodie and black beanie typing on a MacBook at a school desk, with a Learn Grow Discover sign above the bookshelves. |
 | learner-typing-coursework.jpg | Learner in a tie-dye t-shirt typing on a laptop on a turquoise sofa beside plants. |
 | learner-library-research.jpg | Learner using a Chromebook at a round table in the library, beneath the 330 Economics shelf sign. |
 | learners-reading-together.jpg | Two learners reading side by side on a green circular sofa in front of library shelves. |
