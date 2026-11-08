@@ -22,7 +22,7 @@ export const learnersGallery: LearnerImage[] = [
   {
     src: '/images/learners/triple-4-curriculum-learner-piano-practice.jpg',
     alt: 'Learner reading sheet music while playing a Casio digital piano in a music room.',
-    caption: 'Practice on the keys, from real sheet music.',
+    caption: 'Hobby time: practice on the keys, from real sheet music.',
     width: 1322,
     height: 1450,
   },
@@ -43,7 +43,7 @@ export const learnersGallery: LearnerImage[] = [
   {
     src: '/images/learners/triple-4-curriculum-learner-violin-practice.jpg',
     alt: 'Learner playing the violin in a study room, with a world map and an alphabet chart on the wall behind her.',
-    caption: 'Bow to string, in the study room.',
+    caption: 'A hobby, not a school subject: bow to string in the study room.',
     width: 1136,
     height: 1840,
   },
@@ -64,7 +64,7 @@ export const learnersGallery: LearnerImage[] = [
   {
     src: '/images/learners/triple-4-curriculum-learner-piano-lesson.jpg',
     alt: 'Learner at a Casio piano with sheet music open, looking up from the keys.',
-    caption: 'Confidence on the keys.',
+    caption: 'Music is a hobby here — confidence on the keys.',
     width: 1205,
     height: 1487,
   },
@@ -99,7 +99,7 @@ export const learnersGallery: LearnerImage[] = [
   {
     src: '/images/learners/triple-4-curriculum-learner-music-practice.jpg',
     alt: 'Learner playing a Casio piano from sheet music in a blue-walled music room.',
-    caption: 'The music room, mid-practice.',
+    caption: 'The music room, mid-practice — a hobby, not a timetable subject.',
     width: 1465,
     height: 1465,
     focus: 'center',
@@ -122,7 +122,7 @@ export const learnersGallery: LearnerImage[] = [
   {
     src: '/images/learners/triple-4-curriculum-learner-piano-confidence.jpg',
     alt: 'Smiling learner at a Casio piano with sheet music open, one hand raised over the keys.',
-    caption: 'Practice, then a look at the camera.',
+    caption: 'After-lessons hobby: practice, then a look at the camera.',
     width: 1451,
     height: 1597,
   },
@@ -165,7 +165,7 @@ export const learnerFaqs: LearnerFaq[] = [
   {
     question: 'What do learners do outside live lessons?',
     answer:
-      'They complete independent study on Chromebooks and laptops, read in the library and use the time for enrichment such as music practice.',
+      'They complete independent study on Chromebooks and laptops, read in the library and use the time for hobbies such as music practice. Music is a hobby learners enjoy in their own time — it is not a subject offered by Triple 4C.',
   },
   {
     question: 'Do learners use laptops and Chromebooks?',

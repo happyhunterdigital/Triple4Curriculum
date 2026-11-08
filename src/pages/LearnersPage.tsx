@@ -87,7 +87,9 @@ export function LearnersPage() {
             Triple 4 Curriculum (T4C) is an online micro-school built on the 4-4-4 model: four
             days a week, four hours a day and four lessons a day, with classes capped at 16
             learners. These photos show the time outside live lessons: independent study,
-            reading and enrichment. Updated November 2026.
+            reading and enrichment. The music photos are hobbies learners enjoy in their own
+            time — music is <strong>not</strong> a subject offered by Triple 4C. Updated
+            November 2026.
           </Body>
           <MasonryGallery images={learnersGallery} />
         </RevealStagger>

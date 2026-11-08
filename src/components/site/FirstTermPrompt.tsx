@@ -127,7 +127,7 @@ export const FirstTermPrompt: React.FC = () => {
           id="term-prompt-title"
           className="mt-2 font-display text-[24px] font-semibold leading-tight tracking-tight text-[var(--color-t4c-black)] sm:text-[28px]"
         >
-          Secure your place for Term 1.
+          Registration Open.
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-neutral-700">
           Live classes begin {termStartLabel()} — {daysUntilTerm()} days away. Sixteen learners per
