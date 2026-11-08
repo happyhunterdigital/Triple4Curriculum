@@ -46,3 +46,23 @@ export function cloudinarySrcSet(url: string | null | undefined, widths: number[
     .map((w) => `${cloudinaryImage(url, w)} ${w}w`)
     .join(', ');
 }
+
+/**
+ * Fixed-aspect, subject-aware crop for slots where CSS `object-cover` would
+ * zoom too far into a wide image (e.g. photo collages on phones). Returns
+ * `f_auto,q_auto,w_x_h,c_fill,g_auto`, so Cloudinary centres the crop on the
+ * detected subjects instead of the geometric middle. Use inside a
+ * `<picture><source media="(max-width: …)">` so phones get the portrait crop
+ * and desktops keep the full composition.
+ */
+export function cloudinaryFill(url: string | null | undefined, width: number, height: number): string {
+  if (!url) return '';
+  if (!url.includes('res.cloudinary.com/') || !url.includes(CLOUDINARY_IMAGE)) return url;
+
+  const [base, rest] = url.split(CLOUDINARY_IMAGE);
+  if (!base || !rest) return url;
+
+  const w = Math.max(16, Math.round(width));
+  const h = Math.max(16, Math.round(height));
+  return `${base}${CLOUDINARY_IMAGE}f_auto,q_auto,w_${w},h_${h},c_fill,g_auto/${rest}`;
+}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Users, Clock, Video, GraduationCap, Heart, Shield, Lightbulb, ArrowRight, Award, BookOpen } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
 import { PricingTable } from '../components/site/PricingTable';
-import { cloudinaryImage, cloudinarySrcSet } from '../lib/image';
+import { cloudinaryFill, cloudinaryImage, cloudinarySrcSet } from '../lib/image';
 
 const HERO_IMAGE = 'https://res.cloudinary.com/x4agmmbo/image/upload/v1793762771/T4C_hero_image.png';
 
@@ -129,8 +129,27 @@ export function HomePage() {
         {/* Class environment full-width editorial */}
         <RevealStagger>
           <div className="rounded-[16px] overflow-hidden border border-black/10 bg-white grid lg:grid-cols-2">
-            <div className="h-[240px] sm:h-[320px] bg-neutral-100 overflow-hidden">
-              <img src={cloudinaryImage(HERO_IMAGE, 800)} srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 800, 1024])} sizes="(min-width: 1024px) 50vw, 100vw" alt="Live classroom capped at 16 learners" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+            <div className="h-[280px] sm:h-[320px] bg-neutral-100 overflow-hidden">
+              {/* Mobile gets its own 4:3 subject-aware crop: the full collage strip
+                  would zoom into the middle and cut the learners at the edges. */}
+              <picture>
+                <source
+                  media="(max-width: 639px)"
+                  srcSet={[480, 640, 800]
+                    .map((w) => `${cloudinaryFill(HERO_IMAGE, w, Math.round(w * 0.75))} ${w}w`)
+                    .join(', ')}
+                  sizes="100vw"
+                />
+                <img
+                  src={cloudinaryImage(HERO_IMAGE, 800)}
+                  srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 800, 1024])}
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  alt="Live classroom capped at 16 learners"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover"
+                />
+              </picture>
             </div>
             <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
               <SectionHeading className="text-[22px] sm:text-[26px]">100% live. Capped at 16. Parent hands-off.</SectionHeading>
