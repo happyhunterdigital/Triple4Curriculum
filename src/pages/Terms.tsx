@@ -105,7 +105,7 @@ const SECTIONS: Array<{ h: string; body: React.ReactNode }> = [
       <p>
         These Terms are governed by the laws of South Africa. Disputes will first be addressed
         through good-faith discussion with support@triple4c.com, then mediation in Cape Town before
-        litigation. Contact: admissions@t4c.com · support@triple4c.com. Last updated:{' '}
+        litigation. Contact: admissions@triple4c.com · support@triple4c.com. Last updated:{' '}
         <strong>19 September 2026</strong>.
       </p>
     ),
