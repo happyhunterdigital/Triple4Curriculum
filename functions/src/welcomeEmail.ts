@@ -104,7 +104,7 @@ async function sendWelcome(uid: string, kind: 'learner' | 'teacher'): Promise<{ 
   return { sent: true };
 }
 
-const WELCOME_OPTIONS = { region: REGION, secrets: [RESEND_SECRET], retry: false } as const;
+const WELCOME_OPTIONS = { region: REGION, secrets: [RESEND_SECRET] };
 
 /** Learner profile created by onboarding → welcome email. */
 export const onLearnerWelcome = onDocumentCreated(
