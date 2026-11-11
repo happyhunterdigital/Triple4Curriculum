@@ -1,5 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import type { LearnerImage } from '../../data/learnersGallery';
+import { cloudinaryImage, cloudinarySrcSet } from '../../lib/image';
+
+/** Only Cloudinary-hosted gallery entries get CDN transforms; local paths pass through. */
+function serveOptimised(src: string, width: number): { src: string; srcSet?: string } {
+  if (!src.includes('res.cloudinary.com/')) return { src };
+  return {
+    src: cloudinaryImage(src, width),
+    srcSet: cloudinarySrcSet(src, [480, 800, 1200]),
+  };
+}
 
 /**
  * Waterfall / masonry gallery.
@@ -69,13 +79,16 @@ export const MasonryGallery: React.FC<{ images: LearnerImage[] }> = ({ images })
         <div key={columnIndex} className="flex min-w-0 flex-1 flex-col gap-3 sm:gap-4">
           {column.map((image) => {
             const isFirst = images.indexOf(image) === 0;
+            const served = serveOptimised(image.src, 800);
             return (
               <figure
                 key={image.src}
                 className="overflow-hidden rounded-[16px] border border-black/10 bg-white"
               >
                 <img
-                  src={image.src}
+                  src={served.src}
+                  srcSet={served.srcSet}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   alt={image.alt}
                   width={image.width}
                   height={image.height}
