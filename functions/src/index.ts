@@ -452,6 +452,7 @@ export const createCertificate = onCall(async (request) => {
 export * from "./retention";
 export * from "./youtubeSync";
 export * from "./attendanceThanks";
+export * from "./welcomeEmail";
 
 // ── Payment webhooks (signature-verified, PayFast-validated, idempotent) ───
 

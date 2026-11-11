@@ -13,7 +13,7 @@ import { Card } from '../ui/card';
 import { FileUpload, type UploadedFileMeta } from '../ui/FileUpload';
 import { auth, getDb, getStorageClient } from '../../lib/firebase';
 import {
-  createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile,
+  createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendEmailVerification,
   GoogleAuthProvider, signInWithPopup, type User as FbUser
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
@@ -290,6 +290,10 @@ export const OnboardingFlow: React.FC = () => {
         try {
           const cred = await createUserWithEmailAndPassword(auth, data.email!, data.password!);
           await updateProfile(cred.user, { displayName: data.name });
+          // Transactional registration email. Firebase sends it with its own
+          // sender, so delivery never depends on the branded Resend domain.
+          // Best-effort: a failed send must never block the application.
+          void sendEmailVerification(cred.user).catch(() => {});
           fbUser = cred.user;
         } catch (e) {
           const code = (e as { code?: string })?.code || '';
