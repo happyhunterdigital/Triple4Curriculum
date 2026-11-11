@@ -107,18 +107,24 @@ async function sendWelcome(uid: string, kind: 'learner' | 'teacher'): Promise<{ 
 const WELCOME_OPTIONS = { region: REGION, secrets: [RESEND_SECRET], retry: false } as const;
 
 /** Learner profile created by onboarding → welcome email. */
-export const onLearnerWelcome = onDocumentCreated('students/{uid}', WELCOME_OPTIONS, async (event) => {
-  const uid = event.params.uid as string;
-  const result = await sendWelcome(uid, 'learner');
-  logger.info('learner welcome', { uid, ...result });
-});
+export const onLearnerWelcome = onDocumentCreated(
+  { document: 'students/{uid}', ...WELCOME_OPTIONS },
+  async (event) => {
+    const uid = event.params.uid as string;
+    const result = await sendWelcome(uid, 'learner');
+    logger.info('learner welcome', { uid, ...result });
+  },
+);
 
 /** Teacher application created by onboarding → application-received email. */
-export const onTeacherWelcome = onDocumentCreated('teacher_applications/{uid}', WELCOME_OPTIONS, async (event) => {
-  const uid = event.params.uid as string;
-  const result = await sendWelcome(uid, 'teacher');
-  logger.info('teacher welcome', { uid, ...result });
-});
+export const onTeacherWelcome = onDocumentCreated(
+  { document: 'teacher_applications/{uid}', ...WELCOME_OPTIONS },
+  async (event) => {
+    const uid = event.params.uid as string;
+    const result = await sendWelcome(uid, 'teacher');
+    logger.info('teacher welcome', { uid, ...result });
+  },
+);
 
 /** Staff re-send (optional kind override) for testing or when Resend was down. */
 export const sendWelcomeEmailNow = onCall({ region: REGION, secrets: [RESEND_SECRET] }, async (request) => {
