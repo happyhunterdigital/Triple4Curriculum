@@ -2,9 +2,30 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Target, Scale, Wrench, Crown, Heart, Lightbulb, Users, Sparkles } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
+import { teamMembers, teamPhotoSrcSet } from '../data/team';
+import { injectJsonLd } from '../lib/seo';
 
 export function AboutPage() {
-  useEffect(() => { document.title = 'About: Triple 4 Curriculum'; }, []);
+  useEffect(() => {
+    document.title = 'About: Triple 4 Curriculum';
+    // Entity signal for answer engines: the people behind the organisation.
+    const teamSchema = injectJsonLd('about-team-schema', {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: teamMembers.map((member, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'Person',
+          name: member.name,
+          jobTitle: member.role,
+          image: member.photo,
+          worksFor: { '@type': 'EducationalOrganization', name: 'Triple 4 Curriculum', url: 'https://triple4c.com' },
+        },
+      })),
+    });
+    return () => teamSchema.remove();
+  }, []);
   return (
     <div className="w-full bg-[var(--color-canvas-soft)]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
@@ -122,6 +143,40 @@ export function AboutPage() {
                 <h3 className="mt-3 font-semibold text-sm">{v.t} <span className="font-normal text-neutral-500">, {v.s}</span></h3>
                 <p className="mt-1 text-xs leading-relaxed text-neutral-600">{v.d}</p>
               </div>
+            ))}
+          </div>
+        </RevealStagger>
+
+        {/* Our Team, staff portraits */}
+        <RevealStagger>
+          <SectionHeading>Our Team</SectionHeading>
+          <Body className="mt-2">
+            The people behind Triple 4C: heads of department, specialist teachers and a
+            dedicated safeguarding lead. Every class is led by one of them — never a
+            facilitator, never a video on a screen.
+          </Body>
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {teamMembers.map((member) => (
+              <figure
+                key={member.name}
+                className="bg-white border border-black/10 rounded-[16px] overflow-hidden"
+              >
+                <img
+                  src={member.photo}
+                  srcSet={teamPhotoSrcSet(member.photo)}
+                  sizes="(min-width: 1024px) 20vw, (min-width: 640px) 50vw, 100vw"
+                  width={member.width}
+                  height={member.height}
+                  alt={member.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="block w-full aspect-[4/5] object-cover object-top"
+                />
+                <figcaption className="p-4">
+                  <p className="font-semibold text-sm text-[var(--color-t4c-black)]">{member.name}</p>
+                  <p className="mt-0.5 text-xs font-mono uppercase tracking-widest text-[var(--color-t4c-green)]">{member.role}</p>
+                </figcaption>
+              </figure>
             ))}
           </div>
         </RevealStagger>
