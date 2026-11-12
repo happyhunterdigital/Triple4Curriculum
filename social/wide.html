@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>T4C social, wide formats</title>
+<link rel="stylesheet" href="social.css">
+</head>
+<body>
+
+<!-- W1 · X / Twitter and link previews, 1600x900 -->
+<div class="art x-wide s-green">
+  <div class="brandline">
+    <img src="assets/t4c-crest-transparent.png" alt="">
+    <div class="name">Triple 4 Curriculum<small>Golden Achievers</small></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <p class="kicker" style="margin:0 0 20px">Grade R to 12 · 100% live · 16 per class</p>
+  <h1>The future of learning<br><span class="gold">is here</span></h1>
+
+  <div class="spacer"></div>
+
+  <div class="hair" style="margin-bottom:22px"></div>
+  <div class="foot">
+    <span><b>triple4c.com/admissions</b></span>
+    <span>Four days · four hours · four lessons</span>
+  </div>
+</div>
+
+<!-- W2 · LinkedIn and Facebook link card, 1200x627 -->
+<div class="art li-wide s-white">
+  <div class="brandline">
+    <img src="assets/t4c-crest-transparent.png" alt="">
+    <div class="name">Triple 4 Curriculum<small>Golden Achievers</small></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <p class="kicker" style="margin:0 0 12px">South African online school</p>
+  <h1 style="color:var(--green)">Live school.<br><span style="color:var(--gold-ink)">Real teachers.</span></h1>
+
+  <div class="spacer"></div>
+
+  <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid rgba(26,28,30,0.14);padding-top:18px">
+    <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:26px;color:var(--green)">triple4c.com/admissions</span>
+    <span style="font-size:22px;color:#6B7076">Grade R to 12 · CAPS aligned</span>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const q = new URLSearchParams(location.search);
+    if (!q.has("export") && window.self === window.top) return;
+    document.documentElement.classList.add("export");
+    const p = parseInt(q.get("p") || "1", 10);
+    if (p > 1) {
+      const t = document.querySelectorAll(".art")[p - 1];
+      if (t) requestAnimationFrame(() => scrollTo(0, t.offsetTop));
+    }
+  })();
+</script>
+</body>
+</html>

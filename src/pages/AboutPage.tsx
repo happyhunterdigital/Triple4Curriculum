@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Target, Scale, Wrench, Crown, Heart, Lightbulb, Users, Sparkles } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
-import { teamMembers, teamPhotoSrcSet } from '../data/team';
+import { teamMembers, teamPhotoSrcSet, type TeamMember } from '../data/team';
 import { injectJsonLd } from '../lib/seo';
 
 export function AboutPage() {
@@ -155,26 +155,29 @@ export function AboutPage() {
             dedicated safeguarding lead. Every class is led by one of them — never a
             facilitator, never a video on a screen.
           </Body>
-          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {teamMembers.map((member) => (
+          {/* Company hierarchy: Head of Department on the top row, everyone else below. */}
+          {(() => {
+            const featured = teamMembers.find((m) => m.featured);
+            const rest = teamMembers.filter((m) => !m.featured);
+            const card = (member: TeamMember, wide = false) => (
               <figure
                 key={member.name}
                 className={
-                  member.featured
-                    ? 'bg-white border-2 border-[var(--color-t4c-yellow)] rounded-[16px] overflow-hidden shadow-md'
+                  wide
+                    ? 'w-full max-w-md mx-auto bg-white border-2 border-[var(--color-t4c-yellow)] rounded-[16px] overflow-hidden shadow-md sm:flex'
                     : 'bg-white border border-black/10 rounded-[16px] overflow-hidden'
                 }
               >
                 <img
                   src={member.photo}
                   srcSet={teamPhotoSrcSet(member.photo)}
-                  sizes="(min-width: 1024px) 20vw, (min-width: 640px) 50vw, 100vw"
+                  sizes={wide ? '(min-width: 640px) 256px, 100vw' : '(min-width: 1024px) 19vw, (min-width: 640px) 50vw, 100vw'}
                   width={member.width}
                   height={member.height}
                   alt={member.alt}
                   loading="lazy"
                   decoding="async"
-                  className="block w-full aspect-[4/5] object-cover object-top"
+                  className={wide ? 'block w-full sm:w-64 aspect-[4/5] object-cover object-top' : 'block w-full aspect-[4/5] object-cover object-top'}
                 />
                 <figcaption className="p-4">
                   {member.featured && (
@@ -184,8 +187,16 @@ export function AboutPage() {
                   <p className="mt-0.5 text-xs font-mono uppercase tracking-widest text-[var(--color-t4c-green)]">{member.role}</p>
                 </figcaption>
               </figure>
-            ))}
-          </div>
+            );
+            return (
+              <>
+                {featured && card(featured, true)}
+                <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                  {rest.map((member) => card(member))}
+                </div>
+              </>
+            );
+          })()}
         </RevealStagger>
 
         {/* Ethos, 7 */}

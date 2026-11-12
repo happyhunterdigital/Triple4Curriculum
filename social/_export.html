@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>export</title>
+<style>
+  html, body { margin: 0; padding: 0; background: transparent; overflow: hidden; }
+  iframe { border: 0; display: block; }
+</style>
+</head>
+<body>
+<!-- Local render helper: ?src=tiles.html&w=1080&h=1080&p=1 -->
+<script>
+  const q = new URLSearchParams(location.search);
+  const src = q.get("src") || "tiles.html";
+  const w = q.get("w") || "1080";
+  const h = q.get("h") || "1080";
+  const sep = src.includes("?") ? "&" : "?";
+  const f = document.createElement("iframe");
+  f.src = src + sep + "export=1" + (q.get("p") ? "&p=" + q.get("p") : "");
+  f.style.width = w + "px";
+  f.style.height = h + "px";
+  document.body.appendChild(f);
+</script>
+</body>
+</html>

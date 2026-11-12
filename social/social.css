@@ -1,0 +1,248 @@
+/* Triple 4 Curriculum social design system.
+   Same brand book palette and typefaces as the print kit, rebuilt at screen
+   sizes: 1080 square, 1080x1920 vertical, 1600x900 and 1200x627 wide.
+   No third-party requests: fonts and crest are served from this repository. */
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("../public/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../public/fonts/inter-latin.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: block;
+}
+
+:root {
+  --green: #0B3B2B;
+  --green-deep: #072A1F;
+  --gold: #E2B026;
+  --gold-ink: #8A6A10;
+  --ink: #1A1C1E;
+  --cream: #FAF9F5;
+  --serif: Georgia, "Times New Roman", serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #101211;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 40px 0 80px;
+}
+
+html.export body {
+  background: transparent;
+  padding: 0;
+  gap: 0;
+  display: block;
+}
+
+/* ---------- canvases ---------- */
+
+.art {
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sq { width: 1080px; height: 1080px; padding: 86px; }
+.story { width: 1080px; height: 1920px; padding: 104px 86px; }
+.x-wide { width: 1600px; height: 900px; padding: 84px 96px; }
+.li-wide { width: 1200px; height: 627px; padding: 62px 70px; }
+
+.s-green {
+  background:
+    radial-gradient(70% 50% at 92% 92%, rgba(226, 176, 38, 0.28) 0%, rgba(226, 176, 38, 0) 70%),
+    radial-gradient(55% 34% at 4% 2%, rgba(226, 176, 38, 0.10) 0%, rgba(226, 176, 38, 0) 72%),
+    var(--green);
+  color: #FFFFFF;
+}
+
+.s-white { background: var(--cream); color: var(--ink); }
+.s-gold { background: var(--gold); color: var(--ink); }
+
+/* ---------- shared parts ---------- */
+
+.brandline {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  flex: 0 0 auto;
+}
+
+.brandline img { display: block; }
+.sq .brandline img, .x-wide .brandline img, .li-wide .brandline img { width: 108px; height: 108px; }
+.story .brandline img { width: 120px; height: 120px; }
+
+.brandline .name {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: 27px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.brandline .name small {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--gold-ink);
+  margin-top: 2px;
+}
+
+.s-green .brandline .name small,
+.s-gold .brandline .name small { color: rgba(255, 255, 255, 0.72); }
+
+.kicker {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.s-white .kicker { color: var(--gold-ink); }
+
+h1 {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: 100px;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.story h1 { font-size: 112px; }
+.li-wide h1 { font-size: 62px; }
+.x-wide h1 { font-size: 92px; }
+
+.gold { color: var(--gold); }
+
+.lede {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 40px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.lede-sm { font-size: 32px; }
+
+.body {
+  font-size: 34px;
+  line-height: 1.42;
+  margin: 0;
+}
+
+.body-sm { font-size: 28px; }
+
+.s-green .body { color: rgba(255, 255, 255, 0.82); }
+.s-white .body { color: #44484D; }
+
+.spacer { flex: 1 1 auto; }
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex: 0 0 auto;
+  font-size: 25px;
+  letter-spacing: 0.02em;
+}
+
+.s-green .foot { color: rgba(255, 255, 255, 0.62); }
+.s-white .foot { color: #6B7076; }
+.s-gold .foot { color: rgba(26, 28, 30, 0.66); }
+
+.foot b { font-weight: 600; }
+.s-green .foot b { color: #FFFFFF; }
+
+.hair { height: 3px; background: rgba(226, 176, 38, 0.5); }
+.s-white .hair { background: rgba(138, 106, 16, 0.35); }
+
+/* the three-up list used on the difference and fours tiles */
+
+.rows { display: flex; flex-direction: column; }
+
+.row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 30px;
+  padding: 26px 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+.s-white .row { border-top: 2px solid rgba(26, 28, 30, 0.14); }
+.row:last-child { border-bottom: 2px solid rgba(255, 255, 255, 0.16); }
+.s-white .row:last-child { border-bottom: 2px solid rgba(26, 28, 30, 0.14); }
+
+.row .num {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: 76px;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: var(--gold);
+}
+
+.s-white .row .num { color: var(--gold-ink); }
+
+.row h3 {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.row p {
+  font-size: 26px;
+  line-height: 1.38;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.s-white .row p { color: #4E5257; }
+
+/* big stat numeral */
+
+.stat {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: 420px;
+  line-height: 0.82;
+  letter-spacing: -0.07em;
+  color: var(--green);
+  display: block;
+  margin-bottom: 22px;
+}
+
+.li-wide h1 { text-transform: uppercase; }

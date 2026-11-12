@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>T4C social, 1080x1920 story and reel frames</title>
+<link rel="stylesheet" href="social.css">
+</head>
+<body>
+
+<!-- V1 · hook -->
+<div class="art story s-green">
+  <div class="brandline">
+    <img src="assets/t4c-crest-transparent.png" alt="">
+    <div class="name">Triple 4 Curriculum<small>Golden Achievers</small></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <p class="kicker" style="margin:0 0 30px">Grade R to 12 · South Africa</p>
+  <h1>What if school<br>fit your<br><span class="gold">family?</span></h1>
+
+  <p class="lede" style="margin-top:44px;color:rgba(255,255,255,0.9);font-size:44px">Four days of live teaching. Three days that belong to you.</p>
+
+  <div class="spacer"></div>
+
+  <div class="hair" style="margin-bottom:34px"></div>
+  <div class="foot">
+    <span>Swipe to see the school day</span>
+    <span>triple4c.com</span>
+  </div>
+</div>
+
+<!-- V2 · the model -->
+<div class="art story s-white">
+  <div class="brandline">
+    <img src="assets/t4c-crest-transparent.png" alt="">
+    <div class="name">Triple 4 Curriculum<small>Golden Achievers</small></div>
+  </div>
+
+  <p class="kicker" style="margin:96px 0 24px">The power of four</p>
+  <h1 style="font-size:104px;color:var(--green)">Four days.<br>Four hours.<br><span style="color:var(--gold-ink)">Four lessons.</span></h1>
+
+  <div class="spacer"></div>
+
+  <div class="rows">
+    <div class="row">
+      <span class="num">4</span>
+      <div>
+        <h3>Days a week</h3>
+        <p>Monday to Thursday, with a three day weekend every week.</p>
+      </div>
+    </div>
+    <div class="row">
+      <span class="num">4</span>
+      <div>
+        <h3>Hours a day</h3>
+        <p>Focused live blocks. Learning that fits a child's attention.</p>
+      </div>
+    </div>
+    <div class="row">
+      <span class="num">4</span>
+      <div>
+        <h3>Lessons a day</h3>
+        <p>Four subjects taught properly, by a teacher on camera.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <p class="body" style="margin-bottom:34px">Capped at 16 learners. CAPS aligned with an international blend. Recordings included.</p>
+  <div class="foot" style="border-top:2px solid rgba(26,28,30,0.14);padding-top:26px">
+    <span><b>triple4c.com/admissions</b></span>
+  </div>
+</div>
+
+<!-- V3 · call to action -->
+<div class="art story s-gold">
+  <div class="brandline">
+    <img src="assets/t4c-crest-transparent.png" alt="">
+    <div class="name">Triple 4 Curriculum<small>Golden Achievers</small></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <p class="kicker" style="margin:0 0 26px;color:rgba(26,28,30,0.62)">Term 1 2027</p>
+  <h1 style="color:var(--green)">Enrolment<br>is now<br>open</h1>
+
+  <p class="body" style="margin-top:40px;color:rgba(26,28,30,0.82)">Grade R to 12. 100% live, teacher led, sixteen learners per class.</p>
+
+  <div class="spacer"></div>
+
+  <div style="border-top:3px solid rgba(26,28,30,0.35);padding-top:36px">
+    <p style="margin:0 0 18px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:56px;letter-spacing:-0.02em">triple4c.com/admissions</p>
+    <div class="foot">
+      <span>+27 689 758 960</span>
+      <span>info@triple4c.com</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const q = new URLSearchParams(location.search);
+    if (!q.has("export") && window.self === window.top) return;
+    document.documentElement.classList.add("export");
+    const p = parseInt(q.get("p") || "1", 10);
+    if (p > 1) {
+      const t = document.querySelectorAll(".art")[p - 1];
+      if (t) requestAnimationFrame(() => scrollTo(0, t.offsetTop));
+    }
+  })();
+</script>
+</body>
+</html>
