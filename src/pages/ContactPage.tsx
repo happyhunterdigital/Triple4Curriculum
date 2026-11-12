@@ -20,11 +20,11 @@ export function ContactPage() {
       <PageShell>
         <RevealStagger>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <a href="tel:+27689758960" className="bg-white border border-black/10 rounded-[16px] p-6 hover:border-[var(--color-t4c-yellow)] transition-colors">
+            <a href="tel:+27631997147" className="bg-white border border-black/10 rounded-[16px] p-6 hover:border-[var(--color-t4c-yellow)] transition-colors">
               <Phone size={18} className="text-[var(--color-t4c-green)]" />
               <h3 className="mt-2 font-semibold text-sm">SA Call</h3>
-              <p className="text-sm text-neutral-700 mt-1">+27 689-758-960</p>
-              <p className="text-sm text-neutral-700">+27 639-642-288</p>
+              <p className="text-sm text-neutral-700 mt-1">+27 63-199-7147</p>
+              <p className="text-sm text-neutral-700">+27 639-642-288 <span className="text-xs text-neutral-500">(WhatsApp)</span></p>
               <p className="text-xs text-neutral-500 mt-1">Admissions &amp; enquiries</p>
             </a>
             <a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="bg-white border border-black/10 rounded-[16px] p-6 hover:border-[var(--color-t4c-yellow)] transition-colors">

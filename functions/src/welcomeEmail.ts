@@ -21,7 +21,7 @@ const REGION = 'europe-west1';
 const COMMON_FOOTER = `
   <p style="margin-top:24px">Warm regards,<br/>The Triple 4C teaching team</p>
   <p style="font-size:12px;color:#6b7280;margin-top:24px">Triple 4 Curriculum · 178 Daisy Street, Sandton ·
-  <a href="https://triple4c.com">triple4c.com</a> · +27 689-758-960</p>`;
+  <a href="https://triple4c.com">triple4c.com</a> · +27 63-199-7147</p>`;
 
 function learnerEmail(name: string): string {
   return `

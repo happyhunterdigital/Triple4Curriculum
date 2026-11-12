@@ -25,7 +25,7 @@ export function SiteFooter() {
           <div>
             <p className="text-[11px] font-mono tracking-[0.16em] uppercase text-white/60">Explore</p>
             <ul className="mt-2 space-y-0.5 text-sm">
-              <li><Link to="/about" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">About</Link></li>
+              <li><Link to="/about" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">About Us</Link></li>
               <li><Link to="/how-it-works" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">How it Works</Link></li>
               <li><Link to="/curriculum" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Curriculum</Link></li>
             <li><Link to="/learners" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Learners</Link></li>
@@ -44,7 +44,7 @@ export function SiteFooter() {
           <div>
             <p className="text-[11px] font-mono tracking-[0.16em] uppercase text-white/60">Contact</p>
             <ul className="mt-3 space-y-2 text-sm leading-relaxed">
-              <li><a href="tel:+27689758960" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">SA: +27 689-758-960</a> <span className="text-white/50">/</span> <a href="tel:+27639642288" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">+27 639-642-288</a></li>
+              <li><a href="tel:+27631997147" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">Main: +27 63-199-7147</a> <span className="text-white/50">/</span> <a href="https://wa.me/27639642288" target="_blank" rel="noreferrer" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">WhatsApp: +27 639-642-288</a></li>
               <li><a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">UK WhatsApp: +44 757-7924-174</a></li>
               <li><a href="mailto:info@t4c.com" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">info@t4c.com</a> <span className="text-white/50">·</span> <a href="mailto:admissions@t4c.com" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">admissions@t4c.com</a></li>
               <li><a href="mailto:support@triple4c.com" className="inline-block py-1.5 hover:text-[var(--color-t4c-yellow)] transition-colors">support@triple4c.com</a></li>

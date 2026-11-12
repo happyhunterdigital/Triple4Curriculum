@@ -205,7 +205,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
               )}
               {[
                 { id:'', label:'Home' },
-                { id:'about', label:'About' },
+                { id:'about', label:'About Us' },
                 { id:'how-it-works', label:'How it Works' },
                 { id:'curriculum', label:'Curriculum' },
                 { id:'learners', label:'Learner Gallery' },

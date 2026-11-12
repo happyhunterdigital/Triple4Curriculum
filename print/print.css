@@ -1,0 +1,845 @@
+/* Triple 4 Curriculum print system
+   Type: Plus Jakarta Sans (display) + Inter (text), the two self-hosted
+   families the school already ships in public/fonts. No webfont requests.
+   Colour: the Prestige Crest Identity palette from src/index.css.
+   Print with background graphics on, margins none, scale 100 percent. */
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("../public/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../public/fonts/inter-latin.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: block;
+}
+
+:root {
+  /* Official Triple 4 Curriculum brand book palette. */
+  --green: #0B3B2B;        /* Brunswick Green */
+  --green-deep: #072A1F;
+  --gold: #E2B026;         /* Antique Gold */
+  /* Antique Gold is a display and accent colour: at 8pt on white it loses
+     contrast, so small gold type uses this darkened print tint of it. */
+  --gold-ink: #8A6A10;
+  --ink: #1A1C1E;          /* Obsidian Black */
+  --cream: #FAF9F5;        /* Chalk White */
+  --line: rgba(26, 28, 30, 0.16);
+  --line-soft: rgba(26, 28, 30, 0.08);
+  --grey: #565A5F;
+  --grey-soft: #878C92;
+  --serif: Georgia, "Times New Roman", serif;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 10pt;
+  line-height: 1.5;
+  color: var(--ink);
+  background: #17181B;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media screen {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 36px 24px 64px;
+    min-height: 100vh;
+  }
+}
+
+@media print {
+  body {
+    background: #FFFFFF;
+    display: block;
+    padding: 0;
+  }
+}
+
+/* export mode for headless capture */
+html.export body {
+  padding: 0;
+  gap: 0;
+  background: #FFFFFF;
+  display: block;
+}
+
+html.export .sheet {
+  box-shadow: none;
+  margin: 0;
+}
+
+/* ---------- sheets ---------- */
+
+.sheet {
+  position: relative;
+  overflow: hidden;
+  background: #FFFFFF;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+}
+
+@media print {
+  .sheet {
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+  .sheet:last-of-type {
+    break-after: auto;
+    page-break-after: auto;
+  }
+}
+
+.a4 { width: 210mm; height: 297mm; }
+.a5 { width: 148mm; height: 210mm; }
+.a2 { width: 420mm; height: 594mm; }
+.a3 { width: 297mm; height: 420mm; }
+
+@media print {
+  @page { size: A4; margin: 0; }
+}
+
+/* ---------- crest and wordmark ---------- */
+
+.crest {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 5mm;
+}
+
+.brand-name {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 11pt;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.brand-name small {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 8.4pt;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--gold-ink);
+}
+
+.on-dark .brand-name { color: #FFFFFF; }
+.on-dark .brand-name small { color: var(--gold); }
+
+/* ---------- shared type ---------- */
+
+.eyebrow {
+  font-size: 7.6pt;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--grey-soft);
+}
+
+.on-dark .eyebrow { color: rgba(255, 255, 255, 0.62); }
+
+.display {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  margin: 0;
+}
+
+.gold { color: var(--gold); }
+.green { color: var(--green); }
+.rule-gold { height: 1.2mm; background: var(--gold); border: 0; }
+.rule-green { height: 1.2mm; background: var(--green); border: 0; }
+
+/* dotted fill-in field, replaced when the letter is merged */
+.fill {
+  display: inline-block;
+  min-width: 34mm;
+  border-bottom: 0.6pt dotted #B4B8BE;
+}
+
+/* ---------- letterhead ---------- */
+
+.lh {
+  padding: 13mm 20mm 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.lh-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12mm;
+}
+
+.lh-head .crest { width: 25mm; height: 25mm; }.lh-contact {
+  text-align: right;
+  font-size: 8.2pt;
+  line-height: 1.62;
+  color: var(--grey);
+}
+
+.lh-contact strong {
+  display: block;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 8.4pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1.4mm;
+}
+
+.lh-contact a { color: var(--ink); text-decoration: none; }
+
+.lh-rule {
+  height: 1.6mm;
+  margin-top: 6mm;
+  background: linear-gradient(90deg, var(--green) 0%, var(--green) 62%, var(--gold) 62%, var(--gold) 100%);
+}
+
+.lh-body {
+  flex: 1 1 auto;
+  padding-top: 10mm;
+  max-width: 156mm;
+}
+
+.lh-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey-soft);
+  margin-bottom: 7mm;
+}
+
+.lh-address {
+  font-style: normal;
+  font-size: 9.6pt;
+  line-height: 1.55;
+  margin: 0 0 6mm;
+}
+
+.lh-address .fill { min-width: 62mm; }
+
+.lh-subject {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 12pt;
+  letter-spacing: -0.01em;
+  margin: 0 0 5mm;
+  color: var(--green);
+}
+
+.lh-body p {
+  font-size: 10.2pt;
+  line-height: 1.6;
+  margin: 0 0 3.8mm;
+}
+
+.lh-sign {
+  margin-top: 6mm;
+  font-size: 10.2pt;
+  line-height: 1.6;
+}
+
+.lh-sign .sig-space { height: 13mm; }
+
+.lh-sign strong {
+  display: block;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.lh-sign em {
+  font-style: normal;
+  color: var(--grey);
+  font-size: 9pt;
+}
+
+.lh-foot {
+  margin: 7mm 0 0;
+  padding: 5mm 20mm 5mm;
+  background: var(--green);
+  color: rgba(255, 255, 255, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10mm;
+  font-size: 8pt;
+  letter-spacing: 0.04em;
+}
+
+.lh-foot .crest { width: 22mm; height: 22mm; }
+
+.lh-foot .foot-line {
+  font-size: 7.6pt;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.lh-foot .foot-line b {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.lh-foot .foot-tag {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11pt;
+  color: #FFFFFF;
+  text-align: right;
+  line-height: 1.25;
+}
+
+.lh-foot .foot-tag span {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-size: 6.8pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 1.4mm;
+}
+
+/* ---------- forms ---------- */
+
+.form {
+  padding: 10mm 16mm 9mm;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10mm;
+  padding-bottom: 4mm;
+  border-bottom: 1.2mm solid var(--green);
+}
+
+.form-head .brand { gap: 5mm; }
+.form-head .crest { width: 21.5mm; height: 21.5mm; }
+.form-head .brand-name { font-size: 9.4pt; }
+.form-head .brand-name small { font-size: 7.6pt; }
+
+.form-title {
+  text-align: right;
+}
+
+.form-title h1 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 15pt;
+  letter-spacing: -0.015em;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.form-title p {
+  margin: 1.2mm 0 0;
+  font-size: 7.6pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--grey-soft);
+}
+
+.form-section {
+  margin-top: 4.8mm;
+}
+
+.form-section h2 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 9.6pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0 0 3mm;
+  padding-bottom: 1.6mm;
+  border-bottom: 0.6pt solid var(--gold);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.form-section h2 em {
+  font-style: normal;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 7.4pt;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--grey-soft);
+}
+
+.rows {
+  display: grid;
+  gap: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 44mm 1fr;
+  gap: 5mm;
+  align-items: end;
+  padding: 2mm 0;
+  border-bottom: 0.5pt solid var(--line-soft);
+}
+
+.row .lab {
+  font-size: 7.8pt;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding-bottom: 1.4mm;
+}
+
+.row .field {
+  border-bottom: 0.7pt solid rgba(17, 18, 20, 0.55);
+  height: 5.6mm;
+  font-size: 9.4pt;
+  color: var(--ink);
+  padding-bottom: 0.8mm;
+}
+
+.row .field.multiline { height: 12mm; }
+
+.row-3 {
+  display: grid;
+  grid-template-columns: 44mm 1fr 1fr 1fr;
+  gap: 5mm;
+  align-items: end;
+  padding: 2mm 0;
+  border-bottom: 0.5pt solid var(--line-soft);
+}
+
+.row-3 .lab {
+  font-size: 7.8pt;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding-bottom: 1.4mm;
+}
+
+.row-3 .field {
+  border-bottom: 0.7pt solid rgba(17, 18, 20, 0.55);
+  height: 5.6mm;
+}
+
+.opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.4mm 6mm;
+  padding: 2.2mm 0 2.6mm;
+}
+
+.opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.2mm;
+  font-size: 8.6pt;
+  line-height: 1.2;
+}
+
+.box {
+  width: 3.6mm;
+  height: 3.6mm;
+  border: 0.7pt solid rgba(17, 18, 20, 0.65);
+  border-radius: 0.7mm;
+  display: inline-block;
+}
+
+.checks {
+  list-style: none;
+  margin: 2mm 0 0;
+  padding: 0;
+  columns: 2;
+  column-gap: 8mm;
+}
+
+.checks li {
+  break-inside: avoid;
+  font-size: 8.6pt;
+  line-height: 1.4;
+  margin-bottom: 1.5mm;
+  padding-left: 6mm;
+  position: relative;
+  color: #33363B;
+}
+
+.checks li .box {
+  position: absolute;
+  left: 0;
+  top: 0.4mm;
+}
+
+.note {
+  font-size: 7.8pt;
+  line-height: 1.5;
+  color: var(--grey);
+  margin: 3mm 0 0;
+}
+
+.form-foot {
+  margin-top: auto;
+  padding: 4.5mm 0 0;
+  border-top: 0.6pt solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8mm;
+  font-size: 7.8pt;
+  color: var(--grey);
+}
+
+.form-foot b { color: var(--ink); font-weight: 600; }
+
+/* fee table */
+
+.fees {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.6pt;
+  margin-top: 2mm;
+}
+
+.fees th {
+  text-align: left;
+  font-size: 7.2pt;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding: 1.8mm 2mm;
+  border-bottom: 0.7pt solid var(--ink);
+}
+
+.fees td {
+  padding: 2.2mm 2mm;
+  border-bottom: 0.5pt solid var(--line-soft);
+  vertical-align: top;
+}
+
+.fees td.price {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.fees tr.phase-accent td { background: rgba(226, 176, 38, 0.16); }
+
+/* agreement text */
+
+.agree {
+  font-size: 8.4pt;
+  line-height: 1.52;
+  color: #33363B;
+}
+
+.agree p { margin: 0 0 2.6mm; }
+
+.agree strong { color: var(--ink); font-weight: 600; }
+
+.consents {
+  list-style: none;
+  margin: 2mm 0 0;
+  padding: 0;
+}
+
+.consents li {
+  display: grid;
+  grid-template-columns: 4.6mm 1fr;
+  gap: 2.6mm;
+  font-size: 8.4pt;
+  line-height: 1.45;
+  margin-bottom: 2.4mm;
+  color: #33363B;
+}
+
+.sign-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8mm;
+  margin-top: 4mm;
+}
+
+.sign-block .line {
+  border-bottom: 0.7pt solid rgba(17, 18, 20, 0.55);
+  height: 12mm;
+}
+
+.sign-block .cap {
+  font-size: 7.4pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding-top: 1.4mm;
+}
+
+.sign-block .cap b { color: var(--ink); font-weight: 600; }
+
+/* ---------- poster ---------- */
+
+.poster {
+  padding: 26mm 26mm 22mm;
+  background: var(--green);
+  color: #FFFFFF;
+}
+
+.poster::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(46% 32% at 88% 88%, rgba(226, 176, 38, 0.30) 0%, rgba(226, 176, 38, 0) 72%),
+    radial-gradient(40% 26% at 6% 6%, rgba(226, 176, 38, 0.09) 0%, rgba(226, 176, 38, 0) 70%),
+    radial-gradient(120% 90% at 50% 44%, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.40) 100%);
+}
+
+.poster > * { position: relative; z-index: 1; }
+
+.poster > footer { margin-top: auto; }
+
+.poster-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12mm;
+}
+
+.poster-top .crest {
+  width: 62mm;
+  height: 62mm;
+  background: #FFFFFF;
+  border-radius: 50%;
+  padding: 5.5mm;
+}
+
+.poster-top .brand-name { font-size: 18pt; }
+.poster-top .brand-name small { font-size: 12.5pt; }
+
+.poster-top-right {
+  text-align: right;
+  font-size: 9pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 2;
+}
+
+.poster-top-right b { color: var(--gold); font-weight: 600; }
+
+.poster-head {
+  margin-top: 28mm;
+}
+
+.poster-head h1 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 100pt;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.poster-head .lede {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 29pt;
+  color: var(--gold);
+  margin: 8mm 0 0;
+  letter-spacing: 0.005em;
+}
+
+.poster-label {
+  display: flex;
+  align-items: center;
+  gap: 4mm;
+  margin: 26mm 0 9mm;
+}
+
+.poster-label span {
+  font-size: 10.5pt;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+  white-space: nowrap;
+}
+
+.poster-label i {
+  flex: 1 1 auto;
+  height: 0.8pt;
+  background: rgba(226, 176, 38, 0.55);
+}
+
+.fours {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12mm;
+}
+
+.four {
+  border-top: 1.2mm solid var(--gold);
+  padding-top: 6mm;
+}
+
+.four .num {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 150pt;
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1.4mm var(--gold);
+  display: block;
+  margin-bottom: 5mm;
+}
+
+.four h3 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 24pt;
+  letter-spacing: -0.01em;
+  margin: 0 0 3mm;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.four p {
+  font-size: 14pt;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.76);
+  margin: 0;
+  max-width: 100mm;
+}
+
+.diff {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12mm;
+}
+
+.diff-item .tag {
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2.6mm;
+}
+
+.diff-item h3 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 21pt;
+  letter-spacing: -0.015em;
+  margin: 0 0 3mm;
+  color: #FFFFFF;
+}
+
+.diff-item p {
+  font-size: 13.5pt;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.74);
+  margin: 0;
+}
+
+.poster-cta {
+  margin-top: 14mm;
+  background: var(--gold);
+  color: var(--ink);
+  padding: 12mm 12mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10mm;
+}
+
+.poster-cta .cta-line h2 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 40pt;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0 0 3mm;
+  line-height: 1;
+}
+
+.poster-cta .cta-line p {
+  margin: 0;
+  font-size: 17pt;
+  font-weight: 500;
+}
+
+.poster-cta .cta-line p b { font-weight: 700; }
+
+.poster-cta .cta-contact {
+  text-align: right;
+  font-size: 13.5pt;
+  line-height: 1.6;
+}
+
+.poster-cta .cta-contact b { font-weight: 700; }
+
+.poster-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8mm;
+  font-size: 11pt;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.poster-foot .tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16pt;
+  color: rgba(255, 255, 255, 0.85);
+}

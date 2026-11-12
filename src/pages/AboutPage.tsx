@@ -33,7 +33,7 @@ export function AboutPage() {
           <SectionEyebrow>About T4C</SectionEyebrow>
           <h1 className="mt-2 font-display text-[30px] sm:text-[42px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Education that<br />preserves fresh minds.</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 max-w-[60ch]">A global micro-school built on balance, self-reliance and intimacy, welcoming learners from across Africa and the world.</p>
-          <a href="#welcome" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Read Zanola's Letter</a>
+          <a href="#welcome" className="inline-flex mt-5 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Read Our Letter</a>
         </div>
       </div>
 
@@ -42,7 +42,7 @@ export function AboutPage() {
         <RevealStagger>
           <div id="welcome" className="bg-white border border-black/10 rounded-[16px] p-6 sm:p-8 lg:p-10">
             <SectionEyebrow>Welcome</SectionEyebrow>
-            <SectionHeading className="mt-2 text-[22px] sm:text-[28px]">A letter from Zanola Amanzi &amp; the T4C Team</SectionHeading>
+            <SectionHeading className="mt-2 text-[22px] sm:text-[28px]">A letter from the T4C Team</SectionHeading>
             <div className="mt-6 space-y-4 text-[14px] leading-relaxed text-neutral-700 max-w-[75ch]">
               <p>We are absolutely thrilled to welcome you to our global learning family. Whether you are joining us from right here in Africa or from across the world, you are now part of an educational community that does things differently.</p>
               <p>At Triple 4 Curriculum (T4C), we believe that school should inspire children, not exhaust them. Education shouldn't mean intense academic pressures, excessive screen time, work overload, or burnouts, nor should it mean drowning in mountains of evening homework. That is why we created the <strong>4-4-4 model: 4 days a week, 4 hours a day, and 4 lessons a day</strong>, led entirely by live, passionate teachers in interactive classes strictly capped at <strong>16 students</strong>.</p>
@@ -51,7 +51,7 @@ export function AboutPage() {
               <p>Best of all, we don't just teach for exams. Our dedicated Friday homework and apprenticeship projects grants your child the freedom to build real-world vocational skills, from coding and website design to content creation, sewing, project management, business studies and more.</p>
               <p>We are here to give your family time back, protect your peace, and equip your child with the practical capabilities to thrive in this competitive, forever-changing world.</p>
               <p>Get ready for a fresh start!</p>
-              <p className="font-semibold">Warmest regards,<br />Zanola Amanzi &amp; the T4C Team</p>
+              <p className="font-semibold">Warmest regards,<br />The T4C Team</p>
               <p className="italic">Where we don't just prepare students for exams, we give them the time to build a life.</p>
             </div>
             <p className="mt-8 text-[11px] font-mono tracking-widest uppercase text-[var(--color-t4c-green)]">Preserving Fresh Minds Globally.</p>
@@ -159,7 +159,11 @@ export function AboutPage() {
             {teamMembers.map((member) => (
               <figure
                 key={member.name}
-                className="bg-white border border-black/10 rounded-[16px] overflow-hidden"
+                className={
+                  member.featured
+                    ? 'bg-white border-2 border-[var(--color-t4c-yellow)] rounded-[16px] overflow-hidden shadow-md'
+                    : 'bg-white border border-black/10 rounded-[16px] overflow-hidden'
+                }
               >
                 <img
                   src={member.photo}
@@ -173,6 +177,9 @@ export function AboutPage() {
                   className="block w-full aspect-[4/5] object-cover object-top"
                 />
                 <figcaption className="p-4">
+                  {member.featured && (
+                    <p className="mb-1 inline-block text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-t4c-black)] bg-[var(--color-t4c-yellow)] px-2 py-0.5 rounded-full">Leadership</p>
+                  )}
                   <p className="font-semibold text-sm text-[var(--color-t4c-black)]">{member.name}</p>
                   <p className="mt-0.5 text-xs font-mono uppercase tracking-widest text-[var(--color-t4c-green)]">{member.role}</p>
                 </figcaption>

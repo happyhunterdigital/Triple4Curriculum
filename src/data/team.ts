@@ -12,6 +12,8 @@ export interface TeamMember {
   alt: string;
   width: number;
   height: number;
+  /** Rendered with a highlighted card (yellow border + Leadership tag). */
+  featured?: boolean;
 }
 
 export const teamMembers: TeamMember[] = [
@@ -30,6 +32,7 @@ export const teamMembers: TeamMember[] = [
     alt: 'Wonder Ngwenya, Head of Department at Triple 4 Curriculum.',
     width: 1024,
     height: 1024,
+    featured: true,
   },
   {
     name: 'Motshidiso',

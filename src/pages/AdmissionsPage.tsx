@@ -107,7 +107,7 @@ export function AdmissionsPage() {
               <a href="mailto:admissions@t4c.com" className="inline-flex border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)]">Email admissions@t4c.com</a>
               <a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="inline-flex border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)]">WhatsApp UK</a>
             </div>
-            <p className="mt-4 text-xs text-neutral-500">Prefer to talk? Call SA +27 689-758-960 / +27 639-642-288 or see <Link to="/contact" className="underline">Contact</Link>.</p>
+            <p className="mt-4 text-xs text-neutral-500">Prefer to talk? Call +27 63-199-7147 (main) / WhatsApp +27 639-642-288 or see <Link to="/contact" className="underline">Contact</Link>.</p>
           </div>
         </RevealStagger>
       </PageShell>

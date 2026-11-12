@@ -72,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
 
       {/* Public nav, PDF sections (desktop) */}
       <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1 text-[10px] 2xl:text-[11px] font-bold uppercase tracking-widest shrink-0" aria-label="Primary">
-        <a href="/about" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">About</a>
+        <a href="/about" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">About Us</a>
         <a href="/how-it-works" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">How it Works</a>
         <a href="/curriculum" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Curriculum</a>
         <a href="/learners" className="px-1.5 2xl:px-2 py-1.5 text-white/80 hover:text-[var(--color-t4c-yellow)] transition-colors">Learners</a>
