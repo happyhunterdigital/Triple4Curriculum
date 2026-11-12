@@ -120,45 +120,62 @@ async function attachToLecture(filename: string, youtubeId: string, videoUrl: st
   return match.id;
 }
 
+async function runSync() {
+  const db = getFirestore();
+  const token = await getAccessToken();
+  const processedSnap = await db.collection('drive_sync').limit(500).get();
+  const processed = new Set(processedSnap.docs.map((d) => d.id));
+  const files = await listNewMeetRecordings(token, processed);
+  console.log(`drive->youtube sync: ${files.length} new recording(s)`);
+
+  for (const file of files) {
+    try {
+      const data = await downloadFile(token, file.id);
+      const videoId = await uploadToYouTube(
+        token,
+        file.name.replace(/\.mp4$/i, ''),
+        `Recorded ${file.createdTime}`,
+        data
+      );
+      const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+      const lectureId = await attachToLecture(file.name, videoId, videoUrl, db);
+
+      await db.collection('recordings').add({
+        driveFileId: file.id,
+        driveName: file.name,
+        youtubeId: videoId,
+        youtubeUrl: videoUrl,
+        privacy: 'unlisted',
+        lectureId: lectureId || null,
+        recordedAt: file.createdTime,
+        syncedAt: FieldValue.serverTimestamp(),
+      });
+      await db.collection('drive_sync').doc(file.id).set({ processedAt: FieldValue.serverTimestamp(), youtubeId: videoId });
+      console.log(`- uploaded ${file.name} -> ${videoUrl}${lectureId ? ` (attached to ${lectureId})` : ''}`);
+    } catch (e) {
+      console.error(`- failed ${file.name}:`, e);
+      // Do NOT mark processed — retried next run.
+    }
+  }
+}
+
 export const syncMeetRecordings = onSchedule(
   { schedule: 'every 6 hours', region: 'europe-west1', secrets: [CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN, DRIVE_FOLDER] },
   async () => {
-    const db = getFirestore();
-    const token = await getAccessToken();
-    const processedSnap = await db.collection('drive_sync').limit(500).get();
-    const processed = new Set(processedSnap.docs.map((d) => d.id));
-    const files = await listNewMeetRecordings(token, processed);
-    console.log(`drive->youtube sync: ${files.length} new recording(s)`);
+    await runSync();
+  }
+);
 
-    for (const file of files) {
-      try {
-        const data = await downloadFile(token, file.id);
-        const videoId = await uploadToYouTube(
-          token,
-          file.name.replace(/\.mp4$/i, ''),
-          `Recorded ${file.createdTime}`,
-          data
-        );
-        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-        const lectureId = await attachToLecture(file.name, videoId, videoUrl, db);
-
-        await db.collection('recordings').add({
-          driveFileId: file.id,
-          driveName: file.name,
-          youtubeId: videoId,
-          youtubeUrl: videoUrl,
-          privacy: 'unlisted',
-          lectureId: lectureId || null,
-          recordedAt: file.createdTime,
-          syncedAt: FieldValue.serverTimestamp(),
-        });
-        await db.collection('drive_sync').doc(file.id).set({ processedAt: FieldValue.serverTimestamp(), youtubeId: videoId });
-        console.log(`- uploaded ${file.name} -> ${videoUrl}${lectureId ? ` (attached to ${lectureId})` : ''}`);
-      } catch (e) {
-        console.error(`- failed ${file.name}:`, e);
-        // Do NOT mark processed — retried next run.
-      }
+/** Staff manual hook: run the Drive -> YouTube sync on demand (no 6h wait). */
+export const syncMeetRecordingsNow = onCall(
+  { region: 'europe-west1', secrets: [CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN, DRIVE_FOLDER] },
+  async (req) => {
+    const role = (req.auth?.token as { role?: string } | undefined)?.role;
+    if (role !== 'teacher' && role !== 'admin' && role !== 'lecturer') {
+      throw new HttpsError('permission-denied', 'Staff only.');
     }
+    await runSync();
+    return { success: true };
   }
 );
 
