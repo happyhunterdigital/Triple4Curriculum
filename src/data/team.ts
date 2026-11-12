@@ -37,7 +37,7 @@ export const teamMembers: TeamMember[] = [
   {
     name: 'Motshidisi',
     role: 'English Teacher',
-    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794495425/Motshidisi_English.jpg',
+    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794496367/Motshidisi_English.jpg',
     alt: 'Motshidisi, English teacher at Triple 4 Curriculum.',
     width: 896,
     height: 1200,
