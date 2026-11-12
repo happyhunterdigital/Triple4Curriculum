@@ -1,0 +1,43 @@
+name: Set auth claims (from Firestore roles)
+
+# One-time/backfill job: writes Firebase Auth custom claims for every
+# users/{uid} document. DRY_RUN=1 first to preview, then run real.
+# Users must sign out/in to pick up new claims.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview only (no changes)'
+        type: boolean
+        default: true
+      uids:
+        description: 'Optional comma-separated UIDs (empty = everyone)'
+        required: false
+        default: ''
+
+jobs:
+  claims:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install firebase-admin
+        run: npm install --no-save firebase-admin
+
+      - name: Set claims
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+          UIDS: ${{ inputs.uids }}
+        run: |
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/svc.json"
+          UID_ARGS=""
+          if [ -n "$UIDS" ]; then
+            UID_ARGS=$(printf '%s' "$UIDS" | tr ',' ' ')
+          fi
+          node scripts/set-claims.mjs $UID_ARGS
