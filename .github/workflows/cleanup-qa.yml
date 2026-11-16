@@ -1,0 +1,26 @@
+name: Cleanup QA accounts
+
+# Removes throwaway test accounts (@triple4c-test.example) and their Firestore
+# docs, payment records and registration uploads. Safe to run any time.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install firebase-admin
+        run: npm install --no-save firebase-admin
+
+      - name: Run cleanup
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GCP_PROJECT: triple4curriculum
+        run: node scripts/cleanup-qa.mjs
