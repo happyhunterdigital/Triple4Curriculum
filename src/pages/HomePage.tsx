@@ -31,36 +31,32 @@ export function HomePage() {
   useEffect(() => { document.title = 'Triple 4 Curriculum: Small Classes. Big Futures.'; }, []);
   return (
     <div className="w-full bg-[var(--color-canvas-soft)]">
-      {/* Hero: brand collage. A 16:9 collage cannot survive a portrait
-          background crop, so on phones it sits as its own band above the copy;
-          from sm up it becomes the card background under a white wash. */}
+      {/* Hero: brand collage. 16:9 uncropped on mobile; from sm up the copy sits
+         at the bottom of the image, touching the baseline, so the faces stay clear. */}
       <section className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         <div className="relative rounded-[24px] sm:rounded-[40px] overflow-hidden bg-white border border-black/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] flex flex-col sm:block sm:min-h-[560px]">
-          <div className="relative sm:absolute sm:inset-0 sm:h-auto">
-            <img
-              src={cloudinaryImage(HERO_IMAGE, 960)}
-              srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1600])}
-              sizes="(min-width: 1400px) 1400px, 100vw"
-              alt="Triple 4C learners playing piano, studying on laptops and reading in the library"
-              width={2048}
-              height={1143}
-              fetchPriority="high"
-              loading="eager"
-              decoding="async"
-              /* Phones: width-driven, so the whole 16:9 collage shows without a
-                 crop or letterbox. From sm up it becomes a cover background. */
-              className="block h-auto w-full sm:h-full sm:w-full sm:object-cover sm:object-[center_42%]"
-            />
-          </div>
-          <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 py-8 sm:py-10 max-w-[640px] sm:max-w-[560px] sm:my-8 sm:ml-8 sm:bg-white/88 sm:backdrop-blur-md sm:rounded-[20px] sm:border sm:border-black/5 sm:shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]">
-            <SectionEyebrow>Preserving Fresh Minds Globally</SectionEyebrow>
-            <h1 className="mt-3 font-display text-[30px] sm:text-[42px] lg:text-[52px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Small Classes.<br />Big Futures.</h1>
-            <p className="mt-3 text-[14px] sm:text-[15px] leading-relaxed text-neutral-700 max-w-[48ch]">Daily live classes capped at 16. Four days, four hours, four lessons, with a Friday for real-world skills.</p>
-            <div className="mt-6 flex flex-wrap gap-3">
+          <img
+            src={cloudinaryImage(HERO_IMAGE, 960)}
+            srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1600])}
+            sizes="(min-width: 1400px) 1400px, 100vw"
+            alt="Triple 4C learners playing piano, studying on laptops and reading in the library"
+            width={2048}
+            height={1143}
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+            className="block w-full h-auto sm:object-cover sm:object-[center_52%]"
+          />
+          {/* Text panel: pinned to the bottom of the image, full width, no overlay */}
+          <div className="relative z-10 flex flex-col justify-end px-5 sm:px-8 lg:px-10 py-6 sm:py-8 max-w-[640px] sm:max-w-[560px] sm:ms-8 bottom-0 left-0 right-0">
+            <SectionEyebrow className="text-emerald-600 mb-2">Preserving Fresh Minds Globally</SectionEyebrow>
+            <h1 className="mt-2 font-display text-[30px] sm:text-[42px] lg:text-[52px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Small Classes.<br />Big Futures.</h1>
+            <p className="mt-2 text-[14px] sm:text-[15px] leading-relaxed text-neutral-700 max-w-[48ch]">Daily live classes capped at 16. Four days, four hours, four lessons, with a Friday for real-world skills.</p>
+            <div className="mt-4 flex flex-wrap gap-3">
               <Link to="/admissions#apply" className="inline-flex items-center gap-2 bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors">Check Availability <ArrowRight size={14} /></Link>
               <Link to="/how-it-works" className="inline-flex items-center gap-2 bg-white border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)] transition-colors">Discover the Model</Link>
             </div>
-            <p className="mt-3 text-xs text-neutral-500">SACCAI-track · CAPS + international · Grade R-12 · 100% live</p>
+            <p className="mt-2 text-xs text-neutral-500">SACCAI-track · CAPS + international · Grade R-12 · 100% live</p>
           </div>
         </div>
       </section>
