@@ -33,12 +33,12 @@ const smtp = {
 };
 
 const res = await client.request({
-  url: `https://identitytoolkit.googleapis.com/v2/projects/${project}/config?updateMask=smtp`,
+  url: `https://identitytoolkit.googleapis.com/v2/projects/${project}/config?updateMask=notification.sendEmail.smtp`,
   method: 'PATCH',
-  data: { smtp },
+  data: { notification: { sendEmail: { smtp } } },
 });
 
-const out = res.data?.smtp || {};
+const out = res.data?.notification?.sendEmail?.smtp || {};
 console.log(
   JSON.stringify(
     {
