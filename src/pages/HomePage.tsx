@@ -22,8 +22,7 @@ function FaqTeaser() {
           <summary className="list-none flex justify-between gap-4 cursor-pointer font-semibold text-sm text-[var(--color-t4c-black)]">{it.q}<ArrowRight size={14} className="shrink-0 mt-1 group-open:rotate-90 transition-transform text-[var(--color-t4c-green)]" /></summary>
           <p className="mt-2 text-sm leading-relaxed text-neutral-600">{it.a} <Link to="/faq" className="underline decoration-[var(--color-t4c-green)] hover:text-[var(--color-t4c-green)]">More</Link></p>
         </details>
-      ))}
-    </div>
+      ))}</div>
   );
 }
 
@@ -31,41 +30,32 @@ export function HomePage() {
   useEffect(() => { document.title = 'Triple 4 Curriculum: Small Classes. Big Futures.'; }, []);
   return (
     <div className="w-full bg-[var(--color-canvas-soft)]">
-      {/* Hero: brand collage. A 16:9 collage cannot survive a portrait
-          background crop, so on phones it sits as its own band above the copy;
-          from sm up it becomes the card background under a white wash. */}
+      {/* Hero: brand collage. 16:9 uncropped on mobile; from sm up the copy sits
+         at the bottom of the image, touching the baseline, so the faces stay clear. */}
       <section className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
-        <div className="relative rounded-[24px] sm:rounded-[40px] overflow-hidden bg-white border border-black/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] flex flex-col sm:block sm:min-h-[560px]">
-          <div className="relative sm:absolute sm:inset-0 sm:h-auto">
-            <img
-              src={cloudinaryImage(HERO_IMAGE, 960)}
-              srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1600])}
-              sizes="(min-width: 1400px) 1400px, 100vw"
-              alt="Triple 4C learners playing piano, studying on laptops and reading in the library"
-              width={2048}
-              height={1143}
-              fetchPriority="high"
-              loading="eager"
-              decoding="async"
-              /* Phones: width-driven, so the whole 16:9 collage shows without a
-                 crop or letterbox. From sm up it becomes a cover background. */
-              className="block h-auto w-full sm:h-full sm:w-full sm:object-cover sm:object-[center_42%]"
-            />
-            {/* phones: blend the band into the copy below */}
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/15 to-transparent sm:hidden" />
-            {/* tablet/desktop: a light wash on the copy side only — the photo
-                stays roughly 60-70% clear across the rest of the card. */}
-            <div className="hidden sm:block absolute inset-0 bg-[linear-gradient(90deg,#FFFFFF_0%,rgba(255,255,255,0.88)_28%,rgba(255,255,255,0.42)_44%,rgba(255,255,255,0)_62%)]" />
-          </div>
-          <div className="relative z-10 flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-8 sm:py-14 max-w-[640px]">
-            <SectionEyebrow>Preserving Fresh Minds Globally</SectionEyebrow>
-            <h1 className="mt-3 font-display text-[30px] sm:text-[42px] lg:text-[52px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Small Classes.<br />Big Futures.</h1>
-            <p className="mt-3 text-[14px] sm:text-[15px] leading-relaxed text-neutral-700 max-w-[48ch]">Daily live classes capped at 16. Four days, four hours, four lessons, with a Friday for real-world skills.</p>
-            <div className="mt-6 flex flex-wrap gap-3">
+        <div className="relative rounded-[24px] sm:rounded-[40px] overflow-hidden bg-white border border-black/10 sm:min-h-[560px]">
+          <img
+            src={cloudinaryImage(HERO_IMAGE, 960)}
+            srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1600])}
+            sizes="(min-width: 1400px) 1400px, 100vw"
+            alt="Triple 4C learners playing piano, studying on laptops and reading in the library"
+            width={2048}
+            height={1143}
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+            className="block w-full h-auto sm:object-cover sm:object-[center_52%]"
+          />
+          {/* Text panel: pinned to the bottom of the image, full width, no overlay */}
+          <div className="relative z-10 flex flex-col justify-end px-5 sm:px-8 lg:px-10 py-6 sm:py-8 max-w-[640px] sm:max-w-[560px] sm:ms-8 bottom-0 left-0 right-0">
+            <SectionEyebrow className="text-emerald-600 mb-2">Preserving Fresh Minds Globally</SectionEyebrow>
+            <h1 className="mt-2 font-display text-[30px] sm:text-[42px] lg:text-[52px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Small Classes.<br />Big Futures.</h1>
+            <p className="mt-2 text-[14px] sm:text-[15px] leading-relaxed text-neutral-700 max-w-[48ch]">Daily live classes capped at 16. Four days, four hours, four lessons, with a Friday for real-world skills.</p>
+            <div className="mt-4 flex flex-wrap gap-3">
               <Link to="/admissions#apply" className="inline-flex items-center gap-2 bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors">Check Availability <ArrowRight size={14} /></Link>
               <Link to="/how-it-works" className="inline-flex items-center gap-2 bg-white border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)] transition-colors">Discover the Model</Link>
             </div>
-            <p className="mt-3 text-xs text-neutral-500">SACCAI-track · CAPS + international · Grade R-12 · 100% live</p>
+            <p className="mt-2 text-xs text-neutral-500">SACCAI-track · CAPS + international · Grade R-12 · 100% live</p>
           </div>
         </div>
       </section>
@@ -88,8 +78,7 @@ export function HomePage() {
                 <h3 className="mt-3 font-semibold text-[var(--color-t4c-black)]">{card.title}</h3>
                 <ul className="mt-3 space-y-2 text-sm leading-relaxed text-neutral-700">{card.bullets.map(b => <li key={b} className="flex gap-2"><span className="text-[var(--color-t4c-green)]">·</span>{b}</li>)}</ul>
               </div>
-            ))}
-          </div>
+            ))}</div>
         </RevealStagger>
 
         {/* ABOUT teaser, staggered reveal */}
@@ -110,8 +99,7 @@ export function HomePage() {
                     <span className="ml-2 text-xs font-bold uppercase tracking-widest text-[var(--color-t4c-black)]">{s.l}</span>
                     <p className="text-xs text-neutral-600 mt-1">{s.d}</p>
                   </li>
-                ))}
-              </ul>
+                ))}</ul>
               <Link to="/how-it-works" className="inline-flex items-center min-h-11 mt-5 text-xs font-bold uppercase tracking-widest underline decoration-[var(--color-t4c-yellow)] decoration-2 underline-offset-4 hover:text-[var(--color-t4c-green)]">How the week works →</Link>
             </div>
             <div className="bg-white border border-black/10 rounded-[16px] p-6 sm:p-8">
@@ -122,34 +110,6 @@ export function HomePage() {
                 <li className="flex gap-3"><BookOpen size={16} className="shrink-0 text-[var(--color-t4c-green)] mt-0.5" />Blended CAPS + international, local matric + global readiness.</li>
                 <li className="flex gap-3"><Award size={16} className="shrink-0 text-[var(--color-t4c-green)] mt-0.5" />FET Grades 10-12 leads to a valid NSC Matric certificate.</li>
               </ul>
-            </div>
-          </div>
-        </RevealStagger>
-
-        {/* Class environment full-width editorial */}
-        <RevealStagger>
-          <div className="rounded-[16px] overflow-hidden border border-black/10 bg-white grid lg:grid-cols-2">
-            <div className="h-auto sm:h-[320px] bg-neutral-100 overflow-hidden">
-              {/* Mobile shows the full 16:9 collage uncropped so every learner stays
-                  in frame; desktop keeps the 2:1 editorial crop. */}
-              <img
-                src={cloudinaryImage(HERO_IMAGE, 800)}
-                srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 800, 1024])}
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                alt="Live classroom capped at 16 learners"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-auto sm:h-full object-cover"
-              />
-            </div>
-            <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
-              <SectionHeading className="text-[22px] sm:text-[26px]">100% live. Capped at 16. Parent hands-off.</SectionHeading>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-700">Every lesson has a certified teacher on camera for its full duration, teaching, facilitating, answering, mentoring. With only 16 learners, no one hides behind mute. Foundation parents help with login; beyond that, teachers own the room.</p>
-              <div className="mt-4 flex flex-wrap gap-2 text-xs font-mono">
-                <span className="px-2.5 py-1 rounded-full bg-[var(--color-t4c-green)] text-white">16 cap</span>
-                <span className="px-2.5 py-1 rounded-full border border-black/10">Daily synchronized</span>
-                <span className="px-2.5 py-1 rounded-full border border-black/10">Recordings included</span>
-              </div>
             </div>
           </div>
         </RevealStagger>

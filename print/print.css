@@ -621,6 +621,297 @@ html.export .sheet {
 
 .sign-block .cap b { color: var(--ink); font-weight: 600; }
 
+/* ---------- flyers ---------- */
+
+.flyer-head {
+  padding: 12mm 13mm 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8mm;
+}
+
+.flyer-head .crest { width: 21.5mm; height: 21.5mm; }
+.flyer-head .brand-name { font-size: 10pt; white-space: nowrap; }
+.flyer-head .brand-name small { font-size: 8.6pt; }
+
+.flyer-meta {
+  text-align: right;
+  font-size: 6.6pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey-soft);
+  line-height: 2.1;
+  max-width: 44mm;
+}
+
+.flyer-meta b {
+  display: block;
+  font-size: 7pt;
+  color: var(--green);
+  margin-bottom: 0.8mm;
+}
+
+.flyer-hero { padding: 9mm 13mm 0; }
+
+.flyer-hero h1 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 29pt;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 2.4mm 0 0;
+}
+
+.flyer-hero h1 .gold { color: var(--gold-ink); white-space: nowrap; }
+
+.flyer-hero .lede {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12pt;
+  color: var(--gold-ink);
+  margin: 3.4mm 0 0;
+}
+
+.flyer-hero .standfirst {
+  font-size: 8.6pt;
+  line-height: 1.55;
+  color: var(--grey);
+  margin: 3.6mm 0 0;
+  max-width: 118mm;
+}
+
+.flyer-four {
+  margin-top: auto;
+  background: var(--green);
+  color: #FFFFFF;
+  padding: 7.5mm 13mm 8mm;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6mm;
+}
+
+.flyer-four .n {
+  display: block;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 38pt;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 0.9mm var(--gold);
+  margin-bottom: 2.6mm;
+}
+
+.flyer-four h3 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 8.4pt;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0 0 1.4mm;
+}
+
+.flyer-four p {
+  font-size: 7.2pt;
+  line-height: 1.42;
+  color: rgba(255, 255, 255, 0.74);
+  margin: 0;
+}
+
+.flyer-cta {
+  background: var(--gold);
+  color: var(--ink);
+  padding: 5.4mm 13mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6mm;
+}
+
+.flyer-cta h2 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 13.5pt;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.05;
+}
+
+.flyer-cta .url {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 11pt;
+  letter-spacing: -0.01em;
+  text-align: right;
+  line-height: 1.35;
+}
+
+.flyer-cta .url span {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 7.4pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(26, 28, 30, 0.66);
+}
+
+.flyer-foot {
+  background: var(--green);
+  color: rgba(255, 255, 255, 0.74);
+  padding: 4mm 13mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6mm;
+  font-size: 7pt;
+  letter-spacing: 0.02em;
+}
+
+.flyer-foot b { color: #FFFFFF; font-weight: 600; }
+.flyer-foot .tag {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 9pt;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* back of the flyer */
+
+.flyer-back {
+  padding: 11mm 13mm 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.flyer-sec { margin-top: 6mm; }
+.flyer-sec:first-child { margin-top: 0; }
+
+.flyer-back-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6mm;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 7pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  border-bottom: 0.6pt solid var(--line);
+  padding-bottom: 2.6mm;
+  margin-bottom: 2mm;
+}
+
+.flyer-back-head em {
+  font-style: normal;
+  color: var(--gold-ink);
+}
+
+.flyer-sec h2 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 8.6pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+  border-bottom: 0.6pt solid var(--gold);
+  padding-bottom: 1.5mm;
+  margin: 0 0 2.6mm;
+}
+
+.f-item {
+  display: grid;
+  grid-template-columns: 7mm 1fr;
+  gap: 3mm;
+  padding: 2.2mm 0;
+  border-bottom: 0.5pt solid var(--line-soft);
+}
+
+.f-item .i {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 8.6pt;
+  color: var(--gold-ink);
+}
+
+.f-item h3 {
+  font-size: 8.2pt;
+  font-weight: 600;
+  margin: 0 0 0.6mm;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.f-item p {
+  font-size: 7.4pt;
+  line-height: 1.4;
+  color: var(--grey);
+  margin: 0;
+}
+
+.steps { display: grid; gap: 1.8mm; margin-top: 1mm; }
+
+.step {
+  display: grid;
+  grid-template-columns: 5.6mm 1fr;
+  gap: 3mm;
+  font-size: 7.6pt;
+  line-height: 1.4;
+  color: var(--grey);
+}
+
+.step .s {
+  width: 5.2mm;
+  height: 5.2mm;
+  border: 0.7pt solid var(--green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 6.6pt;
+  color: var(--green);
+}
+
+.step b { color: var(--ink); font-weight: 600; }
+
+.flyer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7.6pt;
+}
+
+.flyer-table th {
+  text-align: left;
+  font-size: 6.4pt;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--grey-soft);
+  padding: 1.4mm 1.4mm;
+  border-bottom: 0.6pt solid var(--ink);
+}
+
+.flyer-table td {
+  padding: 1.7mm 1.4mm;
+  border-bottom: 0.5pt solid var(--line-soft);
+  color: #3C4045;
+}
+
+.flyer-table td.p {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
 /* ---------- poster ---------- */
 
 .poster {
@@ -843,3 +1134,240 @@ html.export .sheet {
   font-size: 16pt;
   color: rgba(255, 255, 255, 0.85);
 }
+
+/* ---------- A5 flyer ---------- */
+
+.flyer {
+  padding: 12mm;
+  display: flex;
+  flex-direction: column;
+}
+
+.flyer-dark {
+  background:
+    radial-gradient(60% 40% at 92% 94%, rgba(226, 176, 38, 0.30) 0%, rgba(226, 176, 38, 0) 70%),
+    radial-gradient(50% 30% at 4% 2%, rgba(226, 176, 38, 0.10) 0%, rgba(226, 176, 38, 0) 72%),
+    var(--green);
+  color: #FFFFFF;
+}
+
+.flyer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8mm;
+}
+
+.flyer-head .crest { width: 22mm; height: 22mm; }
+
+.flyer-head .name {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 10.5pt;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.flyer-head .name small {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 8.2pt;
+  text-transform: none;
+  color: var(--gold-ink);
+}
+
+.flyer-dark .flyer-head .name small { color: rgba(255, 255, 255, 0.74); }
+
+.flyer-kicker {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 6.6pt;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
+}
+
+.flyer-dark .flyer-kicker { color: var(--gold); }
+
+.flyer h1 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 34pt;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.flyer-dark h1 { color: #FFFFFF; }
+
+.flyer .lede {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13pt;
+  line-height: 1.25;
+  margin: 0;
+  color: var(--gold);
+}
+
+.flyer-trio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5mm;
+  margin-top: auto;
+}
+
+.flyer-trio .item {
+  border-top: 0.9mm solid var(--gold);
+  padding-top: 3mm;
+}
+
+.flyer-trio .num {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 30pt;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 2mm;
+}
+
+.flyer-trio h3 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 9pt;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0 0 1.2mm;
+}
+
+.flyer-dark .flyer-trio h3 { color: #FFFFFF; }
+
+.flyer-trio p {
+  font-size: 7.6pt;
+  line-height: 1.4;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.flyer-band {
+  background: var(--gold);
+  color: var(--ink);
+  padding: 4.6mm 5mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5mm;
+  margin-top: 8mm;
+}
+
+.flyer-band b {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 11pt;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.flyer-band span { font-size: 8.4pt; font-weight: 600; }
+
+/* flyer back */
+
+.flyer-sec h2 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 9.2pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0 0 3mm;
+  padding-bottom: 1.6mm;
+  border-bottom: 0.6pt solid var(--gold);
+}
+
+.flyer-list { display: grid; gap: 3.4mm; }
+
+.flyer-item {
+  display: grid;
+  grid-template-columns: 9mm 1fr;
+  gap: 3.4mm;
+  align-items: start;
+}
+
+.flyer-item .n {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 14pt;
+  line-height: 0.9;
+  color: var(--gold-ink);
+}
+
+.flyer-item h3 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 9.4pt;
+  margin: 0 0 1mm;
+  text-transform: uppercase;
+}
+
+.flyer-item p {
+  font-size: 8pt;
+  line-height: 1.4;
+  margin: 0;
+  color: #4E5257;
+}
+
+.flyer-fee {
+  background: var(--cream);
+  border-left: 1.2mm solid var(--gold);
+  padding: 3.4mm 4mm;
+  margin-top: 5mm;
+}
+
+.flyer-fee p { margin: 0; font-size: 8pt; line-height: 1.45; color: #4E5257; }
+.flyer-fee b { font-size: 10pt; color: var(--ink); }
+
+.flyer-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4mm;
+  margin-top: 2mm;
+}
+
+.flyer-steps .step .n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.6mm;
+  height: 5.6mm;
+  border: 0.5mm solid var(--green);
+  border-radius: 50%;
+  font-size: 6.4pt;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 1.6mm;
+}
+
+.flyer-steps .step p { margin: 0; font-size: 7.6pt; line-height: 1.35; color: #4E5257; }
+.flyer-steps .step b { display: block; font-size: 8.2pt; color: var(--ink); margin-bottom: 0.6mm; }
+
+.flyer-foot {
+  margin: 6mm -12mm -12mm;
+  padding: 4.6mm 12mm;
+  background: var(--green);
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6mm;
+  font-size: 7.4pt;
+  line-height: 1.6;
+}
+
+.flyer-foot .crest { width: 22mm; height: 22mm; }
+.flyer-foot b { color: #FFFFFF; font-weight: 600; }

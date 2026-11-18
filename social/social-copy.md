@@ -76,22 +76,47 @@ Instagram.
 
 ### Instagram (carousel: 01, 02, 03, 06)
 
-> We built the school we wished existed.
+> A school week of four days sounds like a shortcut. It is not.
 >
-> Triple 4 Curriculum is a South African online school for Grade R to 12.
-> Every lesson is live and teacher led. Every class is capped at sixteen.
+> Four days a week. Four hours a day. Four lessons a day. Sixteen learners in
+> a class, taught live by a certified South African or UK teacher who knows
+> every one of them by name.
 >
-> Four days a week. Four hours a day. Four lessons a day. Then three days that
-> belong to your family.
+> The fifth day is not a school day. It belongs to your family.
 >
-> CAPS aligned with an international blend, leading to the NSC matric in
-> Grades 10 to 12. Certified South African and UK teachers. Every live lesson
+> Grade R to 12. CAPS aligned with an international blend, working towards
+> the National Senior Certificate in Grades 10 to 12. Every live lesson
 > recorded.
 >
+> Swipe to see how the week works.
+>
 > Enrolment for 2027 is open. Link in bio.
+
+Hook alternatives for the first line, for split testing:
+
+- "Sixteen learners. One teacher. Every lesson."
+- "What if the timetable was designed around your child, and not the other
+  way around?"
+
+Shorter variant:
+
+> Four days a week. Four hours a day. Four lessons a day. Sixteen learners,
+> one live teacher.
+>
+> The fifth day belongs to your family.
+>
+> Grade R to 12. CAPS aligned, NSC matric track. Enrolment for 2027 is open.
+> Link in bio.
+
+First comment to pin:
+
+> FAQ: yes, lessons are live, not recorded videos. Recordings exist so a
+> learner can catch up after being ill. Classes are capped at 16, from Grade R
+> to matric. Fees and the full timetable: triple4c.com/admissions
 >
 > #OnlineSchoolSouthAfrica #Triple4Curriculum #HomeschoolSouthAfrica
 > #SouthAfricanSchools #GradeRto12 #CAPS #LiveOnlineSchool #Sandton
+> #SmallClassSize #MatricSouthAfrica
 
 ### Facebook (single: 01)
 
