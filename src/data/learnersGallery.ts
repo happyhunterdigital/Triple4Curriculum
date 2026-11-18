@@ -134,13 +134,6 @@ export const learnersGallery: LearnerImage[] = [
     height: 1597,
   },
   {
-    src: '/images/learners/triple-4-curriculum-learner-reading-museum.jpg',
-    alt: 'Learner reading an open book on a colourful armchair beside a window, with the Hackney Museum entrance behind her.',
-    caption: 'Reading, in her own time.',
-    width: 995,
-    height: 1600,
-  },
-  {
     src: '/images/learners/triple-4-curriculum-learner-typing-coursework.jpg',
     alt: 'Learner in a tie-dye t-shirt typing on a laptop on a turquoise sofa beside plants.',
     caption: 'Independent study, with a mentor close by.',
