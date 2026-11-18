@@ -97,6 +97,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           accept={accept}
           multiple={multiple}
           className="hidden"
+          onClick={e => e.stopPropagation()}
           onChange={e => processFiles(e.target.files)}
         />
         {busy ? (
