@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowRight, CalendarDays, Users, X } from 'lucide-react';
+import { ArrowRight, CalendarDays, Users, X, Tag } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
 import { getConsent } from '../../lib/consent';
 import { daysUntilTerm, TERM_LABEL, termStartLabel } from '../../lib/term';
@@ -145,13 +145,28 @@ export const FirstTermPrompt: React.FC = () => {
           </li>
         </ul>
 
+        {/* Black Friday highlight */}
+        <div className="mt-4 flex items-start gap-3 rounded-[14px] border border-[var(--color-t4c-yellow)]/60 bg-[var(--color-t4c-black)] px-4 py-3">
+          <Tag size={16} className="mt-0.5 shrink-0 text-[var(--color-t4c-yellow)]" />
+          <div className="text-xs leading-relaxed text-white/90">
+            <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-t4c-yellow)]">
+              Black Friday Special
+            </p>
+            <p className="mt-0.5">
+              <strong className="text-white">10% off all terms</strong> with code{' '}
+              <span className="font-mono font-bold text-[var(--color-t4c-yellow)]">BLACKFRIEND10</span>{' '}
+              at checkout · new registrations only · offer ends midnight Sunday.
+            </p>
+          </div>
+        </div>
+
         <div className="mt-6 flex flex-col gap-2 sm:flex-row">
           <Link
             to="/admissions#apply"
             onClick={close}
             className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[var(--color-t4c-black)] px-5 py-3 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-[var(--color-t4c-green)]"
           >
-            Apply for Term 1 <ArrowRight size={14} />
+            Apply for Term 1 — save 10% <ArrowRight size={14} />
           </Link>
           <Link
             to="/contact"
