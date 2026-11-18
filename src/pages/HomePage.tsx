@@ -64,8 +64,8 @@ export function HomePage() {
               </a>
             </nav>
           </div>
-          {/* Text panel: pinned to the bottom of the image, full width, no overlay */}
-          <div className="relative z-10 flex flex-col justify-end px-5 sm:px-8 lg:px-10 py-6 sm:py-8 max-w-[640px] sm:max-w-[560px] sm:ms-8 bottom-0 left-0 right-0">
+          {/* Text panel: glassmorphism at bottom of image, clear faces */}
+          <div className="relative z-10 flex flex-col justify-end px-5 sm:px-8 lg:px-10 py-6 sm:py-8 max-w-[640px] sm:max-w-[560px] sm:ms-8 bottom-0 left-0 right-0 bg-white/10 backdrop-blur-sm border-t border-white/5">
             <SectionEyebrow className="text-emerald-600 mb-2">Preserving Fresh Minds Globally</SectionEyebrow>
             <h1 className="mt-2 font-display text-[30px] sm:text-[42px] lg:text-[52px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Small Classes.<br />Big Futures.</h1>
             <p className="mt-2 text-[14px] sm:text-[15px] leading-relaxed text-neutral-700 max-w-[48ch]">Daily live classes capped at 16. Four days, four hours, four lessons, with a Friday for real-world skills.</p>
