@@ -63,8 +63,23 @@ Link by platform, all pointing at `https://triple4c.com/admissions`:
 | `wide-x-1600x900.png` | 1600x900 | X and link previews |
 | `wide-li-1200x627.png` | 1200x627 | LinkedIn and Facebook link card |
 
+Photo set, for when there is a photograph to carry the post:
+
+| File | Size | Use |
+|---|---|---|
+| `photo-01-teacher.png` | 1080x1080 | Learner at a desk, headline "Every lesson. A real teacher." |
+| `photo-02-childhood.png` | 1080x1080 | Duotone violin, "Four days of school. Three days of childhood." |
+| `photo-03-sixteen.png` | 1080x1080 | Photo band, "16 learners. One teacher. Every lesson." |
+| `photo-04-taught.png` | 1080x1080 | Teacher portrait and cream panel, "Taught by people who know your child's name." |
+| `story-photo-family.png` | 1080x1920 | Story and reel cover, "What if school fit your family?" |
+| `wide-photo-school.png` | 1600x900 | X and link card, "School that fits a childhood." |
+
 Carousel order that reads as one argument: 01 hero, 02 four, 03 difference,
 04 sixteen, 06 call to action.
+
+A strong alternate carousel mixes the two sets: `photo-01-teacher.png`,
+`tile-02-four.png`, `photo-03-sixteen.png`, `photo-04-taught.png`,
+`tile-06-cta.png`.
 
 ---
 
@@ -505,6 +520,25 @@ Write alt text into the platform field, in the language of the post:
   admissions link and phone number."
 - Story frames: "Vertical version of the launch message" and "Vertical
   enrolment call to action with the admissions URL".
+
+Photo set, where the image itself carries information and must be described:
+
+- `photo-01-teacher.png`: "A learner working at a desk at home, science and
+  map posters on the wall behind him. Headline: Every lesson. A real teacher.
+  Live online school, South Africa."
+- `photo-02-childhood.png`: "A learner playing the violin, printed in green
+  duotone. Headline: Four days of school. Three days of childhood."
+- `photo-03-sixteen.png`: "A learner reading among library shelves, with the
+  gold numeral 16 and the line one teacher, every lesson."
+- `photo-04-taught.png`: "Portrait of a Triple 4 Curriculum teacher beside a
+  cream panel reading: taught by people who know your child's name."
+- `story-photo-family.png`: "Vertical photograph of a learner at a laptop,
+  headline: what if school fit your family."
+- `wide-photo-school.png`: "A learner playing the violin beside the headline
+  school that fits a childhood."
+
+If the learner in a photograph cannot be identified safely, describe the
+scene and the headline only. Never put a learner's name in alt text.
 
 ---
 

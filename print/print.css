@@ -621,6 +621,229 @@ html.export .sheet {
 
 .sign-block .cap b { color: var(--ink); font-weight: 600; }
 
+/* ---------- photography and QR ---------- */
+
+.ph {
+  position: relative;
+  overflow: hidden;
+  background: #DCD8CD;
+}
+
+.ph > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ph-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* white disc behind the crest so a keyed-out logo reads on photography */
+.crest-plate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 27mm;
+  height: 27mm;
+  border-radius: 50%;
+  background: #FFFFFF;
+  padding: 2.4mm;
+  flex: 0 0 auto;
+}
+
+.crest-plate img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.qr {
+  background: #FFFFFF;
+  padding: 1.6mm;
+  display: block;
+}
+
+.qr img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.qr-note {
+  font-size: 6.8pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(26, 28, 30, 0.66);
+  line-height: 1.4;
+}
+
+/* ---------- section system ----------
+   Every band on a photo piece is its own colour field, and each band is
+   introduced by a numbered label with a rule, so no two sections can be read
+   as one. The three fours never share a colour: gold on green, green on gold,
+   white on black. */
+
+/* A cream gutter between two colour fields, so a gold band above a gold CTA
+   reads as two sections instead of one. */
+.band-gap {
+  height: 3mm;
+  flex: 0 0 auto;
+  background: var(--cream);
+}
+
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 3.4mm;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 7.2pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+.sec-head .n { color: var(--gold-ink); }
+
+.sec-head .line {
+  flex: 1 1 auto;
+  height: 0.6pt;
+  background: currentColor;
+  opacity: 0.28;
+}
+
+.on-dark .sec-head { color: rgba(255, 255, 255, 0.82); }
+.on-dark .sec-head .n { color: var(--gold); }
+.on-dark .sec-head .line { background: rgba(255, 255, 255, 0.4); }
+
+/* the three fours */
+
+.four {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.07em;
+  line-height: 0.74;
+  display: block;
+}
+
+/* the rule above each four takes the colour of the numeral, so the three
+   rules never repeat a cell colour */
+.trio .four { border-top-color: currentColor; }
+
+.cell-green { background: var(--green); color: #FFFFFF; }
+.cell-green .four { color: var(--gold); }
+
+.cell-gold { background: var(--gold); color: var(--green); }
+.cell-gold .four { color: var(--green); }
+
+.cell-black { background: var(--ink); color: #FFFFFF; }
+.cell-black .four { color: #FFFFFF; }
+
+.cell-cream { background: var(--cream); color: var(--ink); }
+.cell-cream .four { color: var(--green); }
+
+.cell-green .lab { color: var(--gold); }
+.cell-gold .lab { color: rgba(11, 59, 43, 0.72); }
+.cell-black .lab { color: var(--gold); }
+.cell-cream .lab { color: var(--gold-ink); }
+
+.lab {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 7pt;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  display: block;
+}
+
+/* horizontal triptych */
+
+.trio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.trio .cell {
+  padding: 10mm 9mm 12mm;
+  display: flex;
+  flex-direction: column;
+}
+
+.trio .four { font-size: 104pt; margin: 0 0 5mm; }
+
+.trio h3 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 14pt;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 2.4mm 0 2.4mm;
+}
+
+.trio p {
+  font-size: 8.6pt;
+  line-height: 1.5;
+  margin: 0;
+  opacity: 0.82;
+}
+
+/* stacked rows, for narrow columns and flyers */
+
+.stack .row4 {
+  display: grid;
+  grid-template-columns: 26mm 1fr;
+  align-items: center;
+  gap: 5mm;
+  padding: 5.5mm 7mm;
+}
+
+.stack .four { font-size: 62pt; }
+
+.stack h3 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 11pt;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 1.2mm 0 0;
+}
+
+.stack p {
+  font-size: 7.6pt;
+  line-height: 1.4;
+  margin: 1mm 0 0;
+  opacity: 0.8;
+}
+
+/* difference column set */
+
+.diffs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8mm;
+}
+
+.diffs h3 {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 13pt;
+  letter-spacing: -0.02em;
+  margin: 2.2mm 0 2mm;
+}
+
+.diffs p {
+  font-size: 8.6pt;
+  line-height: 1.5;
+  margin: 0;
+  color: var(--grey);
+}
+
 /* ---------- flyers ---------- */
 
 .flyer-head {

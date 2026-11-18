@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>T4C flyer A5, variation 1</title>
+<link rel="stylesheet" href="print.css">
+<style>
+  @page { size: A5; margin: 0; }
+
+  /* ---------- front ---------- */
+  .f1 { padding: 0; }
+
+  .f1-hero { flex: 1 1 auto; min-height: 0; }
+
+  .f1-hero .ph-scrim {
+    background:
+      linear-gradient(180deg, rgba(11, 59, 43, 0.88) 0mm, rgba(11, 59, 43, 0.62) 20mm, rgba(11, 59, 43, 0) 40mm),
+      linear-gradient(0deg, rgba(11, 59, 43, 0.96) 0%, rgba(11, 59, 43, 0.80) 26%, rgba(11, 59, 43, 0.10) 58%, rgba(11, 59, 43, 0.06) 100%);
+  }
+
+  .f1-top {
+    position: absolute;
+    top: 9mm;
+    left: 9mm;
+    right: 9mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5mm;
+  }
+
+  .f1-top .crest-plate { width: 20mm; height: 20mm; padding: 1.8mm; }
+
+  .f1-top .flag {
+    font-size: 6.6pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .f1-copy {
+    position: absolute;
+    left: 9mm;
+    right: 9mm;
+    bottom: 8mm;
+    color: #FFFFFF;
+  }
+
+  .f1-copy .kicker {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 7.2pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 3mm;
+  }
+
+  .f1-copy h1 {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 33pt;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    margin: 0;
+    color: #FFFFFF;
+  }
+
+  .f1-copy h1 .g { color: var(--gold); }
+
+  .f1-copy .lede {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 10.5pt;
+    margin: 3.4mm 0 0;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  /* the three fours, one colour each */
+
+  .f1-trio { flex: 0 0 auto; }
+
+  .f1-trio .cell { padding: 4.6mm 4.4mm 5mm; }
+
+  .f1-trio .four { font-size: 40pt; margin-bottom: 2.2mm; }
+
+  .f1-trio .lab { font-size: 5.4pt; letter-spacing: 0.16em; }
+
+  .f1-trio h3 {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 7.2pt;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 1.4mm 0 0;
+    line-height: 1.1;
+  }
+
+  .f1-cta {
+    background: var(--gold);
+    color: var(--ink);
+    flex: 0 0 auto;
+    padding: 4.6mm 9mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5mm;
+  }
+
+  .f1-cta .a {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 11pt;
+    margin: 0 0 1mm;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  .f1-cta .b { font-size: 7.2pt; margin: 0; color: rgba(26, 28, 30, 0.75); }
+  .f1-cta .qr { width: 16mm; height: 16mm; }
+
+  /* ---------- back ---------- */
+
+  .f1-b { background: var(--cream); }
+
+  .f1-back {
+    padding: 9mm 9mm 0;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .f1-back-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 6.4pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    border-bottom: 0.6pt solid var(--line);
+    padding-bottom: 2.4mm;
+  }
+
+  .f1-back-head em { font-style: normal; color: var(--gold-ink); }
+
+  .f1-grid {
+    display: grid;
+    grid-template-columns: 46mm 1fr;
+    gap: 5mm;
+    margin-top: 4.5mm;
+  }
+
+  .f1-shots { display: grid; gap: 3mm; align-content: start; }
+
+  .f1-shots .ph { height: 62mm; }
+
+  .f1-shots .cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 2.4mm 2.6mm;
+    background: linear-gradient(180deg, rgba(11, 59, 43, 0) 0%, rgba(11, 59, 43, 0.88) 78%);
+    color: #FFFFFF;
+    font-size: 5.6pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .f1 h2 {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 11pt;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin: 0 0 2.4mm;
+    line-height: 1.05;
+  }
+
+  .f1-feat .it {
+    display: grid;
+    grid-template-columns: 5mm 1fr;
+    gap: 2.2mm;
+    padding: 2mm 0;
+    border-bottom: 0.5pt solid var(--line-soft);
+  }
+
+  .f1-feat .it:first-child { padding-top: 0; }
+
+  .f1-feat .n {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 7.2pt;
+    color: var(--gold-ink);
+    padding-top: 0.3mm;
+  }
+
+  .f1-feat b { display: block; font-size: 7.8pt; margin-bottom: 0.3mm; }
+  .f1-feat span { font-size: 6.8pt; line-height: 1.36; color: var(--grey); }
+
+  .f1-fee-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4mm;
+    border-top: 0.6pt solid var(--line);
+    margin-top: 3.6mm;
+    padding-top: 3.4mm;
+  }
+
+  .f1-fee-head h2 { margin: 0; }
+
+  .f1-fee-head small {
+    font-size: 6pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-soft);
+  }
+
+  .f1-table { margin-top: 2.2mm; }
+
+  /* steps, as a gold band */
+
+  .f1-steps {
+    flex: 0 0 auto;
+    background: var(--gold);
+    color: var(--ink);
+    margin-top: auto;
+    padding: 4.6mm 9mm 5mm;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4mm;
+  }
+
+  .f1-steps .s {
+    display: block;
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 14pt;
+    color: rgba(11, 59, 43, 0.55);
+    line-height: 1;
+    margin-bottom: 1.6mm;
+  }
+
+  .f1-steps b {
+    display: block;
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 7.4pt;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.8mm;
+  }
+
+  .f1-steps p {
+    font-size: 6.4pt;
+    line-height: 1.36;
+    color: rgba(26, 28, 30, 0.72);
+    margin: 0;
+  }
+
+  .f1-foot {
+    background: var(--green);
+    color: rgba(255, 255, 255, 0.74);
+    padding: 3.4mm 9mm;
+    display: flex;
+    justify-content: space-between;
+    gap: 4mm;
+    font-size: 6.2pt;
+    letter-spacing: 0.02em;
+  }
+
+  .f1-foot b { color: #FFFFFF; font-weight: 600; }
+  .f1-foot .tag { font-family: var(--serif); font-style: italic; font-size: 7.6pt; color: rgba(255,255,255,0.9); }
+</style>
+</head>
+<body>
+
+<!-- ============ FRONT ============ -->
+<div class="sheet a5 f1">
+
+  <section class="f1-hero ph">
+    <img src="assets/photos/violin.jpg" alt="" style="object-position: 56% 22%">
+    <div class="ph-scrim"></div>
+
+    <header class="f1-top">
+      <div class="crest-plate">
+        <img src="assets/t4c-crest-transparent.png" alt="">
+      </div>
+      <div class="flag">
+        Grade R to 12<br>Live online school
+      </div>
+    </header>
+
+    <div class="f1-copy">
+      <p class="kicker">Four days of school · three days of childhood</p>
+      <h1>Your future<br>starts <span class="g">here</span></h1>
+      <p class="lede">Interactive courses. Real results.</p>
+    </div>
+  </section>
+
+  <div class="trio f1-trio">
+    <div class="cell cell-green">
+      <span class="four">4</span>
+      <span class="lab">Days a week</span>
+      <h3>Monday to Thursday</h3>
+    </div>
+    <div class="cell cell-gold">
+      <span class="four">4</span>
+      <span class="lab">Lessons a day</span>
+      <h3>Four focused blocks</h3>
+    </div>
+    <div class="cell cell-black">
+      <span class="four">4</span>
+      <span class="lab">Hours a day</span>
+      <h3>Live, not recorded</h3>
+    </div>
+  </div>
+
+  <div class="band-gap"></div>
+
+  <div class="f1-cta">
+    <div>
+      <p class="a">triple4c.com/admissions</p>
+      <p class="b">Enrolment 2027 · +27 689 758 960</p>
+    </div>
+    <span class="qr"><img src="assets/qr-admissions.png" alt="QR code to the admissions page"></span>
+  </div>
+
+</div>
+
+<!-- ============ BACK ============ -->
+<div class="sheet a5 f1 f1-b">
+
+  <div class="f1-back">
+
+    <div class="f1-back-head">
+      <span>Triple 4 Curriculum</span>
+      <em>Admissions 2027</em>
+    </div>
+
+    <div class="f1-grid">
+
+      <div class="f1-shots">
+        <div class="ph">
+          <img src="assets/photos/classroom.jpg" alt="" style="object-position: 50% 38%">
+          <div class="cap">A live class</div>
+        </div>
+        <div class="ph">
+          <img src="assets/photos/learner3.jpg" alt="" style="object-position: 50% 16%">
+          <div class="cap">A T4C learner</div>
+        </div>
+      </div>
+
+      <div>
+        <h2>What your child gets</h2>
+
+        <div class="f1-feat">
+          <div class="it">
+            <span class="n">01</span>
+            <div><b>Live courses</b><span>Every lesson taught live by a certified teacher.</span></div>
+          </div>
+          <div class="it">
+            <span class="n">02</span>
+            <div><b>Assessment and reports</b><span>Regular assessment with written progress reports.</span></div>
+          </div>
+          <div class="it">
+            <span class="n">03</span>
+            <div><b>Access anywhere</b><span>Every lesson recorded. Works on any device.</span></div>
+          </div>
+          <div class="it">
+            <span class="n">04</span>
+            <div><b>Expert teachers</b><span>Certified South African and UK teachers.</span></div>
+          </div>
+        </div>
+
+        <div class="f1-fee-head">
+          <h2>Monthly tuition</h2>
+          <small>ZAR · USD · GBP</small>
+        </div>
+
+        <table class="flyer-table f1-table">
+          <tr><th>Phase</th><th>Grades</th><th>ZAR</th><th>USD</th><th>GBP</th></tr>
+          <tr><td>Foundation</td><td>R to 3</td><td class="p">R 1 500</td><td class="p">$ 125</td><td class="p">£ 100</td></tr>
+          <tr><td>Intermediate</td><td>4 to 6</td><td class="p">R 2 500</td><td class="p">$ 155</td><td class="p">£ 115</td></tr>
+          <tr><td>Senior</td><td>7 to 9</td><td class="p">R 3 500</td><td class="p">$ 190</td><td class="p">£ 145</td></tr>
+          <tr><td>FET</td><td>10 to 12</td><td class="p">R 4 500</td><td class="p">$ 250</td><td class="p">£ 190</td></tr>
+        </table>
+
+        <p class="note" style="margin-top:2mm">
+          Annual registration and application fee applies. Final exam fees excluded.
+          CAPS aligned, leading to the National Senior Certificate.</p>
+      </div>
+
+    </div>
+
+    <div class="f1-steps">
+      <div>
+        <span class="s">1</span>
+        <b>Book a call</b>
+        <p>Ten minutes with admissions. No obligation.</p>
+      </div>
+      <div>
+        <span class="s">2</span>
+        <b>See a live class</b>
+        <p>Sit in with your child before you decide.</p>
+      </div>
+      <div>
+        <span class="s">3</span>
+        <b>Apply online</b>
+        <p>triple4c.com/admissions</p>
+      </div>
+    </div>
+
+    <div class="f1-foot">
+      <span><b>info@triple4c.com</b><br>+27 689 758 960</span>
+      <span><b>178 Daisy Street, Sandton</b><br>triple4c.com</span>
+      <span class="tag">@triple4curriculum</span>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  (function () {
+    const q = new URLSearchParams(location.search);
+    if (!q.has("export") && window.self === window.top) return;
+    document.documentElement.classList.add("export");
+    const p = parseInt(q.get("p") || "1", 10);
+    if (p > 1) {
+      const t = document.querySelectorAll(".sheet")[p - 1];
+      if (t) requestAnimationFrame(() => scrollTo(0, t.offsetTop));
+    }
+  })();
+</script>
+</body>
+</html>

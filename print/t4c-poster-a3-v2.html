@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>T4C poster A3, variation 2</title>
+<link rel="stylesheet" href="print.css">
+<style>
+  @page { size: 297mm 420mm; margin: 0; }
+
+  .p2 {
+    padding: 0;
+    background: var(--cream);
+  }
+
+  /* masthead */
+
+  .p2-head {
+    padding: 18mm 18mm 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 5mm;
+  }
+
+  .p2-head .name {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 10pt;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--green);
+    line-height: 1.25;
+  }
+
+  .p2-head .name small {
+    display: block;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 9pt;
+    text-transform: none;
+    color: var(--gold-ink);
+  }
+
+  .p2-head .right {
+    margin-left: auto;
+    text-align: right;
+    font-size: 7pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey-soft);
+    line-height: 1.95;
+    max-width: 92mm;
+  }
+
+  .p2-head .right b { color: var(--green); font-weight: 600; }
+
+  .p2-title { padding: 10mm 18mm 0; }
+
+  .p2-title .kicker {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 8.4pt;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+    margin: 0 0 6mm;
+  }
+
+  .p2-title h1 {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 60pt;
+    line-height: 0.92;
+    letter-spacing: -0.038em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin: 0;
+  }
+
+  .p2-title h1 .g { color: var(--gold-ink); }
+
+  .p2-title .lede {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14pt;
+    color: var(--gold-ink);
+    margin: 6mm 0 0;
+  }
+
+  /* 01 · the power of four, as three stacked colour rows */
+
+  .p2-four { margin-top: 12mm; }
+
+  .p2-four .head { padding: 0 18mm 5mm; }
+
+  .p2-four .row4 {
+    min-height: 42mm;
+    display: grid;
+    grid-template-columns: 34mm 52mm 1fr;
+    align-items: center;
+    gap: 8mm;
+    padding: 7mm 18mm;
+  }
+
+  .p2-four .row4 .four { font-size: 74pt; }
+
+  .p2-four .row4 h3 {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 17pt;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.05;
+  }
+
+  .p2-four .row4 p {
+    font-size: 9.4pt;
+    line-height: 1.45;
+    margin: 0;
+    max-width: 118mm;
+  }
+
+  .p2-four .cell-gold p { color: rgba(11, 59, 43, 0.82); }
+  .p2-four .cell-black p { color: rgba(255, 255, 255, 0.76); }
+  .p2-four .cell-green p { color: rgba(255, 255, 255, 0.76); }
+
+  /* 02 · the people */
+
+  .p2-proof {
+    flex: 1 1 auto;
+    min-height: 86mm;
+    display: flex;
+    align-items: stretch;
+    padding-top: 10mm;
+  }
+
+  .p2-proof .txt {
+    flex: 1 1 auto;
+    padding: 2mm 12mm 10mm 18mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .p2-proof h3 {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 26pt;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin: 6mm 0 0;
+    line-height: 1;
+  }
+
+  .p2-proof .txt > p {
+    font-size: 9.6pt;
+    line-height: 1.5;
+    color: var(--grey);
+    margin: 3.4mm 0 0;
+    max-width: 116mm;
+  }
+
+  .p2-proof .badge {
+    margin-top: 7mm;
+    display: flex;
+    align-items: baseline;
+    gap: 3.4mm;
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 7pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+    line-height: 1.2;
+  }
+
+  .p2-proof .badge b {
+    font-size: 24pt;
+    letter-spacing: -0.04em;
+    color: var(--green);
+    line-height: 0.9;
+  }
+
+  .p2-proof .pic {
+    width: 108mm;
+    flex: 0 0 auto;
+    align-self: stretch;
+  }
+
+  /* 03 · enrolment */
+
+  .p2-cta {
+    background: var(--gold);
+    color: var(--ink);
+    padding: 8mm 18mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12mm;
+  }
+
+  .p2-cta .n {
+    display: block;
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 7pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(11, 59, 43, 0.6);
+    margin-bottom: 2.4mm;
+  }
+
+  .p2-cta h2 {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 19pt;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin: 0 0 1.6mm;
+    line-height: 1;
+  }
+
+  .p2-cta .line {
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    font-weight: 700;
+    font-size: 12.5pt;
+    margin: 0;
+  }
+
+  .p2-cta .sub {
+    font-size: 7.8pt;
+    margin: 1.2mm 0 0;
+    color: rgba(26, 28, 30, 0.7);
+  }
+
+  .p2-cta .qr-wrap { display: flex; align-items: center; gap: 4mm; }
+  .p2-cta .qr { width: 23mm; height: 23mm; }
+  .p2-cta .qr-note { max-width: 19mm; font-size: 6.8pt; color: rgba(11, 59, 43, 0.72); }
+</style>
+</head>
+<body>
+
+<div class="sheet a3 p2">
+
+  <header class="p2-head">
+    <img class="crest" src="assets/t4c-crest-transparent.png" alt="" style="width:27mm;height:27mm">
+    <div class="name">Triple 4 Curriculum<small>Golden Achievers</small></div>
+    <div class="right">
+      Grade R to 12 · Global online micro-school<br>
+      <b>Enrolment 2027 · Open</b>
+    </div>
+  </header>
+
+  <div class="p2-title">
+    <p class="kicker">A four day school week</p>
+    <h1>The future of<br>learning is here</h1>
+    <p class="lede">Academic excellence meets a balanced life.</p>
+  </div>
+
+  <section class="p2-four">
+    <div class="head">
+      <p class="sec-head"><span class="n">01</span><span>The power of four curriculum</span><span class="line"></span></p>
+    </div>
+
+    <div class="cell-gold row4">
+      <span class="four">4</span>
+      <h3>Days a<br>week</h3>
+      <p>A Monday to Thursday schedule, with a consistent three day weekend for the whole family.</p>
+    </div>
+
+    <div class="cell-black row4">
+      <span class="four">4</span>
+      <h3>Lessons<br>a day</h3>
+      <p>Streamlined focus on four subjects. No information overload, no afternoon homework marathon.</p>
+    </div>
+
+    <div class="cell-green row4">
+      <span class="four">4</span>
+      <h3>Hours a<br>day</h3>
+      <p>High impact blocks with a teacher on camera. Live, engaging, and light on screen fatigue.</p>
+    </div>
+  </section>
+
+  <section class="p2-proof">
+    <div class="txt">
+      <p class="sec-head"><span class="n">02</span><span>The people in the room</span><span class="line"></span></p>
+      <h3>Taught, not<br>streamed</h3>
+      <p>Certified South African and UK teachers, live in every lesson. A
+        person who knows your child, not a playlist of old videos.</p>
+      <div class="badge"><b>16</b><span>learners per class, maximum</span></div>
+    </div>
+    <div class="pic ph">
+      <img src="assets/photos/violin.jpg" alt="" style="object-position: 54% 26%">
+    </div>
+  </section>
+
+  <div class="p2-cta">
+    <div>
+      <span class="n">03 · Enrolment</span>
+      <h2>Enrolment is now open</h2>
+      <p class="line">triple4c.com/admissions</p>
+      <p class="sub">+27 689 758 960 · info@triple4c.com · from R 1 500 per month</p>
+    </div>
+    <div class="qr-wrap">
+      <span class="qr-note">Scan to apply</span>
+      <span class="qr"><img src="assets/qr-admissions.png" alt="QR code to the admissions page"></span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  (function () {
+    const q = new URLSearchParams(location.search);
+    if (!q.has("export") && window.self === window.top) return;
+    document.documentElement.classList.add("export");
+  })();
+</script>
+</body>
+</html>
