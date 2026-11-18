@@ -5,7 +5,7 @@ import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '
 import { PricingTable } from '../components/site/PricingTable';
 import { cloudinaryImage, cloudinarySrcSet } from '../lib/image';
 
-const HERO_IMAGE = 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794997389/T4C_students_lessons.png';
+const HERO_IMAGE = 'https://res.cloudinary.com/x4agmmbo/image/upload/v1793762771/T4C_hero_image.png';
 
 function FaqTeaser() {
   const items = [
@@ -39,7 +39,7 @@ export function HomePage() {
             src={cloudinaryImage(HERO_IMAGE, 960)}
             srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1600])}
             sizes="(min-width: 1400px) 1400px, 100vw"
-            alt="Triple 4C students in live lessons"
+            alt="Triple 4 Curriculum - Small Classes. Big Futures."
             width={2048}
             height={1143}
             fetchPriority="high"
