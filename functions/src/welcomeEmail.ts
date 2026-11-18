@@ -32,7 +32,7 @@ function learnerEmail(name: string): string {
       <ol>
         <li><strong>Verify your email</strong> using the message we sent from Firebase (check spam if you do not see it).</li>
         <li><strong>Sign in</strong> any time at <a href="https://triple4c.com/login">triple4c.com/login</a> with your email and password (or Google).</li>
-        <li><strong>Open your dashboard</strong> to see the timetable, announcements and recordings. Live classes begin 13 January 2027.</li>
+        <li><strong>Open your dashboard</strong> to see the timetable, announcements and recordings. Live classes begin Monday 11 January 2027.</li>
       </ol>
       <p>Every lesson is live, led by a certified teacher, and capped at 16 learners —
       and every lesson is recorded, so nothing is ever missed.</p>
