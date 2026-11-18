@@ -361,6 +361,40 @@ export interface LearnerRegistration {
   payerName: string;
   provider: string;
   documentsCount: number;
+  academicDocuments: RegistrationDocument[];
+  paymentDocuments: RegistrationDocument[];
   createdAt: string;
+}
+
+
+/** A file attached to a registration (id, degree, transcript, scholarship...). */
+export interface RegistrationDocument {
+  name: string;
+  size: number;
+  type: string;
+  downloadURL: string;
+}
+
+/** Flattened view of a teacher_applications/{uid} record for the staff review queue. */
+export interface TeacherApplication {
+  id: string;
+  name: string;
+  email: string;
+  submittedAt: string;
+  status: string;
+  highestDegree: string;
+  degreeField: string;
+  teachingCertificate: string;
+  teachingPhase: string;
+  yearsExperience: string;
+  referenceContact: string;
+  backgroundCheckStatus: string;
+  addressProofVerified: boolean;
+  idDocuments: RegistrationDocument[];
+  addressDocuments: RegistrationDocument[];
+  degreeDocuments: RegistrationDocument[];
+  resumeDocuments: RegistrationDocument[];
+  documentsReceived: number;
+  documentsRequired: number;
 }
 

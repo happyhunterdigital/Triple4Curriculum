@@ -52,6 +52,7 @@ const AdminAudit = lazy(() => import('./components/admin/AdminAuditLogs').then(m
 const AdminReports = lazy(() => import('./components/admin/AdminReports').then(m => ({ default: m.AdminReports })));
 const AdminApplications = lazy(() => import('./components/admin/AdminApplications').then(m => ({ default: m.AdminApplications })));
 const AdminLearners = lazy(() => import('./components/admin/AdminLearners').then(m => ({ default: m.AdminLearners })));
+const AdminApprovals = lazy(() => import('./components/admin/AdminApprovals').then(m => ({ default: m.AdminApprovals })));
 const CertificatesRoute = lazy(() => import('./components/student/CertificatesView').then(m => ({ default: m.CertificatesView })));
 const ClassroomRoute = lazy(() => import('./components/learning/ClassroomWorkspace').then(m => ({ default: m.ClassroomWorkspace })));
 const LiveRoute = lazy(() => import('./components/learning/LiveClassroom').then(m => ({ default: m.LiveClassroom })));
@@ -137,6 +138,7 @@ function Shell() {
             <Route path="/admin/reports" element={<RequireAuth roles={['admin']}><AdminReports /></RequireAuth>} />
             <Route path="/admin/applications" element={<RequireAuth roles={['admin']}><AdminApplications /></RequireAuth>} />
             <Route path="/admin/learners" element={<RequireAuth roles={['admin']}><AdminLearners /></RequireAuth>} />
+            <Route path="/admin/approvals" element={<RequireAuth roles={['admin']}><AdminApprovals /></RequireAuth>} />
             <Route path="/teach" element={<RequireAuth roles={['lecturer', 'admin']}><TeachDashboardRoute /></RequireAuth>} />
             <Route path="/teach/grading" element={<RequireAuth roles={['lecturer', 'admin']}><TeachGrading /></RequireAuth>} />
             <Route path="/teach/classes" element={<RequireAuth roles={['lecturer', 'admin']}><TeachClasses /></RequireAuth>} />

@@ -3,7 +3,7 @@ import {
   Assignment, AssignmentSubmission, AttendanceRecord,
   Badge, AuditLog, PushNotification, ChatMessage, SystemAnnouncement,
   LearnerCourseProgress, TeacherSummary, GeneratedQuiz, Enrollment,
-  LearnerRegistration
+  LearnerRegistration, RegistrationDocument, TeacherApplication
 } from '../types';
 import { auth as fbAuth } from './firebase';
 import { firestore } from './firestore';
@@ -196,6 +196,20 @@ export async function pagedQuery<T>(
   }
 }
 
+/** Normalise the registration-document array stored on onboarding records. */
+function mapDocs(value: unknown): RegistrationDocument[] {
+  if (!Array.isArray(value)) return [];
+  return value.map((d) => {
+    const o = (d ?? {}) as Record<string, unknown>;
+    return {
+      name: String(o.name ?? 'document'),
+      size: Number(o.size ?? 0),
+      type: String(o.type ?? ''),
+      downloadURL: String(o.downloadURL ?? o.url ?? ''),
+    };
+  });
+}
+
 /** Flattened learner registrations for the staff list view. Bounded, sorted
  *  client-side (createdAt may be absent on older rows). Staff-only per rules. */
 export async function getLearnerRegistrations(limitN = 500): Promise<LearnerRegistration[]> {
@@ -209,10 +223,8 @@ export async function getLearnerRegistrations(limitN = 500): Promise<LearnerRegi
       const payment = (data.payment ?? {}) as Record<string, unknown>;
       const created = data.createdAt as { toDate?: () => Date } | undefined;
       const createdAt = typeof created?.toDate === 'function' ? created.toDate().toISOString() : '';
-      const docCount = [
-        ...(Array.isArray(academic.documents) ? academic.documents : []),
-        ...(Array.isArray(payment.documents) ? payment.documents : []),
-      ].length;
+      const academicDocuments = mapDocs(academic.documents);
+      const paymentDocuments = mapDocs(payment.documents);
       return withId<LearnerRegistration>(d.id, {
         name: String(data.name ?? ''),
         email: String(data.email ?? ''),
@@ -231,13 +243,86 @@ export async function getLearnerRegistrations(limitN = 500): Promise<LearnerRegi
         paymentMethod: String(payment.method ?? ''),
         payerName: String(payment.payerName ?? ''),
         provider: String(data.provider ?? ''),
-        documentsCount: docCount,
+        documentsCount: academicDocuments.length + paymentDocuments.length,
+        academicDocuments,
+        paymentDocuments,
         createdAt,
       });
     });
     return items.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
   } catch (e) {
     return friendly(e);
+  }
+}
+
+/** Flattened educator applications for the staff review queue. Admin-only per rules. */
+export async function getTeacherApplications(limitN = 500): Promise<TeacherApplication[]> {
+  try {
+    const snap = await getDocs(query(collection(db, 'teacher_applications'), limit(limitN)));
+    const items = snap.docs.map((d) => {
+      const data = d.data() as Record<string, unknown>;
+      const identity = (data.identity ?? {}) as Record<string, unknown>;
+      const qualifications = (data.qualifications ?? {}) as Record<string, unknown>;
+      const professional = (data.professional ?? {}) as Record<string, unknown>;
+      const background = (data.backgroundCheck ?? {}) as Record<string, unknown>;
+      const submitted = data.submittedAt as { toDate?: () => Date } | undefined;
+      const submittedAt = typeof submitted?.toDate === 'function' ? submitted.toDate().toISOString() : '';
+      const idDocuments = mapDocs(identity.idDocuments);
+      const addressDocuments = mapDocs(identity.addressDocuments);
+      const degreeDocuments = mapDocs(qualifications.documents);
+      const resumeDocuments = mapDocs(professional.documents);
+      // Required categories: id, address proof, qualification, CV (4).
+      const documentsReceived = [
+        idDocuments.length > 0,
+        addressDocuments.length > 0,
+        degreeDocuments.length > 0,
+        resumeDocuments.length > 0,
+      ].filter(Boolean).length;
+      return withId<TeacherApplication>(d.id, {
+        name: String(data.name ?? ''),
+        email: String(data.email ?? ''),
+        submittedAt,
+        status: String(data.status ?? 'pending'),
+        highestDegree: String(qualifications.highestDegree ?? ''),
+        degreeField: String(qualifications.degreeField ?? ''),
+        teachingCertificate: String(qualifications.teachingCertificate ?? ''),
+        teachingPhase: String(qualifications.teachingPhase ?? ''),
+        yearsExperience: String(professional.yearsExperience ?? ''),
+        referenceContact: String(professional.referenceContact ?? ''),
+        backgroundCheckStatus: String(background.status ?? 'clearance_pending'),
+        addressProofVerified: !!identity.addressProofVerified,
+        idDocuments,
+        addressDocuments,
+        degreeDocuments,
+        resumeDocuments,
+        documentsReceived,
+        documentsRequired: 4,
+      });
+    });
+    return items.sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''));
+  } catch (e) {
+    return friendly(e);
+  }
+}
+
+/** Admin review action on an educator application (status only; grants no claims). */
+export async function setTeacherApplicationStatus(
+  applicantId: string,
+  status: 'approved' | 'rejected',
+): Promise<void> {
+  try {
+    await updateDoc(doc(db, 'teacher_applications', applicantId), {
+      status,
+      reviewedAt: serverTimestamp(),
+      reviewedBy: uid(),
+    });
+    await logAudit({
+      action: status === 'approved' ? 'TEACHER_APPLICATION_APPROVED' : 'TEACHER_APPLICATION_REJECTED',
+      resource: `/teacher_applications/${applicantId}`,
+      details: `Educator application ${status} by admin.`,
+    });
+  } catch (e) {
+    friendly(e);
   }
 }
 
@@ -904,6 +989,9 @@ export const api = {
   },
   /** Learner registrations (students collection) for the admissions list view. */
   getLearnerRegistrations: () => getLearnerRegistrations(),
+  getTeacherApplications: () => getTeacherApplications(),
+  setTeacherApplicationStatus: (applicantId: string, status: 'approved' | 'rejected') =>
+    setTeacherApplicationStatus(applicantId, status),
   /** Provision a directory profile; activates when the person registers with the same email. */
   createUser: async (payload: Partial<User>) => {
     try {
