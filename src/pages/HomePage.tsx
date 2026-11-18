@@ -77,6 +77,29 @@ export function HomePage() {
           </div>
         </div>
       </section>
+      {/* Black Friday Special Promo */}
+      <section className="bg-[var(--color-t4c-black)] text-white border-y border-black/10 rounded-[24px] sm:rounded-[40px] overflow-hidden mt-6 sm:mt-10">
+        <div className="relative px-6 py-8 sm:py-12 max-w-[640px] sm:max-w-[520px] mx-auto">
+          <div className="flex items-start gap-3">
+            <div className="w-12 h-12 rounded-full bg-[var(--color-t4c-yellow)] flex items-center justify-center flex-shrink-0">
+              <span className="text-[20px] font-bold">🏃</span>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-t4c-yellow)] mb-1">BLACK FRIDAY SPECIAL</p>
+              <h2 className="text-2xl font-black tracking-tight">10% off all terms</h2>
+              <p className="text-neutral-300 mt-2">Use code BLACKFRIEND10 at checkout. Limited to new registrations only. Offer ends midnight Sunday.</p>
+            </div>
+          </div>
+          <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-end">
+            <Link to="/admissions#apply" className="flex-1 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
+              Claim My Discount
+            </Link>
+            <Link to="/fees" className="px-4 py-3 rounded-full text-sm text-neutral-300 hover:text-white transition-colors">View Fees</Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 
       <PageShell>
         {/* Triple-Benefits Bento, PDF: FAQ Triple-Benefits */}
