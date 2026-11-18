@@ -130,17 +130,20 @@ export function HomePage() {
         <RevealStagger>
           <div className="rounded-[16px] overflow-hidden border border-black/10 bg-white grid lg:grid-cols-2">
             <div className="h-auto sm:h-[320px] bg-neutral-100 overflow-hidden">
-              {/* Mobile shows the full 16:9 collage uncropped so every learner stays
-                  in frame; desktop keeps the 2:1 editorial crop. */}
-              <img
-                src={cloudinaryImage(HERO_IMAGE, 800)}
-                srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 800, 1024])}
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                alt="Live classroom capped at 16 learners"
-                loading="lazy"
-                decoding="async"
+              {/* Brand film replaces the collage: muted autoplay loop, Cloudinary-
+                  optimised; mobile keeps natural height so nothing is cropped. */}
+              <video
+                src="https://res.cloudinary.com/dka0498ns/video/upload/q_auto,w_960/v1787426745/Triple_4_Curriculum_Gold_particles_forming_medallion_wgxtl4.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="Triple 4 Curriculum brand film"
                 className="w-full h-auto sm:h-full object-cover"
-              />
+              >
+                Your browser does not support the video tag.
+              </video>
             </div>
             <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
               <SectionHeading className="text-[22px] sm:text-[26px]">100% live. Capped at 16. Parent hands-off.</SectionHeading>
