@@ -12,6 +12,25 @@ import type { TimetableSlot } from '../types';
 
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+// Live training slot. Source of truth is the AI-442 row in the timetable
+// collection (which carries the school's Google Meet link). This fallback
+// keeps the card working if the timetable read fails for the viewer.
+const TRAINING_FALLBACK: TimetableSlot = {
+  id: 'live-training',
+  courseId: 'ai-442',
+  courseCode: 'AI-442',
+  courseTitle: 'POPIA & AI Ethics Frameworks',
+  lecturerName: 'Dr. Arthur Vance',
+  lecturerId: '',
+  dayOfWeek: 'Wednesday',
+  startTime: '11:00',
+  endTime: '12:30',
+  room: 'Google Meet',
+  type: 'Seminar',
+  departmentId: '',
+  onlineLink: 'https://meet.google.com/xpf-eott-mcf',
+};
+
 const CHECKLIST = [
   { icon: Camera, title: 'Camera on', text: 'Show your face and stay visible unless a teacher agrees otherwise.' },
   { icon: Mic, title: 'Mic muted', text: 'Join muted, then unmute when your teacher invites you to speak.' },
@@ -100,6 +119,11 @@ export function ClassroomPage() {
       window.open(live.url, '_blank', 'noopener');
     }
   };
+
+  const trainingSlot =
+    slots.find((s) => s.courseCode === 'AI-442' && s.startTime === '11:00') ??
+    slots.find((s) => s.courseCode === 'AI-442') ??
+    TRAINING_FALLBACK;
 
   return (
     <div className="w-full bg-[var(--color-canvas-soft)]">
@@ -206,6 +230,44 @@ export function ClassroomPage() {
                   );
                 })}
               </div>
+            )}
+          </div>
+        </RevealStagger>
+
+        {/* Live training — open to teachers and learners */}
+        <RevealStagger>
+          <SectionHeading className="text-[22px] sm:text-[28px]">Live training</SectionHeading>
+          <Body className="mt-2">Open to teachers and learners. Join with your school account — attendance is recorded on join.</Body>
+          <div className="mt-5 rounded-[16px] border border-emerald-900/15 bg-emerald-50 p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-[var(--color-t4c-green)] text-white flex items-center justify-center flex-shrink-0">
+              <GraduationCap size={20} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest bg-[var(--color-t4c-black)] text-white px-2 py-1 rounded">
+                  AI-442 · Training
+                </span>
+                <span className="text-[11px] font-mono text-neutral-600">Wednesday · 11:00–12:30</span>
+              </div>
+              <h3 className="mt-2 text-base font-semibold leading-snug">POPIA &amp; AI Ethics Frameworks</h3>
+              <p className="mt-1 text-xs text-neutral-600 flex items-center gap-1.5">
+                <Clock size={12} /> Seminar · Dr. Arthur Vance · Google Meet
+              </p>
+            </div>
+            {currentUser ? (
+              <button
+                onClick={() => joinClass(trainingSlot)}
+                className="inline-flex items-center justify-center gap-2 bg-[var(--color-t4c-green)] text-white px-5 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-black)] transition-colors whitespace-nowrap"
+              >
+                <Video size={14} /> Join training
+              </button>
+            ) : (
+              <Link
+                to="/onboarding"
+                className="inline-flex items-center justify-center gap-2 bg-[var(--color-t4c-black)] text-white px-5 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest whitespace-nowrap"
+              >
+                Sign in to join <ArrowRight size={14} />
+              </Link>
             )}
           </div>
         </RevealStagger>
