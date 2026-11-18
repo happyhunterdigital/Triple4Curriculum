@@ -5,7 +5,7 @@ import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '
 import { PricingTable } from '../components/site/PricingTable';
 import { cloudinaryImage, cloudinarySrcSet } from '../lib/image';
 
-const HERO_IMAGE = 'https://res.cloudinary.com/x4agmmbo/image/upload/v1793762771/T4C_hero_image.png';
+const HERO_IMAGE = 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794997389/T4C_students_lessons.png';
 
 function FaqTeaser() {
   const items = [
@@ -39,7 +39,7 @@ export function HomePage() {
             src={cloudinaryImage(HERO_IMAGE, 960)}
             srcSet={cloudinarySrcSet(HERO_IMAGE, [480, 768, 1024, 1600])}
             sizes="(min-width: 1400px) 1400px, 100vw"
-            alt="Triple 4C learners playing piano, studying on laptops and reading in the library"
+            alt="Triple 4C students in live lessons"
             width={2048}
             height={1143}
             fetchPriority="high"
@@ -47,6 +47,23 @@ export function HomePage() {
             decoding="async"
             className="block w-full h-auto sm:object-cover sm:object-[center_52%]"
           />
+          {/* Left navigation panel */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-20 flex flex-col justify-start p-4 sm:p-6 border-r border-black/10">
+            <nav className="space-y-2 text-sm">
+              <a href="/admissions" className="flex items-center gap-2 rounded-md px-3 py-2 hover:bg-[var(--color-t4c-black)] hover:text-white transition-colors">
+                <div className="w-3 h-3 rounded-full bg-[var(--color-t4c-green)]"></div>
+                General
+              </a>
+              <a href="/admissions" className="flex items-center gap-2 rounded-md px-3 py-2 hover:bg-[var(--color-t4c-black)] hover:text-white transition-colors">
+                <div className="w-3 h-3 rounded-full bg-[var(--color-t4c-green)]"></div>
+                Admissions:
+              </a>
+              <a href="/contact" className="flex items-center gap-2 rounded-md px-3 py-2 hover:bg-[var(--color-t4c-black)] hover:text-white transition-colors">
+                <div className="w-3 h-3 rounded-full bg-[var(--color-t4c-green)]"></div>
+                Help and Support:
+              </a>
+            </nav>
+          </div>
           {/* Text panel: pinned to the bottom of the image, full width, no overlay */}
           <div className="relative z-10 flex flex-col justify-end px-5 sm:px-8 lg:px-10 py-6 sm:py-8 max-w-[640px] sm:max-w-[560px] sm:ms-8 bottom-0 left-0 right-0">
             <SectionEyebrow className="text-emerald-600 mb-2">Preserving Fresh Minds Globally</SectionEyebrow>
