@@ -130,7 +130,7 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
       warnings.push({
         tone: 'warning',
         title: 'No courses assigned yet',
-        detail: 'Your enrolment is being processed. Admissions can confirm your course list on admissions@t4c.com.',
+        detail: 'Your enrolment is being processed. Admissions can confirm your course list on admissions@triple4c.com.',
       });
     }
     if (overdue.length) {
