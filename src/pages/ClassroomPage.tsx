@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Video, Camera, Mic, Wifi, ShieldCheck, Clock, ExternalLink, ArrowRight,
+  Video, Camera, Mic, Wifi, ShieldCheck, Clock, ArrowRight,
   CheckCircle2, Users, GraduationCap, CalendarDays,
 } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
@@ -115,14 +115,6 @@ export function ClassroomPage() {
             learn face to face, and catch up with the recording if you miss a class.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <a
-              href="https://meet.google.com"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-[var(--color-t4c-green)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-black)] transition-colors"
-            >
-              <Video size={14} /> Open Google Meet <ExternalLink size={12} />
-            </a>
             <Link
               to={currentUser ? '/timetable' : '/onboarding'}
               className="inline-flex items-center gap-2 bg-[var(--color-t4c-black)] text-white px-5 py-2.5 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-t4c-green)] transition-colors"
