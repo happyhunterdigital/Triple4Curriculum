@@ -21,7 +21,11 @@ admin.initializeApp(
 );
 
 const auth = admin.auth();
-const auth2 = new GoogleAuth({ scopes: ['https://www.googleapis.com/auth/cloud-platform'] });
+const auth2 = new GoogleAuth(
+  svcJson
+    ? { credentials: JSON.parse(svcJson), scopes: ['https://www.googleapis.com/auth/cloud-platform'] }
+    : { scopes: ['https://www.googleapis.com/auth/cloud-platform'] },
+);
 const client = await auth2.getClient();
 
 const cfgRes = await client.request({
