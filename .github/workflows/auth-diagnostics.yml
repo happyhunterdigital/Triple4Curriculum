@@ -1,0 +1,31 @@
+name: Auth recovery diagnostics
+
+# Read-only: prints authorized domains, SMTP sender config and the actual
+# password-reset action link (code redacted) + whether it renders.
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: 'Account email to generate a reset link for'
+        required: true
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install deps
+        run: npm install --no-save firebase-admin google-auth-library
+
+      - name: Run auth diagnostics
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GCP_PROJECT: triple4curriculum
+          AUTH_DIAG_EMAIL: ${{ inputs.email }}
+        run: node scripts/auth-diagnose.mjs

@@ -79,8 +79,15 @@ export function LoginPage() {
     try {
       await sendPasswordResetEmail(auth, email.trim());
       setResetSent(true);
-    } catch {
-      setError('Could not send the reset email. Check the address and try again.');
+    } catch (e: unknown) {
+      const code = (e as { code?: string })?.code || '';
+      if (code === 'auth/invalid-email') {
+        setError('That email address doesn’t look right. Check it and try again.');
+      } else if (code === 'auth/too-many-requests') {
+        setError('Too many reset requests. Wait a few minutes and try again.');
+      } else {
+        setError('Could not send the reset email. Check the address and try again.');
+      }
     }
   };
 
@@ -188,6 +195,12 @@ export function LoginPage() {
             <Link to="/onboarding" className="font-bold text-[var(--color-t4c-green)] underline underline-offset-2">
               Apply for a place
             </Link>
+          </p>
+
+          <p className="mt-3 text-center text-[11px] leading-relaxed text-neutral-500">
+            Can’t remember which email you signed up with? Email{' '}
+            <a href="mailto:info@triple4c.com" className="font-semibold underline underline-offset-2">info@triple4c.com</a>{' '}
+            and our team will recover your account.
           </p>
         </div>
 

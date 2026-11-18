@@ -84,8 +84,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
 
       {/* Control Utility Suite / Right Block */}
       <div className="flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-5 h-full shrink-0">
-        {/* Dynamic Action Trigger Button */}
-        <button className="hidden 2xl:inline-flex items-center justify-center min-h-11 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] font-mono text-[9px] sm:text-[10px] uppercase tracking-widest px-2.5 sm:px-3.5 md:px-4 py-2.5 sm:py-2 rounded font-bold hover:bg-white transition-all shadow-xs border-b-2 border-amber-600 cursor-pointer whitespace-nowrap active:scale-95">
+        {/* File submission: learners go to assignments, staff to the grading queue */}
+        <button
+          onClick={() => {
+            const staff = currentUser?.role === 'lecturer' || currentUser?.role === 'admin';
+            navigate(staff ? '/teach/grading' : '/assignments');
+          }}
+          className="hidden 2xl:inline-flex items-center justify-center min-h-11 bg-[var(--color-t4c-yellow)] text-[var(--color-t4c-black)] font-mono text-[9px] sm:text-[10px] uppercase tracking-widest px-2.5 sm:px-3.5 md:px-4 py-2.5 sm:py-2 rounded font-bold hover:bg-white transition-all shadow-xs border-b-2 border-amber-600 cursor-pointer whitespace-nowrap active:scale-95"
+        >
           <span className="hidden sm:inline">Transmit File +</span>
           <span className="sm:hidden">Transmit +</span>
         </button>

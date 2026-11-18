@@ -6,7 +6,7 @@
  * attendance prompts) keys off these helpers, so moving the date is a one-line
  * change when the Q1 calendar is confirmed.
  */
-export const TERM_START_ISO = '2027-01-13';
+export const TERM_START_ISO = '2027-01-11';
 export const TERM_LABEL = 'Term 1, 2027';
 
 const start = new Date(`${TERM_START_ISO}T00:00:00+02:00`);
