@@ -186,13 +186,28 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ onNavigate, currentRoute
               {/* Floating Action Flyout */}
               {showCreateFlyout && (isExpanded || open) && (
                 <div className="absolute top-14 left-2 right-2 sm:left-3 sm:right-3 bg-[var(--color-t4c-black)] text-white border border-neutral-800 rounded shadow-xl p-1.5 space-y-0.5 z-50">
-                  <button className="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] font-medium hover:bg-white/10 rounded text-left cursor-pointer">
+                  <button
+                    onClick={() => {
+                      setShowCreateFlyout(false);
+                      onClose?.();
+                      if (isStaff) onNavigate?.('teach/authoring');
+                      else onNavigate?.('assignments');
+                    }}
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] font-medium hover:bg-white/10 rounded text-left cursor-pointer"
+                  >
                     <FilePlus size={12} className="text-amber-400" />
-                    <span>Upload Assignment</span>
+                    <span>{isStaff ? 'Author Assignment' : 'Upload Assignment'}</span>
                   </button>
-                  <button className="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] font-medium hover:bg-white/10 rounded text-left cursor-pointer">
+                  <button
+                    onClick={() => {
+                      setShowCreateFlyout(false);
+                      onClose?.();
+                      onNavigate?.('workspace');
+                    }}
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] font-medium hover:bg-white/10 rounded text-left cursor-pointer"
+                  >
                     <FolderPlus size={12} className="text-amber-400" />
-                    <span>Create Workspace Folder</span>
+                    <span>Open Class Workspace</span>
                   </button>
                 </div>
               )}
