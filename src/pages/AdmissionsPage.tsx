@@ -86,7 +86,7 @@ export function AdmissionsPage() {
             <h3 className="font-semibold">Admissions FAQs</h3>
             <div className="mt-3 divide-y divide-black/10">
               {[
-                ['When is the annual registration fee due?','At enrollment, see the fee table above. Contact admissions@t4c.com for the current year amount.'],
+                ['When is the annual registration fee due?','At enrollment, see the fee table above. Contact admissions@triple4c.com for the current year amount.'],
                 ['Are exam fees included?','No, SACCAI Grade 12 final exam fees and yearly SACCAI registration are excluded and invoiced separately.'],
                 ['Can we pay in USD or GBP?','Yes, ZAR, USD or GBP at the payment-date exchange rate.'],
               ].map(([q,a])=>(
@@ -104,7 +104,7 @@ export function AdmissionsPage() {
             <p className="mt-2 text-sm leading-relaxed text-neutral-700">Start your application, our admissions team will guide you through document verification and placement.</p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link to="/onboarding" className="inline-flex bg-[var(--color-t4c-black)] text-white px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest">Start Application</Link>
-              <a href="mailto:admissions@t4c.com" className="inline-flex border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)]">Email admissions@t4c.com</a>
+              <a href="mailto:admissions@triple4c.com" className="inline-flex border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)]">Email admissions@triple4c.com</a>
               <a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="inline-flex border border-black/10 px-6 py-3 min-h-11 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[var(--color-t4c-yellow)]">WhatsApp UK</a>
             </div>
             <p className="mt-4 text-xs text-neutral-500">Prefer to talk? Call +27 63-199-7147 (main) / WhatsApp +27 639-642-288 or see <Link to="/contact" className="underline">Contact</Link>.</p>
