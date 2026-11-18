@@ -51,13 +51,8 @@ export function HomePage() {
                  crop or letterbox. From sm up it becomes a cover background. */
               className="block h-auto w-full sm:h-full sm:w-full sm:object-cover sm:object-[center_42%]"
             />
-            {/* phones: blend the band into the copy below */}
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/15 to-transparent sm:hidden" />
-            {/* tablet/desktop: a light wash on the copy side only — the photo
-                stays roughly 60-70% clear across the rest of the card. */}
-            <div className="hidden sm:block absolute inset-0 bg-[linear-gradient(90deg,#FFFFFF_0%,rgba(255,255,255,0.88)_28%,rgba(255,255,255,0.42)_44%,rgba(255,255,255,0)_62%)]" />
           </div>
-          <div className="relative z-10 flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-8 sm:py-14 max-w-[640px]">
+          <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 py-8 sm:py-10 max-w-[640px] sm:max-w-[560px] sm:my-8 sm:ml-8 sm:bg-white/88 sm:backdrop-blur-md sm:rounded-[20px] sm:border sm:border-black/5 sm:shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]">
             <SectionEyebrow>Preserving Fresh Minds Globally</SectionEyebrow>
             <h1 className="mt-3 font-display text-[30px] sm:text-[42px] lg:text-[52px] font-semibold tracking-tight leading-[0.95] text-[var(--color-t4c-black)]">Small Classes.<br />Big Futures.</h1>
             <p className="mt-3 text-[14px] sm:text-[15px] leading-relaxed text-neutral-700 max-w-[48ch]">Daily live classes capped at 16. Four days, four hours, four lessons, with a Friday for real-world skills.</p>
