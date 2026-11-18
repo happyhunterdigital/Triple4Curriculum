@@ -108,7 +108,7 @@ export interface TimetableSlot {
   startTime: string; // e.g. "09:00"
   endTime: string;   // e.g. "10:30"
   room: string;
-  type: 'Lecture' | 'Lab' | 'Tutorial' | 'Seminar';
+  type: 'Lecture' | 'Lab' | 'Tutorial' | 'Seminar' | 'Training';
   departmentId: string;
   onlineLink?: string;
 }

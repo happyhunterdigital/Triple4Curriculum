@@ -32,6 +32,10 @@ export const StudentTimetable: React.FC = () => {
     ? slots
     : slots.filter(s => s.dayOfWeek === selectedDay);
 
+  /** Training slots are open to everyone (staff and learners) from any date —
+   *  they are not part of the academic term and ignore the term-start gate. */
+  const isJoinable = (slot: TimetableSlot) => termStarted || slot.type === 'Training';
+
   const copyLink = async (slotId: string, url: string) => {
     try {
       await navigator.clipboard.writeText(url);
@@ -86,7 +90,7 @@ export const StudentTimetable: React.FC = () => {
           <div className="text-xs leading-relaxed text-amber-900">
             <p className="font-bold">No live classes yet — {TERM_LABEL} begins {termStartLabel()}.</p>
             <p className="mt-0.5 text-amber-800">
-              This is the published schedule. Joining opens on the first teaching day.
+              This is the published schedule. Joining opens on the first teaching day. The AI-442 training slot stays joinable in the meantime.
             </p>
           </div>
         </div>
@@ -127,6 +131,7 @@ export const StudentTimetable: React.FC = () => {
                 <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] uppercase ${
                   slot.type === 'Lecture' ? 'bg-emerald-100 text-emerald-900' :
                   slot.type === 'Lab' ? 'bg-amber-100 text-amber-900' :
+                  slot.type === 'Training' ? 'bg-violet-100 text-violet-900' :
                   'bg-blue-100 text-blue-900'
                 }`}>
                   {slot.type}
@@ -175,27 +180,31 @@ export const StudentTimetable: React.FC = () => {
                   <button
                     type="button"
                     onClick={joinLive}
-                    disabled={!hasTermStarted()}
+                    disabled={!isJoinable(slot)}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-yellow-300 font-bold text-xs shadow-xs transition disabled:bg-neutral-200 disabled:text-neutral-500 disabled:shadow-none disabled:cursor-not-allowed"
                     title={
-                      !hasTermStarted()
+                      !isJoinable(slot)
                         ? `Joining opens on ${termStartLabel()}`
-                        : live.provider === 'google-meet'
-                          ? 'Join in Google Meet (attendance recorded)'
-                          : isInApp
-                            ? 'Enter the embedded classroom (attendance auto-recorded)'
-                            : 'Open the staff-provided live link'
+                        : slot.type === 'Training'
+                          ? 'Join the training (attendance recorded)'
+                          : live.provider === 'google-meet'
+                            ? 'Join in Google Meet (attendance recorded)'
+                            : isInApp
+                              ? 'Enter the embedded classroom (attendance auto-recorded)'
+                              : 'Open the staff-provided live link'
                     }
                   >
                     <Video className="w-3.5 h-3.5" />
                     <span>
-                      {!termStarted
-                        ? `Opens ${termStartShort()}`
-                        : live.provider === 'google-meet'
-                          ? 'Join Live'
-                          : isInApp
-                            ? 'Enter Classroom'
-                            : 'Join Live Stream'}
+                      {slot.type === 'Training'
+                        ? 'Join Training'
+                        : !termStarted
+                          ? `Opens ${termStartShort()}`
+                          : live.provider === 'google-meet'
+                            ? 'Join Live'
+                            : isInApp
+                              ? 'Enter Classroom'
+                              : 'Join Live Stream'}
                     </span>
                   </button>
                 </div>
@@ -205,9 +214,14 @@ export const StudentTimetable: React.FC = () => {
               {live.isFallback && termStarted && (
                 <p className="text-[10px] text-neutral-500 leading-relaxed">{live.embedNote}</p>
               )}
-              {!termStarted && (
+              {!termStarted && slot.type !== 'Training' && (
                 <p className="text-[10px] text-neutral-500 leading-relaxed">
                   Published schedule for {TERM_LABEL}. Joining and attendance open on {termStartLabel()}.
+                </p>
+              )}
+              {slot.type === 'Training' && (
+                <p className="text-[10px] text-violet-800 leading-relaxed">
+                  Live training — open to teachers and learners. Join any time; attendance is recorded.
                 </p>
               )}
             </div>
