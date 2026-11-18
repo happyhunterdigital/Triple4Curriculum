@@ -1,0 +1,27 @@
+name: Configure auth email (Resend SMTP)
+
+# Routes Firebase Auth emails (password reset, verification, email change)
+# through Resend SMTP so they send from noreply@triple4c.com. Idempotent.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smtp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install google-auth-library
+        run: npm install --no-save google-auth-library
+
+      - name: Configure SMTP
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          GCP_PROJECT: triple4curriculum
+        run: node scripts/set-auth-smtp.mjs
