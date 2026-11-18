@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Loader2, Search, TrendingUp, AlertCircle, Download } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
-import { api } from '../../lib/api';
+import { getSubmissionsPaged } from '../../lib/api';
 import { AssignmentSubmission } from '../../types';
 
 export const AdminApplications: React.FC = () => {
@@ -14,7 +14,7 @@ export const AdminApplications: React.FC = () => {
   useEffect(() => {
     async function load() {
       try {
-        const page = await api.getSubmissionsPaged(undefined, 100);
+        const page = await getSubmissionsPaged(undefined, 100);
         setSubmissions(page.items || []);
       } catch (e) {
         console.error(e);
@@ -22,8 +22,10 @@ export const AdminApplications: React.FC = () => {
           id: `toast_${Date.now()}`,
           title: '⚠️ Load Error',
           message: 'Failed to load learner applications. Check console for details.',
-          category: 'error',
+          category: 'urgent',
           timestamp: 'Just now',
+          read: false,
+          priority: 'high',
         });
       } finally {
         setLoading(false);
@@ -89,7 +91,7 @@ export const AdminApplications: React.FC = () => {
           <div className="h-64 flex items-center justify-center text-neutral-500">
             <Loader2 className="w-6 h-6" /> Loading submissions...
           </div>
-        : submissions.length === 0
+        ) : submissions.length === 0
           ? (
               <div className="p-8 text-center text-neutral-600">
                 <FileText className="w-16 h-16 mx-auto mb-4 opacity-50" />
