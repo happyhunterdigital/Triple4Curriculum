@@ -457,7 +457,7 @@ All educators and administrative staff at T4C undergo thorough background screen
 If a student, parent, or teacher suspects that a child is experiencing harm, neglect, or online abuse, the issue must be reported immediately.
 
 - **Designated Safeguarding Lead (DSL)**: T4C maintains an appointed DSL responsible for handling safety concerns.
-- **Internal Reporting Process**: Concerns should be reported directly to the DSL via email at zanolaamanzi@t4c.com.
+- **Internal Reporting Process**: Concerns should be reported directly to the DSL via email at zanolaamanzi@triple4c.com.
 
 ### 4.1 Role of the Designated Safeguarding Lead (DSL)
 
@@ -555,7 +555,7 @@ Learners affected by a safeguarding concern are offered support appropriate to t
 
 ## 12. Contact for This Policy
 
-Reports and questions about this policy go to the Designated Safeguarding Lead: **zanolaamanzi@t4c.com**. This contact is included in all parent and staff communications and is published on the T4C website.
+Reports and questions about this policy go to the Designated Safeguarding Lead: **zanolaamanzi@triple4c.com**. This contact is included in all parent and staff communications and is published on the T4C website.
 `,
   },
 };
