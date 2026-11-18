@@ -38,36 +38,9 @@ const smtp = {
 const sendEmail = {
   method: 'CUSTOM_SMTP',
   smtp,
-  resetPasswordTemplate: {
-    senderLocalPart: 'noreply',
-    senderDisplayName: 'Triple 4C',
-    subject: 'Reset your Triple 4C password',
-  },
-  verifyEmailTemplate: {
-    senderLocalPart: 'noreply',
-    senderDisplayName: 'Triple 4C',
-    subject: 'Verify your Triple 4C email',
-  },
-  changeEmailTemplate: {
-    senderLocalPart: 'noreply',
-    senderDisplayName: 'Triple 4C',
-    subject: 'Confirm your new Triple 4C email',
-  },
 };
 
-const updateMask = [
-  'notification.sendEmail.method',
-  'notification.sendEmail.smtp',
-  'notification.sendEmail.resetPasswordTemplate.senderLocalPart',
-  'notification.sendEmail.resetPasswordTemplate.senderDisplayName',
-  'notification.sendEmail.resetPasswordTemplate.subject',
-  'notification.sendEmail.verifyEmailTemplate.senderLocalPart',
-  'notification.sendEmail.verifyEmailTemplate.senderDisplayName',
-  'notification.sendEmail.verifyEmailTemplate.subject',
-  'notification.sendEmail.changeEmailTemplate.senderLocalPart',
-  'notification.sendEmail.changeEmailTemplate.senderDisplayName',
-  'notification.sendEmail.changeEmailTemplate.subject',
-].join(',');
+const updateMask = ['notification.sendEmail.method', 'notification.sendEmail.smtp'].join(',');
 
 const res = await client.request({
   url: `https://identitytoolkit.googleapis.com/v2/projects/${project}/config?updateMask=${encodeURIComponent(updateMask)}`,
