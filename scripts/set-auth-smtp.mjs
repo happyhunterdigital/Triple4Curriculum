@@ -32,22 +32,60 @@ const smtp = {
   securityMode: 'SSL',
 };
 
+// METHOD_UNSPECIFIED/DEFAULT keeps Firebase's shared sender — CUSTOM_SMTP is
+// what actually routes through the relay. Templates get the branded sender
+// name and subjects (bodies keep Firebase's defaults with the action link).
+const sendEmail = {
+  method: 'CUSTOM_SMTP',
+  smtp,
+  resetPasswordTemplate: {
+    senderLocalPart: 'noreply',
+    senderDisplayName: 'Triple 4C',
+    subject: 'Reset your Triple 4C password',
+  },
+  verifyEmailTemplate: {
+    senderLocalPart: 'noreply',
+    senderDisplayName: 'Triple 4C',
+    subject: 'Verify your Triple 4C email',
+  },
+  changeEmailTemplate: {
+    senderLocalPart: 'noreply',
+    senderDisplayName: 'Triple 4C',
+    subject: 'Confirm your new Triple 4C email',
+  },
+};
+
+const updateMask = [
+  'notification.sendEmail.method',
+  'notification.sendEmail.smtp',
+  'notification.sendEmail.resetPasswordTemplate.senderLocalPart',
+  'notification.sendEmail.resetPasswordTemplate.senderDisplayName',
+  'notification.sendEmail.resetPasswordTemplate.subject',
+  'notification.sendEmail.verifyEmailTemplate.senderLocalPart',
+  'notification.sendEmail.verifyEmailTemplate.senderDisplayName',
+  'notification.sendEmail.verifyEmailTemplate.subject',
+  'notification.sendEmail.changeEmailTemplate.senderLocalPart',
+  'notification.sendEmail.changeEmailTemplate.senderDisplayName',
+  'notification.sendEmail.changeEmailTemplate.subject',
+].join(',');
+
 const res = await client.request({
-  url: `https://identitytoolkit.googleapis.com/v2/projects/${project}/config?updateMask=notification.sendEmail.smtp`,
+  url: `https://identitytoolkit.googleapis.com/v2/projects/${project}/config?updateMask=${encodeURIComponent(updateMask)}`,
   method: 'PATCH',
-  data: { notification: { sendEmail: { smtp } } },
+  data: { notification: { sendEmail } },
 });
 
 const out = res.data?.notification?.sendEmail?.smtp || {};
 console.log(
   JSON.stringify(
     {
+      method: res.data?.notification?.sendEmail?.method ?? null,
       senderEmail: out.senderEmail ?? null,
       host: out.host ?? null,
       port: out.port ?? null,
       username: out.username ?? null,
       securityMode: out.securityMode ?? null,
-      passwordSet: out.password === '********',
+      resetSubject: res.data?.notification?.sendEmail?.resetPasswordTemplate?.subject ?? null,
     },
     null,
     2,
