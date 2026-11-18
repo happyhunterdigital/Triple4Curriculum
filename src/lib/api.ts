@@ -2,7 +2,8 @@ import {
   User, UserRole, Department, Course, Lecture, TimetableSlot,
   Assignment, AssignmentSubmission, AttendanceRecord,
   Badge, AuditLog, PushNotification, ChatMessage, SystemAnnouncement,
-  LearnerCourseProgress, TeacherSummary, GeneratedQuiz, Enrollment
+  LearnerCourseProgress, TeacherSummary, GeneratedQuiz, Enrollment,
+  LearnerRegistration
 } from '../types';
 import { auth as fbAuth } from './firebase';
 import { firestore } from './firestore';
@@ -49,6 +50,7 @@ const C = {
   learnerProgress: 'learner_progress',
   badges: 'badges',
   enrollments: 'enrollments',
+  students: 'students',
 } as const;
 
 type StoredRole = 'learner' | 'teacher' | 'admin' | 'student' | 'lecturer';
@@ -189,6 +191,51 @@ export async function pagedQuery<T>(
     const items = snap.docs.map((d) => withId<T>(d.id, d.data() as Record<string, unknown>));
     const nextCursor = snap.docs.length === limitN ? snap.docs[snap.docs.length - 1] : null;
     return { items, nextCursor, hasMore: nextCursor !== null };
+  } catch (e) {
+    return friendly(e);
+  }
+}
+
+/** Flattened learner registrations for the staff list view. Bounded, sorted
+ *  client-side (createdAt may be absent on older rows). Staff-only per rules. */
+export async function getLearnerRegistrations(limitN = 500): Promise<LearnerRegistration[]> {
+  try {
+    const snap = await getDocs(query(collection(db, C.students), limit(limitN)));
+    const items = snap.docs.map((d) => {
+      const data = d.data() as Record<string, unknown>;
+      const personal = (data.personal ?? {}) as Record<string, unknown>;
+      const guardian = (personal.guardian ?? {}) as Record<string, unknown>;
+      const academic = (data.academic ?? {}) as Record<string, unknown>;
+      const payment = (data.payment ?? {}) as Record<string, unknown>;
+      const created = data.createdAt as { toDate?: () => Date } | undefined;
+      const createdAt = typeof created?.toDate === 'function' ? created.toDate().toISOString() : '';
+      const docCount = [
+        ...(Array.isArray(academic.documents) ? academic.documents : []),
+        ...(Array.isArray(payment.documents) ? payment.documents : []),
+      ].length;
+      return withId<LearnerRegistration>(d.id, {
+        name: String(data.name ?? ''),
+        email: String(data.email ?? ''),
+        department: String(data.department ?? ''),
+        level: String(data.level ?? ''),
+        enrollmentStatus: String(data.enrollmentStatus ?? ''),
+        dob: String(personal.dob ?? ''),
+        isMinor: !!personal.isMinor,
+        guardianName: String(guardian.name ?? ''),
+        guardianContact: String(guardian.contact ?? ''),
+        homeAddress: String(personal.homeAddress ?? ''),
+        previousSchool: String(academic.previousSchool ?? ''),
+        lastGrade: String(academic.lastGrade ?? ''),
+        transcriptsProvided: !!academic.transcriptsProvided,
+        paymentStatus: String(payment.status ?? ''),
+        paymentMethod: String(payment.method ?? ''),
+        payerName: String(payment.payerName ?? ''),
+        provider: String(data.provider ?? ''),
+        documentsCount: docCount,
+        createdAt,
+      });
+    });
+    return items.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
   } catch (e) {
     return friendly(e);
   }
@@ -855,6 +902,8 @@ export const api = {
     const page = await getUsersPaged(100);
     return page.items;
   },
+  /** Learner registrations (students collection) for the admissions list view. */
+  getLearnerRegistrations: () => getLearnerRegistrations(),
   /** Provision a directory profile; activates when the person registers with the same email. */
   createUser: async (payload: Partial<User>) => {
     try {

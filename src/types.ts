@@ -339,3 +339,28 @@ export interface UserProfileSettings {
   twoFactorEnabled: boolean;
 }
 
+
+/** Flattened view of a students/{uid} registration profile for staff list views. */
+export interface LearnerRegistration {
+  id: string;
+  name: string;
+  email: string;
+  department: string;
+  level: string;
+  enrollmentStatus: string;
+  dob: string;
+  isMinor: boolean;
+  guardianName: string;
+  guardianContact: string;
+  homeAddress: string;
+  previousSchool: string;
+  lastGrade: string;
+  transcriptsProvided: boolean;
+  paymentStatus: string;
+  paymentMethod: string;
+  payerName: string;
+  provider: string;
+  documentsCount: number;
+  createdAt: string;
+}
+

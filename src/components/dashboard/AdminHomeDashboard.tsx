@@ -52,6 +52,7 @@ const MOCK_LEARNERS: LearnerProfile[] = [
 
 const QUICK_LINKS = [
   { label: 'Users', route: 'admin/users' },
+  { label: 'Learners', route: 'admin/learners' },
   { label: 'Timetable', route: 'admin/timetable' },
   { label: 'Announcements', route: 'admin/announcements' },
   { label: 'Reports', route: 'admin/reports' },
