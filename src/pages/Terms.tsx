@@ -61,7 +61,7 @@ const SECTIONS: Array<{ h: string; body: React.ReactNode }> = [
     h: '6. Withdrawals, suspensions & refunds',
     body: (
       <ul className="list-disc pl-5 space-y-1">
-        <li>Guardians may withdraw with one calendar month’s written notice to admissions@t4c.com; access runs to the end of the paid period.</li>
+        <li>Guardians may withdraw with one calendar month’s written notice to admissions@triple4c.com; access runs to the end of the paid period.</li>
         <li>Annual plans: pro-rata refund of unused full months less registration/SACCAI charges; monthly plans are not refunded mid-cycle.</li>
         <li>We may suspend or expel for serious misconduct or persistent non-payment after notice; statutory records are still preserved.</li>
       </ul>
