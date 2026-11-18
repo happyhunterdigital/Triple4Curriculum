@@ -25,6 +25,7 @@ export function ContactPage() {
               <h3 className="mt-2 font-semibold text-sm">SA Call</h3>
               <p className="text-sm text-neutral-700 mt-1">+27 63-199-7147</p>
               <p className="text-sm text-neutral-700">+27 639-642-288 <span className="text-xs text-neutral-500">(WhatsApp)</span></p>
+              <p className="text-sm text-neutral-700">011 884 2919 <span className="text-xs text-neutral-500">(Landline)</span></p>
               <p className="text-xs text-neutral-500 mt-1">Admissions &amp; enquiries</p>
             </a>
             <a href="https://wa.me/447577924174" target="_blank" rel="noreferrer" className="bg-white border border-black/10 rounded-[16px] p-6 hover:border-[var(--color-t4c-yellow)] transition-colors">
