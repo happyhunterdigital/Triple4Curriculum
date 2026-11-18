@@ -39,15 +39,18 @@ console.log(
   JSON.stringify(
     {
       authorizedDomains: cfg.authorizedDomains || null,
-      smtp: cfg.smtp
-        ? {
-            senderEmail: cfg.smtp.senderEmail,
-            host: cfg.smtp.host,
-            port: cfg.smtp.port,
-            username: cfg.smtp.username,
-            securityMode: cfg.smtp.securityMode,
-          }
-        : null,
+      smtp: (() => {
+        const s = cfg.notification?.sendEmail?.smtp;
+        return s
+          ? {
+              senderEmail: s.senderEmail,
+              host: s.host,
+              port: s.port,
+              username: s.username,
+              securityMode: s.securityMode,
+            }
+          : null;
+      })(),
       passwordResetTemplate: {
         senderEmail: resetTpl.senderEmail || null,
         subject: resetTpl.subject || null,
