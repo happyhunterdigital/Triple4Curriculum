@@ -19,18 +19,18 @@ export interface TeamMember {
 export const teamMembers: TeamMember[] = [
   {
     name: 'Wonder Ngwenya',
-    role: 'Head of Department',
-    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794406582/Wonder_Ngwenya_Head_of_Department.jpg',
-    alt: 'Wonder Ngwenya, Head of Department at Triple 4 Curriculum.',
-    width: 1024,
-    height: 1024,
+    role: 'Principal',
+    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794983761/Wonder_Ngwenya.jpg',
+    alt: 'Wonder Ngwenya, Principal at Triple 4 Curriculum.',
+    width: 1080,
+    height: 1290,
     featured: true,
   },
   {
     name: 'Eric Mongesi Mpofu',
-    role: 'Head of Business Department',
+    role: 'Vice Principal',
     photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794406582/Eric_Mongesi_Mpofu_Head_of_Business_Department.jpg',
-    alt: 'Eric Mongesi Mpofu, Head of the Business Department at Triple 4 Curriculum.',
+    alt: 'Eric Mongesi Mpofu, Vice Principal at Triple 4 Curriculum.',
     width: 1024,
     height: 1024,
   },
@@ -61,10 +61,10 @@ export const teamMembers: TeamMember[] = [
   {
     name: 'Cilvia Moragwa',
     role: 'English Language & Literature Teacher',
-    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794495419/Cilvia_Moragwa_Subject_English_Language_and_Literature.jpg',
+    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794983762/Cilvia_Moragwa.jpg',
     alt: 'Cilvia Moragwa, English Language and Literature teacher at Triple 4 Curriculum.',
-    width: 896,
-    height: 1200,
+    width: 2902,
+    height: 2967,
   },
 ];
 
