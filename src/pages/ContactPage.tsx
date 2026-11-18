@@ -36,8 +36,8 @@ export function ContactPage() {
             <div className="bg-white border border-black/10 rounded-[16px] p-6">
               <Mail size={18} className="text-[var(--color-t4c-green)]" />
               <h3 className="mt-2 font-semibold text-sm">Email</h3>
-              <p className="text-xs mt-1"><a href="mailto:info@t4c.com" className="underline">info@t4c.com</a> <span className="text-neutral-400">·</span> General</p>
-              <p className="text-xs"><a href="mailto:admissions@t4c.com" className="underline">admissions@t4c.com</a> <span className="text-neutral-400">·</span> Admissions</p>
+              <p className="text-xs mt-1"><a href="mailto:info@triple4c.com" className="underline">info@triple4c.com</a> <span className="text-neutral-400">·</span> General</p>
+              <p className="text-xs"><a href="mailto:admissions@triple4c.com" className="underline">admissions@triple4c.com</a> <span className="text-neutral-400">·</span> Admissions</p>
               <p className="text-xs"><a href="mailto:support@triple4c.com" className="underline">support@triple4c.com</a> <span className="text-neutral-400">·</span> Help</p>
             </div>
             <div className="bg-white border border-black/10 rounded-[16px] p-6">
@@ -98,7 +98,7 @@ export function ContactPage() {
               </ul>
               <div className="mt-6 rounded-[12px] bg-[var(--color-canvas-soft)] border border-black/10 p-4">
                 <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">Admissions team</p>
-                <p className="text-sm mt-1"><a href="mailto:admissions@t4c.com" className="underline">admissions@t4c.com</a>, document checks, placement</p>
+                <p className="text-sm mt-1"><a href="mailto:admissions@triple4c.com" className="underline">admissions@triple4c.com</a>, document checks, placement</p>
               </div>
             </div>
           </div>
