@@ -82,6 +82,14 @@ export const teamMembers: TeamMember[] = [
     width: 2902,
     height: 2967,
   },
+  {
+    name: 'Beaulah Ntoni',
+    role: 'Admin',
+    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1795093578/beaulah_ntoni-_Admin.jpg',
+    alt: 'Beaulah Ntoni, Admin at Triple 4 Curriculum.',
+    width: 684,
+    height: 750,
+  },
 ];
 
 /**
