@@ -101,6 +101,10 @@ export function ContactPage() {
                 <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">Admissions team</p>
                 <p className="text-sm mt-1"><a href="mailto:admissions@triple4c.com" className="underline">admissions@triple4c.com</a>, document checks, placement</p>
               </div>
+              <div className="mt-4 rounded-[12px] bg-[var(--color-canvas-soft)] border border-black/10 p-4">
+                <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">Main office</p>
+                <p className="text-sm mt-1">82 High Road, Tottenham, London N15 6JU</p>
+              </div>
             </div>
           </div>
         </RevealStagger>

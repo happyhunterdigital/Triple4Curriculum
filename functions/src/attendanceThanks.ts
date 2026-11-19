@@ -122,7 +122,7 @@ async function sendThanks(date: string, dryRun: boolean): Promise<ThanksSummary>
               <p>Keep the momentum going: your notes and recordings are in the T4C Classroom, and tomorrow's
               timetable is already on your dashboard.</p>
               <p style="margin-top:24px">Warm regards,<br/>The Triple 4C teaching team</p>
-              <p style="font-size:12px;color:#6b7280;margin-top:24px">Triple 4 Curriculum · 178 Daisy Street, Sandton ·
+              <p style="font-size:12px;color:#6b7280;margin-top:24px">Triple 4 Curriculum · 82 High Road, Tottenham, London N15 6JU ·
               <a href="https://triple4c.com">triple4c.com</a></p>
             </div>`,
         }),

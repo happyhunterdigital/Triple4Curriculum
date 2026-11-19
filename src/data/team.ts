@@ -37,7 +37,7 @@ export const teamMembers: TeamMember[] = [
   {
     name: 'Motshidisi',
     role: 'English Teacher',
-    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794496367/Motshidisi_English.jpg',
+    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1795107901/Motshidisi_English_Teacher.jpg',
     alt: 'Motshidisi, English teacher at Triple 4 Curriculum.',
     width: 896,
     height: 1200,
@@ -45,7 +45,7 @@ export const teamMembers: TeamMember[] = [
   {
     name: 'Ability Ncube',
     role: 'Head of Primary',
-    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1794495423/Ability_Ncube_Head_of_Primary.jpg',
+    photo: 'https://res.cloudinary.com/x4agmmbo/image/upload/v1795107756/Ability_Ncube_Head_of_Primary.jpg',
     alt: 'Ability Ncube, Head of Primary at Triple 4 Curriculum.',
     width: 896,
     height: 1200,

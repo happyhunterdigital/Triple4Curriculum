@@ -405,7 +405,7 @@ If any part of these guidelines doesn't apply, the rest still stands—and we'll
 ---
 
 **Triple 4 Curriculum Online School**
-178 Daisy Street, Sandton
+82 High Road, Tottenham, London N15 6JU
 info@triple4c.com
 `,
   },

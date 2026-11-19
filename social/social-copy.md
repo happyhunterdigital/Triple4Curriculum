@@ -29,7 +29,7 @@ source of truth.
 | Handle (all platforms) | `@triple4curriculum` |
 | Phone | +27 689 758 960 |
 | Email | info@triple4c.com |
-| Address | 178 Daisy Street, Sandton, Gauteng |
+| Address | 82 High Road, Tottenham, London N15 6JU |
 | Grades | Grade R to 12 |
 | Model | Four days a week, four hours a day, four live lessons a day |
 | Class cap | 16 learners |
