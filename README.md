@@ -3,10 +3,11 @@
 React 19 + TypeScript + Vite + Firebase. Demo LMS build, statically hosted on
 Firebase Hosting (`triple4c.com`), data live in Cloud Firestore.
 
-> **Status: Firebase-native demo - not production.** No custom backend; all
-> enforcement lives in `firestore.rules` / `storage.rules`. Do not load real
-> learner data until roles use custom claims and the rules below are reviewed
-> against a real threat model.
+> **Status: Hardened pilot -- real learner data allowed for the capped pilot
+> cohort only.** Server-side enforcement (XP/grades/roles/audit) lives in
+> Cloud Functions; access control is claims-only via `firestore.rules`. Open
+> enrolment and in-app payments remain gated on Phases 2-3 (see "Go-live plan"
+> below). Pilot guardrails and runbook: `docs/PILOT-RUNBOOK.md`.
 
 ## Quick start
 
@@ -98,31 +99,37 @@ The navbar logo and Home button both return to `/dashboard`.
 - Staff provisioning (`AdminUsers`) creates directory profiles that activate
   when the person registers with the same email.
 
-## Remaining work
+## Go-live plan
 
-- [x] Phase 0 security hardening done: claims-only `firestore.rules`
-  (owner/staff-scoped reads, immutable roles, sized audit writes),
-  scoped `storage.rules` (registrations/submissions/certificates),
-  server-side quiz callable (no client Gemini key), fixed deep-link
-  `actionUrl`s (`/assignments`, `/lectures`).
-- [x] Phase 1 backend trust layer: XP/grades/roles/secrets in Functions
-  (`completeLectureAndAwardXP`, `gradeSubmission`, `setCustomRole`,
-  `generateQuiz` quota + cache, `writeAudit` quota, webhooks), App Check
-  wiring, persistent Firestore cache.
-- [x] Phase 2 cost/correctness: paged reads (`getUsersPaged`,
-  `getSubmissionsPaged`, `getNotificationsPaged`, `getAttendancePaged`),
-  `getCountFromServer` totals, bounded staff queries.
-- [x] Phase 3 payments/comms: PayFast checkout (`createPayfastCheckout`) with
-  signature + PayFast validation in `payfastWebhook`, Resend `sendEmailNudge`
-  stub, `createCertificate` callable.
-- [x] Phase 4 compliance hardening: `docs/DPIA.md`, `functions/src/retention.ts`
-  (`purgeExpired` daily sweep, `exportMyDataStrict`, `eraseMyData`),
-  `src/lib/sams.ts` SA-SAMS CSV builders + `api.exportSamsAttendance` /
-  `api.exportSamsResults`, retention/DSR/residency in `PRIVACY.md`,
-  `tests/dsr.test.ts` (guardian + CSV coverage).
-- [x] Video launch layer: real YouTube-backed lecture player (no sample-video
-  fallback), Google Meet live links with a Jitsi embed fallback, and a
-  provider-agnostic resolver (`docs/VIDEO-STRATEGY.md`).
+Completed (verified against staging, see deploy checklist):
+- Phase 0 security hardening: claims-only `firestore.rules`, scoped
+  `storage.rules`, server-side quiz callable, fixed deep-link
+  `actionUrl`s.
+- Wave 0: App Check enforcement, custom-claims migration for all staff,
+  all secrets in Secret Manager, indexes deployed, staging rehearsal
+  passed.
+- Phase 1 backend trust layer: XP/grades/roles in Functions
+  (`completeLectureAndAwardXP`, `gradeSubmission`, `setCustomRole`),
+  `writeAudit` functions-only with per-IP quotas, `generateQuiz` quota
+  + cache, App Check verified end-to-end, persistent Firestore cache.
+
+Remaining before open enrolment:
+- Phase 2 cost/correctness: paged reads, `getCountFromServer` totals,
+  bounded staff queries.
+- Phase 3 payments/comms: PayFast production credentials + notify URL,
+  Resend `sendEmailNudge`, `createCertificate`.
+- Phase 4 compliance: `docs/DPIA.md`, `functions/src/retention.ts`
+  (`purgeExpired`, `exportMyDataStrict`, `eraseMyData`), SA-SAMS
+  exports, `PRIVACY.md` retention/DSR/residency, `tests/dsr.test.ts`
+  coverage.
+- Video launch layer: real YouTube-backed player, Google Meet + Jitsi
+  fallback.
+- Post-launch: Sentry + uptime monitoring, Playwright e2e.
+
+Pilot guardrails: enrolment is admin-provisioned and capped; payments
+are handled outside the app; a DSR/wipe runbook is in
+`docs/PILOT-RUNBOOK.md`.
+
 - Live AI quiz needs a `GEMINI_API_KEY` functions secret - the client calls
   the `generateQuiz` callable; without it the tutor serves bundled fallback
   questions.
@@ -159,7 +166,7 @@ Every image must be served optimised — this keeps hosting egress and mobile da
   PayFast dashboard, and add `PAYFAST_SANDBOX=true` to `functions/.env` while
   testing against sandbox credentials.
 
-## Deploy checklist (before real learner data)
+## Deploy checklist (before open enrolment)
 
 > **⚠️ Deploy via GitHub Actions only (push to `main`).** A production build
 > requires the `VITE_FIREBASE_*` env vars; CI injects them from repo secrets.
@@ -168,6 +175,9 @@ Every image must be served optimised — this keeps hosting egress and mobile da
 > (`auth/invalid-api-key`). The build now **refuses to run** without
 > `VITE_FIREBASE_API_KEY` for exactly this reason. If you must deploy locally,
 > create `.env` first (see step 1) and use `firebase deploy --only hosting`.
+
+0. Confirm pilot guardrails still in place: capped cohort, manual
+   provisioning, `docs/PILOT-RUNBOOK.md` current.
 
 1. **App Check:** set `VITE_RECAPTCHA_SITE_KEY`, enable App Check enforcement
    in Firebase Console (Auth/Firestore/Storage/Functions), verify debug tokens
