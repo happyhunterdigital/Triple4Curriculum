@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Target, Scale, Wrench, Crown, Heart, Lightbulb, Users, Sparkles } from 'lucide-react';
 import { PageShell, SectionEyebrow, SectionHeading, Body, RevealStagger } from '../components/site/Section';
-import { teamMembers, teamPhotoSrcSet, type TeamMember } from '../data/team';
+import { teamMembers } from '../data/team';
+import { TeamOrgChart } from '../components/site/TeamOrgChart';
 import { injectJsonLd } from '../lib/seo';
 
 export function AboutPage() {
@@ -147,57 +148,15 @@ export function AboutPage() {
           </div>
         </RevealStagger>
 
-        {/* Our Team, staff portraits */}
+        {/* Our Team: org chart */}
         <RevealStagger>
-          <SectionHeading>Our Team</SectionHeading>
           <Body className="mt-2">
             The people behind Triple 4C: heads of department, specialist teachers and a
             dedicated safeguarding lead. Every class is led by one of them — never a
             facilitator, never a video on a screen.
           </Body>
-          {/* Company hierarchy: Head of Department on the top row, everyone else below. */}
-          {(() => {
-            const featured = teamMembers.find((m) => m.featured);
-            const rest = teamMembers.filter((m) => !m.featured);
-            const card = (member: TeamMember, wide = false) => (
-              <figure
-                key={member.name}
-                className={
-                  wide
-                    ? 'w-full max-w-md mx-auto bg-white border-2 border-[var(--color-t4c-yellow)] rounded-[16px] overflow-hidden shadow-md sm:flex'
-                    : 'bg-white border border-black/10 rounded-[16px] overflow-hidden'
-                }
-              >
-                <img
-                  src={member.photo}
-                  srcSet={teamPhotoSrcSet(member.photo)}
-                  sizes={wide ? '(min-width: 640px) 256px, 100vw' : '(min-width: 1024px) 19vw, (min-width: 640px) 50vw, 100vw'}
-                  width={member.width}
-                  height={member.height}
-                  alt={member.alt}
-                  loading="lazy"
-                  decoding="async"
-                  className={wide ? 'block w-full sm:w-64 aspect-[4/5] object-cover object-top' : 'block w-full aspect-[4/5] object-cover object-top'}
-                />
-                <figcaption className="p-4">
-                  {member.featured && (
-                    <p className="mb-1 inline-block text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-t4c-black)] bg-[var(--color-t4c-yellow)] px-2 py-0.5 rounded-full">Leadership</p>
-                  )}
-                  <p className="font-semibold text-sm text-[var(--color-t4c-black)]">{member.name}</p>
-                  <p className="mt-0.5 text-xs font-mono uppercase tracking-widest text-[var(--color-t4c-green)]">{member.role}</p>
-                </figcaption>
-              </figure>
-            );
-            return (
-              <>
-                {featured && card(featured, true)}
-                <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                  {rest.map((member) => card(member))}
-                </div>
-              </>
-            );
-          })()}
         </RevealStagger>
+        <TeamOrgChart />
 
         {/* Ethos, 7 */}
         <RevealStagger>
