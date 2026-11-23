@@ -20,7 +20,8 @@ involved; the crest, photographs and QR code are stored locally in `assets/`.
 | `t4c-flyer-a5-v2.html` | A5 148x210 mm, 2 pages | Photo flyer: classroom hero front, 4-4-4 band and portrait fees on the back |
 | `t4c-flyer-a5-v3.html` | A5 148x210 mm, 2 pages | Photo flyer: cream typographic front with portrait card, dark back |
 | `t4c-flyer-a5-v4-admissions-2027.html` | A5 148x210 mm, 2 pages | Previous admissions flyer for 2027 using the happyhunterdigital document palette; retained for reference |
-| `t4c-flyer-a5-v5-admissions-2027.html` | A5 148x210 mm, 2 pages | Current admissions flyer for 2027: black hero band, classroom photo, offer badge and card-based back; includes the Black Friday extension to 5 December 2026 |
+| `t4c-flyer-a5-v5-admissions-2027.html` | A5 148x210 mm, 2 pages | Previous admissions flyer for 2027: black hero band and agency palette; retained for reference |
+| `t4c-flyer-a5-v6-admissions-2027.html` | A5 148x210 mm, 2 pages | Current admissions flyer for 2027: T4C green and gold, online-class browser hero, 4-4-4 stat band, circular photo row and green CTA; includes the Black Friday extension to 5 December 2026 |
 | `print.css` | | Shared print design system (tokens, sheets, letterhead, form, poster, flyer, photography) |
 | `assets/t4c-crest.png` | | Official crest, original source |
 | `assets/t4c-crest-transparent.png` | | Crest with the white backdrop keyed out, for use on cream, green or black |
@@ -66,22 +67,22 @@ Taken from the T4C brand book, not inferred:
 
 ## Admission in Progress campaign
 
-`t4c-flyer-a5-v5-admissions-2027.html` is the current campaign piece. It replaces
-v4 for active use; v4 is retained for reference. It uses the happyhunterdigital
-document palette and Inter-only typography, not the green and gold brand book
-system, because the brief called for agency branding and a fresh creative
-direction. It announces the 2027 intake and carries the Black Friday offer:
+`t4c-flyer-a5-v6-admissions-2027.html` is the current campaign piece. It replaces
+v5 for active use; v4 and v5 are retained for reference. The direction is taken
+from the school's poster layout, rebuilt in the T4C brand system: Brunswick
+Green, Antique Gold and Chalk White, with Plus Jakarta Sans for display and
+Inter for text. It announces the 2027 intake and carries the Black Friday offer:
 10% off all terms with code `BLACKFRIEND10`, new registrations only, extended
 to 5 December 2026. The same deadline is used in `HomePage.tsx` and
 `FirstTermPrompt.tsx`; keep all three in step if the offer changes again.
 
-The front carries the school crest and name, the "Admission in progress" hook
-and headline, a real classroom photograph inside a full-width black hero band,
-grades offered, the offer deadline, class size, a badge-led offer panel, and the
-direct CTA with phone, email, address and QR code. The back uses five cards for
-the selling points, then an Extra Skills photograph, tuition by phase, terms,
-and a book-an-observation CTA. The companion digital post is
-`../social/vertical-admissions-2027-v5.html` for WhatsApp and Facebook.
+The front carries the crest and name, the "Admission in progress" hook and
+headline, an online-class browser hero with a live lesson badge, the 4-4-4
+rhythm, class size, the offer deadline, a badge-led offer panel, and the direct
+CTA with phone, email, address and QR code. The back carries three circular
+photographs, the T4C difference, catch-up and curriculum cards, tuition by
+phase, terms, and a book-an-observation CTA. The companion digital post is
+`../social/vertical-admissions-2027-v6.html` for WhatsApp and Facebook.
 
 ## Photography
 

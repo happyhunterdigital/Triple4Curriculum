@@ -13,7 +13,8 @@ LinkedIn and TikTok, built on the brand book palette and the positioning in
 | `photos.html` | Four 1080x1080 photo tiles, one 1080x1920 story and one 1600x900 link card |
 | `vertical.html` | Three 1080x1920 story and reel frames |
 | `vertical-admissions-2027.html` | Previous 1080x1350 vertical post for the 2027 admissions campaign; retained for reference |
-| `vertical-admissions-2027-v5.html` | Current 1080x1350 vertical post for the 2027 admissions campaign, matching the v5 A5 flyer |
+| `vertical-admissions-2027-v5.html` | Previous 1080x1350 vertical post for the 2027 admissions campaign; retained for reference |
+| `vertical-admissions-2027-v6.html` | Current 1080x1350 vertical post for the 2027 admissions campaign, matching the v6 A5 flyer |
 | `wide.html` | 1600x900 for X and 1200x627 for LinkedIn and Facebook link cards |
 | `social.css` | Design system: palette, type, rows, stat block, photography, duotone, split panels |
 | `assets/` | Crest, original and with the white background keyed out, plus the admissions QR |
@@ -42,22 +43,24 @@ wide-x-1600x900.png       1600x900    X and link previews
 wide-li-1200x627.png      1200x627    LinkedIn and Facebook card
 wide-photo-school.png     1600x900    photo link card, "School that fits a childhood."
 vertical-admissions-2027.png      1080x1350  previous admissions campaign post
-vertical-admissions-2027-v5.png   1080x1350  current admissions campaign post for WhatsApp and Facebook
+vertical-admissions-2027-v5.png   1080x1350  previous v5 admissions campaign post
+vertical-admissions-2027-v6.png   1080x1350  current admissions campaign post for WhatsApp and Facebook
 ```
 
 The typographic set and the photo set are designed to run together: use the
 typographic tile as the announcement and the photo tile as the follow up in
 the same week, or run them as a two up carousel.
 
-`vertical-admissions-2027-v5.png` is the current 2027 admissions campaign post.
-It replaces the earlier `vertical-admissions-2027.png` for active use; the older
-file is retained for reference. It mirrors the A5 flyer in
-`../print/t4c-flyer-a5-v5-admissions-2027.html`: crest, name, "Admission in
-progress" hook and headline, classroom photograph in a black hero band, grades,
-six selling points, the Black Friday extension to 5 December 2026, and a direct
-CTA with phone, email, address and QR code. It is 1080x1350 because that fits a
-parent WhatsApp or Facebook feed without cropping the CTA. Use the same
-guardian-consent check listed below before posting the classroom photograph.
+`vertical-admissions-2027-v6.png` is the current 2027 admissions campaign post.
+It replaces `vertical-admissions-2027-v5.png` for active use; the older files are
+retained for reference. It mirrors the A5 flyer in
+`../print/t4c-flyer-a5-v6-admissions-2027.html`: crest, name, "Admission in
+progress" hook and headline, an online-class browser hero with a live lesson
+badge, the 4-4-4 rhythm, class size, three selling points, the Black Friday
+extension to 5 December 2026, and a direct CTA with phone, email, address and QR
+code. It is 1080x1350 because that fits a parent WhatsApp or Facebook feed
+without cropping the CTA. Use the same guardian-consent check listed below
+before posting the classroom photograph.
 
 ## Design rules
 
@@ -116,8 +119,8 @@ The admissions posts render directly, without `_export.html`:
 ```powershell
 chrome --headless=new --disable-gpu --hide-scrollbars `
   --window-size=1080,1350 `
-  --screenshot="_export/vertical-admissions-2027-v5.png" `
-  "file:///path/to/social/vertical-admissions-2027-v5.html?export=1"
+  --screenshot="_export/vertical-admissions-2027-v6.png" `
+  "file:///path/to/social/vertical-admissions-2027-v6.html?export=1"
 ```
 
 Chrome writes nothing if `--user-data-dir` is reused, so give each run its own

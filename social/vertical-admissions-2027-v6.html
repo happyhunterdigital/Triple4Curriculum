@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Triple 4 Curriculum · Admission in Progress · Vertical v6</title>
+<style>
+  @font-face{
+    font-family:"Plus Jakarta Sans";
+    src:url("../public/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+    font-weight:400 700;
+    font-style:normal;
+    font-display:block;
+  }
+  @font-face{
+    font-family:"Inter";
+    src:url("../public/fonts/inter-latin.woff2") format("woff2");
+    font-weight:400 600;
+    font-style:normal;
+    font-display:block;
+  }
+  :root{
+    --green:#084228;
+    --yellow:#E9C444;
+    --ink:#111214;
+    --cream:#FAF9F5;
+    --mute:#5d655f;
+    --line:rgba(8,66,40,.16);
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#e6e6e9;font-family:"Inter",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .post{
+    width:1080px;height:1350px;background:var(--cream);position:relative;overflow:hidden;
+    display:flex;flex-direction:column;margin:0 auto 24px;box-shadow:0 18px 50px rgba(0,0,0,.2);
+  }
+  html.export body{background:#fff}
+  html.export .post{margin:0;box-shadow:none}
+  .pad{padding:48px 60px 0}
+
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brandleft{display:flex;align-items:center;gap:20px}
+  .brandleft img{width:72px;height:72px;object-fit:contain}
+  .brandtext{border-left:3px solid var(--line);padding-left:20px}
+  .brandname{font-family:"Plus Jakarta Sans",Inter,sans-serif;font-weight:700;font-size:26px;line-height:1.08;text-transform:uppercase;color:var(--ink)}
+  .brandtag{font-size:17px;font-weight:600;color:var(--mute);margin-top:5px}
+  .pill{background:var(--green);color:var(--yellow);border-radius:99px;padding:9px 18px;font-family:"Plus Jakarta Sans",Inter,sans-serif;font-size:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+
+  .headline{font-family:"Plus Jakarta Sans",Inter,sans-serif;font-weight:700;font-size:80px;line-height:.92;letter-spacing:-.045em;text-transform:uppercase;margin:22px 0 0;color:var(--ink)}
+  .headline span{display:block}
+  .headline em{display:block;font-style:normal;color:var(--green);position:relative;z-index:0}
+  .headline em::after{content:"";position:absolute;left:-4px;right:-4px;bottom:4px;height:18px;background:var(--yellow);z-index:-1}
+  .subhead{font-size:21px;line-height:1.35;color:var(--mute);margin:14px 0 0;max-width:870px}
+
+  .hero{margin:22px 60px 0;background:#fff;border:3px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:8px 8px 0 rgba(233,196,68,.55)}
+  .chrome{display:flex;align-items:center;gap:14px;padding:11px 16px;border-bottom:2px solid var(--line);background:#fff}
+  .dots{display:flex;gap:7px;flex:0 0 auto}
+  .dots i{display:block;width:11px;height:11px;border-radius:50%;background:#d8ddd9}
+  .url{font-size:16px;color:var(--mute);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .live{background:var(--yellow);color:var(--green);border-radius:99px;padding:6px 13px;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+  .screen{height:200px;overflow:hidden;background:var(--green)}
+  .screen img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block}
+  .caption{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:14px 18px;background:var(--green);color:#fff}
+  .caption b{font-family:"Plus Jakarta Sans",Inter,sans-serif;font-size:23px;font-weight:700;line-height:1.15}
+  .caption span{font-size:16px;color:rgba(255,255,255,.72);line-height:1.35;text-align:right}
+
+  .stats{margin:24px 0 0;background:var(--yellow);padding:14px 60px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .stat{display:flex;align-items:center;gap:14px;min-width:0}
+  .stat svg{width:52px;height:52px;flex:0 0 52px;color:var(--green)}
+  .stat b{display:block;font-family:"Plus Jakarta Sans",Inter,sans-serif;font-size:40px;line-height:1;color:var(--green);letter-spacing:-.03em}
+  .stat span{display:block;font-size:17px;font-weight:700;color:var(--green);line-height:1.2;margin-top:3px}
+  .stat small{display:block;font-size:14px;color:rgba(8,66,40,.68);line-height:1.25;margin-top:2px}
+
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:24px 60px 0}
+  .pillar{display:flex;align-items:flex-start;gap:12px}
+  .pillar svg{width:36px;height:36px;flex:0 0 36px;color:var(--green);margin-top:2px}
+  .pillar b{display:block;font-family:"Plus Jakarta Sans",Inter,sans-serif;font-size:18px;line-height:1.18;color:var(--ink)}
+  .pillar p{font-size:14px;line-height:1.35;color:var(--mute);margin:3px 0 0}
+
+  .offer{margin:24px 60px 0;background:#fff;border:3px solid var(--green);border-radius:14px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .offer .tag{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .offer .big{font-family:"Plus Jakarta Sans",Inter,sans-serif;font-size:31px;font-weight:700;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin:5px 0 3px}
+  .offer .fine{font-size:15px;line-height:1.35;color:var(--mute);margin:0}
+  .badge{background:var(--green);color:var(--yellow);border-radius:10px;padding:9px 14px;text-align:center;flex:0 0 220px}
+  .badge span{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.62)}
+  .badge b{display:block;font-family:"Plus Jakarta Sans",Inter,sans-serif;font-size:20px;line-height:1.15;margin-top:4px;word-break:break-all}
+
+  .cta{margin-top:auto;background:var(--green);color:#fff;padding:16px 60px;display:flex;align-items:center;gap:24px}
+  .cta .copy{flex:1}
+  .cta b{display:block;font-family:"Plus Jakarta Sans",Inter,sans-serif;font-size:31px;font-weight:700;line-height:1.1;text-transform:uppercase;letter-spacing:.01em;color:var(--yellow)}
+  .cta span{display:block;font-size:17px;line-height:1.45;color:rgba(255,255,255,.82);margin-top:5px}
+  .qr{width:120px;height:120px;flex:0 0 120px;background:#fff;border-radius:6px;padding:6px}
+  .qr img{width:100%;height:100%;display:block}
+
+  .contact{background:#fff;border-top:2px solid var(--line);padding:12px 60px;display:grid;grid-template-columns:1.1fr 1fr 1.25fr;gap:16px}
+  .contact span{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.11em;color:var(--mute)}
+  .contact b{display:block;font-size:16px;font-weight:600;color:var(--ink);line-height:1.3;margin-top:3px}
+  .credit{padding:9px 60px;border-top:1px solid var(--line);font-size:13px;color:var(--mute);display:flex;justify-content:space-between;gap:16px;background:var(--cream)}
+  .credit b{color:var(--green)}
+</style>
+</head>
+<body>
+
+<div class="post">
+  <div class="pad">
+    <div class="brandrow">
+      <div class="brandleft">
+        <img src="../print/assets/t4c-crest-transparent.png" alt="Triple 4 Curriculum crest">
+        <div class="brandtext">
+          <div class="brandname">Triple 4 Curriculum</div>
+          <div class="brandtag">Live online school · Grade R to 12</div>
+        </div>
+      </div>
+      <div class="pill">2027 intake</div>
+    </div>
+
+    <h1 class="headline"><span>Admission</span><em>in progress</em></h1>
+    <p class="subhead">A 100% live online school for Grade R to Grade 12. Real teachers, small classes, and a timetable that gives families time back.</p>
+
+    <div class="hero">
+      <div class="chrome">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url">live.triple4c.com · Grade 7 · 09:00</span>
+        <span class="live">Live</span>
+      </div>
+      <div class="screen"><img src="../print/assets/photos/classroom.jpg" alt="Learner in a live Triple 4 Curriculum online class"></div>
+      <div class="caption">
+        <b>Every lesson. A real teacher.</b>
+        <span>Live, interactive<br>16 learners maximum</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+        <div><b>4</b><span>days a week</span><small>Monday to Thursday</small></div>
+      </div>
+      <div class="stat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <div><b>4</b><span>live hours a day</span><small>Focused blocks</small></div>
+      </div>
+      <div class="stat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div><b>16</b><span>learners max</span><small>Every child known</small></div>
+      </div>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.4 8 8 9 4.6-1 8-4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <div><b>Real human teachers</b><p>Live in every lesson, never pre-recorded.</p></div>
+      </div>
+      <div class="pillar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div><b>Strictly small classes</b><p>16 learners maximum, known by name.</p></div>
+      </div>
+      <div class="pillar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.2l5.9-.9L12 3Z"/></svg>
+        <div><b>Extra Skills Fridays</b><p>Coding, finance, arts and leadership.</p></div>
+      </div>
+    </div>
+
+    <div class="offer">
+      <div>
+        <div class="tag">Black Friday special · extended</div>
+        <div class="big">10% off all terms</div>
+        <p class="fine">Use code BLACKFRIEND10 at checkout. New registrations only. Offer extended to 5 December 2026.</p>
+      </div>
+      <div class="badge"><span>Code</span><b>BLACKFRIEND10</b></div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="copy">
+      <b>Apply for 2027</b>
+      <span>triple4c.com/admissions · +27 689 758 960</span>
+      <span>info@triple4c.com · 178 Daisy Street, Sandton</span>
+    </div>
+    <div class="qr"><img src="../print/assets/qr-admissions.png" alt="QR code to the Triple 4 Curriculum admissions page"></div>
+  </div>
+
+  <div class="contact">
+    <div><span>Admissions</span><b>triple4c.com/admissions</b></div>
+    <div><span>WhatsApp</span><b>+27 689 758 960</b></div>
+    <div><span>Email</span><b>info@triple4c.com</b></div>
+  </div>
+  <div class="credit"><span><b>TRIPLE 4 CURRICULUM</b> · Preserving Fresh Minds Globally.</span><span>happyhunterdigital.com</span></div>
+</div>
+
+<script>
+  (function(){
+    var q=new URLSearchParams(location.search);
+    if(q.has("export")||window.self!==window.top)document.documentElement.classList.add("export");
+  })();
+</script>
+</body>
+</html>
