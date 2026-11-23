@@ -19,6 +19,7 @@ involved; the crest, photographs and QR code are stored locally in `assets/`.
 | `t4c-flyer-a5-v1.html` | A5 148x210 mm, 2 pages | Photo flyer: violin front, classroom diptych back |
 | `t4c-flyer-a5-v2.html` | A5 148x210 mm, 2 pages | Photo flyer: classroom hero front, 4-4-4 band and portrait fees on the back |
 | `t4c-flyer-a5-v3.html` | A5 148x210 mm, 2 pages | Photo flyer: cream typographic front with portrait card, dark back |
+| `t4c-flyer-a5-v4-admissions-2027.html` | A5 148x210 mm, 2 pages | Typographic admissions flyer for 2027 using the happyhunterdigital document palette; includes the Black Friday extension to 5 December 2026 |
 | `print.css` | | Shared print design system (tokens, sheets, letterhead, form, poster, flyer, photography) |
 | `assets/t4c-crest.png` | | Official crest, original source |
 | `assets/t4c-crest-transparent.png` | | Crest with the white backdrop keyed out, for use on cream, green or black |
@@ -61,6 +62,16 @@ Taken from the T4C brand book, not inferred:
 - Contact details, the admissions URL and the UTM campaign tag come from
   `docs/social-launch.md`: `+27 689 758 960`, `info@triple4c.com`,
   `triple4c.com/admissions`, `utm_campaign=launch2026`.
+
+## Admission in Progress campaign
+
+`t4c-flyer-a5-v4-admissions-2027.html` is a separate campaign piece. It uses the
+happyhunterdigital document palette and Inter-only typography, not the green and
+gold brand book system, because the brief called for agency branding and a new
+creative direction. It announces the 2027 intake and carries the Black Friday
+offer: 10% off all terms with code `BLACKFRIEND10`, new registrations only,
+extended to 5 December 2026. The same deadline is used in `HomePage.tsx` and
+`FirstTermPrompt.tsx`; keep all three in step if the offer changes again.
 
 ## Photography
 

@@ -155,7 +155,7 @@ export const FirstTermPrompt: React.FC = () => {
             <p className="mt-0.5">
               <strong className="text-white">10% off all terms</strong> with code{' '}
               <span className="font-mono font-bold text-[var(--color-t4c-yellow)]">BLACKFRIEND10</span>{' '}
-              at checkout · new registrations only · offer ends midnight Sunday.
+              at checkout · new registrations only · offer extended to 5 December 2026.
             </p>
           </div>
         </div>

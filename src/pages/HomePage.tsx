@@ -87,7 +87,7 @@ export function HomePage() {
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-t4c-yellow)] mb-1">BLACK FRIDAY SPECIAL</p>
               <h2 className="text-2xl font-black tracking-tight">10% off all terms</h2>
-              <p className="text-neutral-300 mt-2">Use code BLACKFRIEND10 at checkout. Limited to new registrations only. Offer ends midnight Sunday.</p>
+              <p className="text-neutral-300 mt-2">Use code BLACKFRIEND10 at checkout. Limited to new registrations only. Offer extended to 5 December 2026.</p>
             </div>
           </div>
           <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-end">
