@@ -18,7 +18,7 @@ import {
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { createPayfastCheckout, submitPayfastCheckout } from '../../lib/payfast';
+import { createPayfastCheckout, payfastErrorMessage, submitPayfastCheckout } from '../../lib/payfast';
 
 const PHASES = [
   { id: 'Foundation', label: 'Foundation', grades: 'Grade R-3', desc: 'Playful, sensory, movement', icon: '🧸' },
@@ -98,6 +98,7 @@ export const OnboardingFlow: React.FC = () => {
   const [completed, setCompleted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [payfastError, setPayfastError] = useState<string | null>(null);
   const [googleUser, setGoogleUser] = useState<FbUser | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -272,6 +273,7 @@ export const OnboardingFlow: React.FC = () => {
       return;
     }
     setError(null);
+    setPayfastError(null);
     setSubmitting(true);
     const [db, storage] = await Promise.all([getDb(), getStorageClient()]);
     try {
@@ -422,27 +424,40 @@ export const OnboardingFlow: React.FC = () => {
         });
       }
 
-      await setDoc(doc(db, 'users', fbUser.uid), {
-        // Self-service sign-up is always a learner until an admin grants a
-        // staff claim; the role field must match the rules (role == 'learner').
-        uid: fbUser.uid, role: 'learner', name: base.name, email: base.email,
+      // Never rewrite `role` on an existing user document: the rules only allow
+      // an update that keeps the stored role, so forcing role:'learner' here
+      // made every returning (or staff) account fail with permission-denied -
+      // before the PayFast hand-off ever ran. Role is only set on create.
+      const userRef = doc(db, 'users', fbUser.uid);
+      const existingUser = await getDoc(userRef);
+      const userFields: Record<string, unknown> = {
+        uid: fbUser.uid, name: base.name, email: base.email,
         avatarUrl: base.avatarUrl, photoURL: base.photoURL,
         departmentId: data.department || '', provider,
         privacyPolicyAccepted: true, codeOfConductAccepted: true, termsAccepted: true,
-        createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
-      }, { merge: true });
+        updatedAt: serverTimestamp(),
+      };
+      if (!existingUser.exists()) {
+        // Self-service sign-up is always a learner until an admin grants a
+        // staff claim; the role field must match the rules (role == 'learner').
+        userFields.role = 'learner';
+        userFields.createdAt = serverTimestamp();
+      }
+      await setDoc(userRef, userFields, { merge: true });
 
       // Tuition: hand off to PayFast (amount + signature computed server-side).
-      // If the payment function is not configured yet, fall through to the
-      // invoice-pending screen instead of blocking sign-up.
+      // A failure here must be visible - silently finishing as "invoice pending"
+      // is what made a blocked merchant account look like a broken button.
       if (data.role === 'learner' && (data.paymentMethod ?? 'tuition') === 'tuition') {
-        const checkout = await createPayfastCheckout({
-          plan: data.paymentPlan === 'annual' ? 'annual' : 'monthly',
-          phase: data.department,
-        });
-        if (checkout) {
+        try {
+          const checkout = await createPayfastCheckout({
+            plan: data.paymentPlan === 'annual' ? 'annual' : 'monthly',
+            phase: data.department,
+          });
           submitPayfastCheckout(checkout);
           return;
+        } catch (payfastError) {
+          setPayfastError(payfastErrorMessage(payfastError));
         }
       }
 
@@ -499,6 +514,16 @@ export const OnboardingFlow: React.FC = () => {
                   : 'Your personal details, academic records, agreements and payment setup are logged. You will be routed to your learning dashboard.'}
               </p>
             </div>
+            {payfastError && (
+              <div className="mx-auto max-w-lg rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-left">
+                <p className="text-xs font-semibold text-amber-900">Payment could not start</p>
+                <p className="mt-1 text-xs leading-relaxed text-amber-800">{payfastError}</p>
+                <p className="mt-2 text-[11px] leading-relaxed text-amber-700">
+                  Your registration is saved. You can pay any time from your dashboard, or email
+                  support@triple4c.com and we will send an invoice.
+                </p>
+              </div>
+            )}
             <Button onClick={() => { window.location.href = '/dashboard'; }}>Go to {role === 'teacher' ? 'Dashboard' : 'Dashboard'} <ArrowRight size={16} className="ml-2" /></Button>
           </motion.div>
         ) : (

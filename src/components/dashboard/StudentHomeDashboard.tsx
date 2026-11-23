@@ -11,6 +11,7 @@ import type {
   LearnerCourseProgress, TimetableSlot,
 } from '../../types';
 import { AccountSettingsModal } from '../modals/AccountSettingsModal';
+import { TuitionPaymentCard } from './TuitionPaymentCard';
 import { daysUntilTerm, hasTermStarted, TERM_LABEL, termStartLabel } from '../../lib/term';
 
 interface DashboardData {
@@ -233,6 +234,8 @@ export const StudentHomeDashboard: React.FC<{ onNavigate: (r: string) => void }>
 
       <div className="px-5 xs:px-7 sm:px-9 lg:px-10 py-5 sm:py-6">
         <BentoGrid>
+
+          <TuitionPaymentCard />
 
           {/* ── Profile ── */}
           <BentoCard accent="dark" eyebrow="Profile" title="Your record" className="lg:col-span-2 lg:row-span-2">

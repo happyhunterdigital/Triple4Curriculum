@@ -33,11 +33,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
         <button
           onClick={goHome}
           className="flex items-center gap-2.5 sm:gap-3.5 cursor-pointer rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-t4c-yellow)]"
-          aria-label="Triple 4C home"
+          aria-label="Triple4Curriculum home"
         >
           <img
             src={cloudinaryImage('https://res.cloudinary.com/dka0498ns/image/upload/v1787254845/Triple_4_Curriculum_latest_logo_variant4_hjviza.png', 128)}
-            alt="Triple 4C"
+            alt="Triple4Curriculum"
             loading="eager"
             decoding="async"
             className="w-11 h-11 sm:w-[52px] sm:h-[52px] md:w-[58px] md:h-[58px] lg:w-[62px] lg:h-[62px] rounded-full object-cover border border-[var(--color-t4c-yellow)] shadow-sm shrink-0 bg-white"
@@ -45,14 +45,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMenu, menuOpen }) => {
           />
           <span className="hidden xs:block text-left">
             <span className="block text-xs sm:text-sm font-extrabold tracking-tight text-white uppercase leading-none">
-              Triple 4C Platform
+              Triple4Curriculum
             </span>
             <span className="block text-[10px] sm:text-[9px] font-mono uppercase tracking-widest text-[var(--color-t4c-yellow)] font-bold mt-0.5">
-              Academic Core
+              -Online School-
             </span>
           </span>
           <span className="xs:hidden text-xs font-extrabold tracking-tight text-white uppercase leading-none">
-            Triple 4C
+            Triple4C
           </span>
         </button>
       </div>
