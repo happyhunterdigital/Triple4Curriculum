@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Triple 4 Curriculum · Admission in Progress · 2027 · v5</title>
+<style>
+  @font-face{
+    font-family:"Inter";
+    src:url("../public/fonts/inter-latin.woff2") format("woff2");
+    font-weight:400 700;
+    font-style:normal;
+    font-display:block;
+  }
+  :root{
+    --ink:#111114;
+    --yellow:#FACC15;
+    --amber:#EAB308;
+    --mute:#5b5b63;
+    --line:#dcdce1;
+    --paper:#ffffff;
+  }
+  *{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html,body{margin:0;padding:0}
+  body{font-family:"Inter",Arial,sans-serif;color:var(--ink);background:#e6e6e9;font-size:9pt;line-height:1.45;-webkit-font-smoothing:antialiased}
+  @media print{body{background:#fff}}
+  @page{size:A5;margin:0}
+
+  .sheet{
+    width:148mm;height:210mm;background:var(--paper);position:relative;overflow:hidden;
+    display:flex;flex-direction:column;margin:0 auto 18px;box-shadow:0 12px 36px rgba(0,0,0,.18);
+  }
+  @media print{.sheet{margin:0;box-shadow:none;break-after:page;page-break-after:always}.sheet:last-of-type{break-after:auto;page-break-after:auto}}
+  html.export body{padding:0;background:#fff}
+  html.export .sheet{margin:0;box-shadow:none}
+  .pad{padding:8mm 9mm 0}
+
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:3mm}
+  .brandrow .left{display:flex;align-items:center;gap:2.5mm}
+  .brandrow img{width:14mm;height:14mm;object-fit:contain}
+  .brandname{font-size:8pt;font-weight:800;line-height:1.1;text-transform:uppercase;letter-spacing:.01em}
+  .brandname small{display:block;font-size:6pt;font-weight:600;color:var(--mute);text-transform:none;letter-spacing:0;margin-top:.6mm}
+  .intake{font-size:6.2pt;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);white-space:nowrap}
+  .hrule{height:1.1mm;background:var(--yellow);margin:3.5mm -9mm 0}
+
+  .hero{
+    margin:5mm -9mm 0;background:var(--ink);color:#fff;padding:6mm 9mm;
+    display:grid;grid-template-columns:1fr 52mm;gap:5mm;align-items:stretch;min-height:76mm;
+  }
+  .hero .copy{display:flex;flex-direction:column}
+  .hero .eyebrow{font-size:6.4pt;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);margin:0}
+  .hero h1{font-size:23pt;line-height:.96;letter-spacing:-.04em;text-transform:uppercase;margin:3mm 0 0;font-weight:800}
+  .hero h1 em{display:block;font-style:normal;color:var(--yellow)}
+  .hero .subhead{font-size:8pt;font-weight:700;color:rgba(255,255,255,.8);margin:3mm 0 0;line-height:1.4}
+  .hero .meta{margin-top:auto;font-size:6.2pt;line-height:1.5;color:rgba(255,255,255,.62);padding-top:3mm}
+  .hero .photo{height:100%;min-height:62mm;overflow:hidden;background:#000}
+  .hero .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block}
+
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5mm;margin-top:5mm}
+  .facts div{border-top:.8mm solid var(--yellow);padding-top:2mm}
+  .facts b{display:block;font-size:7.8pt;line-height:1.2}
+  .facts span{display:block;font-size:5.8pt;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;margin-top:.8mm}
+
+  .offer{margin-top:5mm;background:var(--yellow);padding:4mm 4.5mm;display:grid;grid-template-columns:1fr 24mm;gap:3mm;align-items:center}
+  .offer .tag{font-size:6pt;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+  .offer .big{font-size:12pt;font-weight:800;margin:1mm 0 .6mm;line-height:1.1}
+  .offer .fine{font-size:6.3pt;line-height:1.42;color:rgba(17,17,20,.78);margin:0}
+  .offer .badge{border:.5mm solid var(--ink);padding:2mm 1mm;text-align:center;font-size:6pt;font-weight:800;line-height:1.25;text-transform:uppercase}
+
+  .cta{margin-top:auto;background:var(--ink);color:#fff;padding:4mm 9mm;display:flex;align-items:center;gap:4mm}
+  .cta .copy{flex:1}
+  .cta b{display:block;font-size:9pt;text-transform:uppercase;letter-spacing:.01em;color:var(--yellow)}
+  .cta span{display:block;font-size:6.4pt;line-height:1.5;color:rgba(255,255,255,.78);margin-top:.6mm}
+  .qr{width:17mm;height:17mm;flex:0 0 17mm;background:#fff;border:.2mm solid var(--line);padding:.8mm}
+  .qr img{width:100%;height:100%;display:block}
+  .credit{padding:2mm 9mm;border-top:.2mm solid var(--line);font-size:5.4pt;color:var(--mute);display:flex;justify-content:space-between;gap:3mm}
+  .credit b{color:var(--ink)}
+
+  /* back */
+  .backhead{display:flex;justify-content:space-between;align-items:baseline;font-size:6pt;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding-bottom:2mm;border-bottom:.3mm solid var(--line)}
+  .backhead em{font-style:normal;color:var(--amber)}
+  h2{font-size:11pt;line-height:1.15;letter-spacing:-.02em;text-transform:uppercase;margin:4mm 0 3mm}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm}
+  .card{border:.2mm solid var(--line);padding:2.6mm 3mm;min-height:22mm}
+  .card .n{font-size:6.4pt;font-weight:800;color:var(--amber)}
+  .card b{display:block;font-size:7.4pt;line-height:1.25;margin-top:1mm}
+  .card p{margin:.8mm 0 0;font-size:6.1pt;line-height:1.4;color:var(--mute)}
+  .card.five{grid-column:1 / -1;min-height:0}
+  .strip{display:grid;grid-template-columns:38mm 1fr;gap:3mm;margin-top:4mm;align-items:stretch}
+  .strip .photo2{height:27mm;overflow:hidden;background:var(--ink)}
+  .strip .photo2 img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block}
+  .strip .note{background:var(--ink);color:#fff;padding:3mm 4mm;font-size:6.3pt;line-height:1.45}
+  .strip .note b{display:block;font-size:7.2pt;text-transform:uppercase;color:var(--yellow);margin-bottom:1mm}
+  table{width:100%;border-collapse:collapse;margin-top:2mm;font-size:6.6pt}
+  th{text-align:left;background:var(--ink);color:#fff;font-size:5.8pt;letter-spacing:.07em;text-transform:uppercase;padding:1.5mm 2mm}
+  td{padding:1.5mm 2mm;border-bottom:.3mm solid var(--line);color:var(--mute)}
+  td:first-child{font-weight:800;color:var(--ink)}
+  td:last-child{font-weight:800;color:var(--ink);text-align:right}
+  .terms{font-size:5.8pt;line-height:1.42;color:var(--mute);margin:1.8mm 0 0}
+  .contact{margin-top:auto;background:var(--yellow);padding:3.6mm 9mm;display:flex;justify-content:space-between;gap:4mm;align-items:center}
+  .contact b{display:block;font-size:8.2pt;text-transform:uppercase}
+  .contact span{display:block;font-size:6.2pt;line-height:1.5;color:rgba(17,17,20,.75);margin-top:.5mm}
+  .contact .phone{text-align:right;font-size:7.6pt;font-weight:800;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<!-- FRONT -->
+<div class="sheet">
+  <div class="pad">
+    <div class="brandrow">
+      <div class="left">
+        <img src="assets/t4c-crest.png" alt="Triple 4 Curriculum crest">
+        <div class="brandname">Triple 4 Curriculum<small>Grade R to 12 · Live online school</small></div>
+      </div>
+      <div class="intake">2027 intake</div>
+    </div>
+    <div class="hrule"></div>
+
+    <div class="hero">
+      <div class="copy">
+        <p class="eyebrow">Admission in progress</p>
+        <h1>Admission<br><em>in progress</em></h1>
+        <p class="subhead">2027 admissions now open. Grade R to Grade 12, taught live by real teachers.</p>
+        <p class="meta">Book a class observation before you decide. Places are being confirmed for the 2027 school year.</p>
+      </div>
+      <div class="photo"><img src="assets/photos/classroom.jpg" alt="Learner working at a desk in a live Triple 4 Curriculum class"></div>
+    </div>
+
+    <div class="facts">
+      <div><b>Grade R to 12</b><span>all phases</span></div>
+      <div><b>16 learners</b><span>maximum per class</span></div>
+      <div><b>5 December 2026</b><span>offer deadline</span></div>
+    </div>
+
+    <div class="offer">
+      <div>
+        <div class="tag">Black Friday special · extended</div>
+        <div class="big">10% off all terms</div>
+        <p class="fine">Use code BLACKFRIEND10 at checkout. New registrations only. Offer extended to 5 December 2026.</p>
+      </div>
+      <div class="badge">code<br>BLACKFRIEND10</div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="copy">
+      <b>Apply online today</b>
+      <span>triple4c.com/admissions · +27 689 758 960</span>
+      <span>info@triple4c.com · 178 Daisy Street, Sandton</span>
+    </div>
+    <div class="qr"><img src="assets/qr-admissions.png" alt="QR code to the admissions page"></div>
+  </div>
+  <div class="credit"><span><b>TRIPLE 4 CURRICULUM</b> · Preserving Fresh Minds Globally.</span><span>Marketing design: happyhunterdigital</span></div>
+</div>
+
+<!-- BACK -->
+<div class="sheet">
+  <div class="pad">
+    <div class="backhead"><span>Admissions 2027</span><em>Why families choose T4C</em></div>
+
+    <h2>Five reasons to apply</h2>
+    <div class="grid2">
+      <div class="card"><span class="n">01</span><b>Live teachers, every lesson</b><p>Certified South African and UK teachers on camera, not pre-recorded clips.</p></div>
+      <div class="card"><span class="n">02</span><b>Classes capped at sixteen</b><p>Every learner is known by name, seen and supported by a real teacher.</p></div>
+      <div class="card"><span class="n">03</span><b>Extra Skills Fridays</b><p>Coding, finance, arts and leadership taught through practical projects.</p></div>
+      <div class="card"><span class="n">04</span><b>Lessons kept for catch-up</b><p>Recordings are available when illness or travel interrupts the week.</p></div>
+      <div class="card five"><span class="n">05</span><b>CAPS plus international</b><p>A South African track with an international outlook from Grade R to 12.</p></div>
+    </div>
+
+    <div class="strip">
+      <div class="photo2"><img src="assets/photos/violin.jpg" alt="Learner playing violin in an Extra Skills class"></div>
+      <div class="note"><b>More than the basics</b>Extra Skills Fridays give learners room to try coding, finance, arts and leadership in real projects. A school day that teaches the whole child.</div>
+    </div>
+
+    <h2>Monthly tuition</h2>
+    <table>
+      <tr><th>Phase</th><th>Grades</th><th>ZAR</th></tr>
+      <tr><td>Foundation</td><td>R to 3</td><td>R 1 500</td></tr>
+      <tr><td>Intermediate</td><td>4 to 6</td><td>R 2 500</td></tr>
+      <tr><td>Senior</td><td>7 to 9</td><td>R 3 500</td></tr>
+      <tr><td>FET</td><td>10 to 12</td><td>R 4 500</td></tr>
+    </table>
+    <p class="terms">Annual registration and application fee applies. Final exam fees excluded. Black Friday discount applies to terms for new registrations and ends 5 December 2026.</p>
+  </div>
+
+  <div class="contact">
+    <div>
+      <b>Book a class observation</b>
+      <span>Apply at triple4c.com/admissions · info@triple4c.com</span>
+      <span>178 Daisy Street, Sandton · @triple4curriculum</span>
+    </div>
+    <div class="phone">+27 689 758 960</div>
+  </div>
+  <div class="credit"><span><b>TRIPLE 4 CURRICULUM</b> · 178 Daisy Street, Sandton</span><span>happyhunterdigital.com</span></div>
+</div>
+
+<script>
+  (function(){
+    var q=new URLSearchParams(location.search);
+    if(q.has("export")||window.self!==window.top){
+      document.documentElement.classList.add("export");
+      var p=parseInt(q.get("p")||"1",10);
+      if(p>1){var t=document.querySelectorAll(".sheet")[p-1];if(t)requestAnimationFrame(function(){scrollTo(0,t.offsetTop)})}
+    }
+  })();
+</script>
+</body>
+</html>
