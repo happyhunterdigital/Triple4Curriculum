@@ -19,7 +19,7 @@ involved; the crest, photographs and QR code are stored locally in `assets/`.
 | `t4c-flyer-a5-v1.html` | A5 148x210 mm, 2 pages | Photo flyer: violin front, classroom diptych back |
 | `t4c-flyer-a5-v2.html` | A5 148x210 mm, 2 pages | Photo flyer: classroom hero front, 4-4-4 band and portrait fees on the back |
 | `t4c-flyer-a5-v3.html` | A5 148x210 mm, 2 pages | Photo flyer: cream typographic front with portrait card, dark back |
-| `t4c-flyer-a5-v4-admissions-2027.html` | A5 148x210 mm, 2 pages | Typographic admissions flyer for 2027 using the happyhunterdigital document palette; includes the Black Friday extension to 5 December 2026 |
+| `t4c-flyer-a5-v4-admissions-2027.html` | A5 148x210 mm, 2 pages | Photo-led admissions flyer for 2027 using the happyhunterdigital document palette; includes the Black Friday extension to 5 December 2026 |
 | `print.css` | | Shared print design system (tokens, sheets, letterhead, form, poster, flyer, photography) |
 | `assets/t4c-crest.png` | | Official crest, original source |
 | `assets/t4c-crest-transparent.png` | | Crest with the white backdrop keyed out, for use on cream, green or black |
@@ -72,6 +72,13 @@ creative direction. It announces the 2027 intake and carries the Black Friday
 offer: 10% off all terms with code `BLACKFRIEND10`, new registrations only,
 extended to 5 December 2026. The same deadline is used in `HomePage.tsx` and
 `FirstTermPrompt.tsx`; keep all three in step if the offer changes again.
+
+The front carries the school crest and name, the "Admission in progress" hook
+and headline, a real classroom photograph, grades offered, the offer deadline,
+class size, the offer panel, and the direct CTA with phone, email, address and
+QR code. The back carries five selling points, an Extra Skills photograph,
+tuition by phase, terms, and a book-an-observation CTA. The companion digital
+post is `../social/vertical-admissions-2027.html` for WhatsApp and Facebook.
 
 ## Photography
 
